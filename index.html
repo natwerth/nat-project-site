@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>natwerth.com</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#a09484" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- Hamburgers animation lib (you can self-host later if you want) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hamburgers/1.2.1/hamburgers.min.css" />
+
+  <!-- Global styles first -->
+  <link rel="stylesheet" href="/assets/styles/styles.css" />
+  <link rel="stylesheet" href="/assets/styles/header.css" />
+  <link rel="stylesheet" href="/assets/styles/home.css" />
+  <link rel="stylesheet" href="/assets/styles/carousel.css" />
+  <link rel="stylesheet" href="/assets/styles/footer.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+  <!-- Include the header partial -->
+  <div data-include="/partials/header.html"></div>
+
+  <!-- Your global JS (scroller, etc.) -->
+  <script src="/assets/scripts/scripts.js" defer></script>
+  <!-- Header behavior -->
+  <script src="/assets/scripts/header.js" defer></script>
+  <!-- The tiny include loader -->
+  <script type="module" src="/assets/includes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/embla-carousel@8.1.6/embla-carousel.umd.js" defer></script>
+  <script src="https://unpkg.com/embla-carousel-wheel-gestures@8.1.0/dist/embla-carousel-wheel-gestures.umd.js" defer></script>
+  <script src="/assets/scripts/carousel.js" defer></script>
+  <script src="/assets/scripts/letterboxd.js" defer></script>
+
+<section class="home-hero bg-footer" aria-label="Homepage hero">
+
+
+ <div class="container hero-inner">
+  <div class="col-text">
+   <h1 class="h-display">Nat. <em class="light-italic">Reimagined.</em></h1>
+   <p>The world awaits. Discover more Nat right here, right now.</p>
+
+   <div class="hero-cta">
+    <div class="cta-row">
+     <a class="c-btn c-btn--primary" href="https://www.natwerth.com/links">Nat Links</a>
+     <a class="c-btn c-btn--primary c-btn--outline" href="https://natwerth.github.io/firemebot">Hire Nat</a>
+    </div>
+    <p class="hero-subtext">Built exclusively with <strong>custom code</strong> and <strong>open-source</strong> tools</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="reveal-anim-section bg-footer section-pad" aria-label="Hero image reveal">
+
+  <!-- Nat SVG animation -->
+ <div class="reveal-anim-box" id="revealAnim">
+  <svg viewBox="-2 -1 152.5 96.57" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Nat logo reveal">
+   <defs>
+    <symbol id="revealLogo" viewBox="-2 -1 152.5 96.57">
+     <g>
+      <path d="M13.5,30.56c18,0,27,18,27,18,0,0-9-18,9-18s18,63,0,63-27-27-27-27c0,0,9,27-9,27s-18-63,0-63h0Z"/>
+      <path d="M148.5,30.56c0,18-18,18-18,18,0,0,9,54-18,45,0,0,18-63-18-72h0c9-9,54-9,54,9Z"/>
+      <path d="M68.79,0s2.6,20.33,21.59,21.55c0,0-18.87,2.24-21.59,21.55,0,0-2.68-19.69-21.59-21.55,0,0,17.69-2.01,21.59-21.55Z"/>
+      <path id="revealStarPathDef" d="M91.22,38.8s1.11,8.2,9.22,8.7c0,0-8.06.91-9.22,8.7,0,0-1.15-7.95-9.22-8.7,0,0,7.56-.81,9.22-8.7Z"/>
+     </g>
+    </symbol>
+
+    <mask id="revealLogoMask">
+     <rect x="-2" y="-1" width="152.5" height="96.57" fill="#000"/>
+     <g class="reveal-mask-ink" data-reveal-box>
+      <use href="#revealLogo" fill="#fff"/>
+     </g>
+    </mask>
+   </defs>
+
+   <path id="revealStarProbe" d="M91.22,38.8s1.11,8.2,9.22,8.7c0,0-8.06.91-9.22,8.7,0,0-1.15-7.95-9.22-8.7,0,0,7.56-.81,9.22-8.7Z"
+         fill="none" stroke="none" visibility="hidden"/>
+
+   <image
+     class="reveal-photo"
+     href="https://www.natwerth.com/wp-content/uploads/2024/06/IMG_8141-scaled.jpeg"
+     x="-2" y="-1" width="152.5" height="96.57"
+     preserveAspectRatio="xMidYMid slice"
+     mask="url(#revealLogoMask)"/>
+
+   <g class="reveal-rings" data-reveal-box>
+    <use href="#revealLogo" class="reveal-ring reveal-ring--1" data-reveal-box/>
+    <use href="#revealLogo" class="reveal-ring reveal-ring--2" data-reveal-box/>
+    <use href="#revealLogo" class="reveal-ring reveal-ring--3" data-reveal-box/>
+   </g>
+  </svg>
+ </div>
+
+ <script type="module" src="/assets/scripts/home.js"></script>
+</section>
+
+<!-- Laurel row -->
+<section class="laurel-row bg-footer" aria-label="Awards & Laurels">
+
+
+ <div class="container laurel-grid">
+  <figure class="laurel-item">
+   <img src="https://www.natwerth.com/wp-content/uploads/2024/03/MasterPhotographerLaurel.png" alt="Master Photographer Laurel">
+  </figure>
+  <figure class="laurel-item">
+   <img src="https://www.natwerth.com/wp-content/uploads/2024/03/WHSFAForensicsStateChampionLaurel.png" alt="WHSFA Forensics State Champion Laurel">
+  </figure>
+  <figure class="laurel-item">
+   <img src="https://www.natwerth.com/wp-content/uploads/2024/03/MilwaukeePrideValorAwardLaurel.png" alt="Milwaukee Pride Valor Award Laurel">
+  </figure>
+  <figure class="laurel-item">
+   <img src="https://www.natwerth.com/wp-content/uploads/2024/03/TouchtunesIndieIconLaurel.png" alt="Touchtunes Indie Icon Laurel">
+  </figure>
+  <figure class="laurel-item">
+   <img src="https://www.natwerth.com/wp-content/uploads/2024/03/SheboyganPersonoftheYearLaurel.png" alt="Sheboygan Person of the Year Laurel">
+  </figure>
+ </div>
+</section>
+
+<!-- Featured projects -->
+<section class="projects-block bg-footer" aria-label="Featured projects">
+  <div class="container">
+    <h2 class="h-section text-footer-text">Projects</h2>
+  </div>
+  <!-- page block contained in /partials/projects.html folder -->
+  <section data-include="/partials/projects.html"></section>
+</section>
+
+<!-- Award tiles -->
+<section class="nt-tiles bg-footer" aria-label="Showcase Tiles">
+
+ <div class="nt-tiles__wrap">
+  <div class="nt-tile">
+   <div class="nt-tile__top"><div class="nt-tile__imgwrap">
+    <img class="nt-tile__img" src="https://www.natwerth.com/wp-content/uploads/2023/11/padi-logo.png" alt="PADI Logo">
+   </div></div>
+   <div class="nt-tile__bottom"><p class="nt-tile__label">Open Water</p></div>
+  </div>
+
+  <a class="nt-tile nt-tile--akamai" href="https://coursera.org/share/a62b93f95c856d3fc20baa29ee79d696" target="_blank" rel="noopener">
+   <div class="nt-tile__top"><div class="nt-tile__imgwrap">
+    <img class="nt-tile__img" src="https://www.natwerth.com/wp-content/uploads/2024/05/akamai-technical-academy-promo-removebg-preview-transformed.png" alt="Akamai Technical Academy">
+   </div></div>
+   <div class="nt-tile__bottom"><p class="nt-tile__label">Network Engineer →</p></div>
+  </a>
+
+  <a class="nt-tile nt-tile--salesforce" href="https://www.salesforce.com/trailblazer/profile/" target="_blank" rel="noopener">
+   <div class="nt-tile__top"><div class="nt-tile__imgwrap">
+    <img class="nt-tile__img" src="https://www.natwerth.com/wp-content/uploads/2025/08/2025-03_Badge_SF-Certified_Platform-Admin_High-Res.png" alt="Salesforce Certified Administrator">
+   </div></div>
+   <div class="nt-tile__bottom"><p class="nt-tile__label">Salesforce Admin →</p></div>
+  </a>
+
+  <a class="nt-tile nt-tile--gmap" href="https://www.google.com/maps/contrib/111567881794706653052/reviews" target="_blank" rel="noopener">
+   <div class="nt-tile__top"><div class="nt-tile__imgwrap">
+    <img class="nt-tile__img" src="https://www.natwerth.com/wp-content/uploads/2024/03/Google-Maps-logo-design-on-transparent-background-PNG.png" alt="Google Maps">
+   </div></div>
+   <div class="nt-tile__bottom"><p class="nt-tile__label">Lvl 7 Guide →</p></div>
+  </a>
+
+  <div class="nt-tile">
+   <div class="nt-tile__top"><div class="nt-tile__imgwrap">
+    <img class="nt-tile__img" src="https://www.natwerth.com/wp-content/uploads/2024/03/linkedin_thumb_DMSB_Ongoing_Badges-21.png" alt="LinkedIn Badge">
+   </div></div>
+   <div class="nt-tile__bottom"><p class="nt-tile__label">BMC</p></div>
+  </div>
+ </div>
+</section>
+
+<!-- Letterboxd reviews row -->
+<section class="reviews-block bg-footer" aria-label="Letterboxd Reviews">
+  <div class="container">
+    <h2 class="h-section text-footer-text">Reviews</h2>
+  </div>
+  <!-- page block contained in /partials folder -->
+  <section data-include="/partials/letterboxd.html"></section>
+</section>
+
+<!-- Education tile -->
+<section class="section-pad bg-footer" aria-label="Education">
+ <div class="container">
+  <h2 class="h-section edu-heading">Education</h2>
+
+  <article class="c-card c-card--white c-card--elevated edu-card">
+   <div class="grid grid-2 gap-lg edu-wrap">
+    <figure class="edu-photo">
+     <img src="https://www.natwerth.com/wp-content/uploads/2024/06/IMG_0668-2-e1720728736693.jpeg" alt="Nat Werth Graduation Photo">
+    </figure>
+
+    <div class="edu-info">
+     <div class="edu-content">
+      <p class="edu-title">Northeastern University</p>
+      <p class="edu-meta">BSBA · Summa Cum Laude · 2023</p>
+      <p class="edu-meta">Concentration: Entrepreneurship &amp; New Venture Management · Minor: Urban Studies</p>
+      <div class="edu-sep" role="presentation"></div>
+
+      <a href="https://linkedin.com/in/nat-werth/" class="c-btn c-btn--danger" aria-label="Learn more about Northeastern University">Learn more</a>
+     </div>
+    </div>
+   </div>
+  </article>
+ </div>
+</section>
+
+<!-- News tiles -->
+<section class="press-strip bg-footer section-pad" aria-label="In the news" style="--rail-gutter: clamp(12px, 4vw, 24px)">
+ <div class="container">
+  <h2 class="h-section text-footer-text" style="margin-top:0">In the News</h2>
+
+  <!-- Mobile bleed on the scroller itself; gutters live INSIDE via padding -->
+  <div class="rail u-bleed-mobile" id="pressRail">
+   <!-- TILE 2 -->
+   <a class="c-tile tile" href="https://wisconsinwatch.org/2023/05/anti-lgbtq-policies-at-wisconsin-voucher-schools/" target="_blank" rel="noopener">
+    <span class="tile__media">
+     <img src="https://www.natwerth.com/wp-content/uploads/2023/11/screenshot-2023-11-20-at-2.27.37-pm.png" alt="Anti-LGBTQ+ Policies at WI Voucher Schools">
+    </span>
+    <div class="c-tile__body">
+     <div class="meta">
+      <span class="source">
+       <img src="https://www.natwerth.com/wp-content/uploads/2024/06/wiwatchlogo.png" alt="" aria-hidden="true">
+       Wisconsin Watch • <span class="age" id="article-age-2">—</span>
+      </span>
+      <h3 class="title">Anti-LGBTQ+ Policies at WI Voucher Schools</h3>
+     </div>
+    </div>
+   </a>
+
+   <!-- TILE 3 -->
+   <a class="c-tile tile" href="https://time.com/5603056/high-school-graduation-speeches-censored/" target="_blank" rel="noopener">
+    <span class="tile__media">
+     <img src="https://www.natwerth.com/wp-content/uploads/2023/11/screenshot-2023-11-21-at-8.35.47-pm-edited-1.png" alt="Valedictorian Speeches Keep Getting Censored">
+    </span>
+    <div class="c-tile__body">
+     <div class="meta">
+      <span class="source">
+       <img src="https://www.natwerth.com/wp-content/uploads/2024/03/Time_Magazine_logo.svg_.png" alt="" aria-hidden="true">
+       TIME • <span class="age" id="article-age-3">—</span>
+      </span>
+      <h3 class="title">Valedictorian Speeches Keep Getting Censored</h3>
+     </div>
+    </div>
+   </a>
+
+   <!-- TILE 4 -->
+   <a class="c-tile tile" href="https://www.today.com/video/watch-nat-werth-s-full-speech-at-pridefest-milwaukee-62216773948" target="_blank" rel="noopener">
+    <span class="tile__media">
+     <img src="https://www.natwerth.com/wp-content/uploads/2023/11/screenshot-2023-11-21-at-8.53.42-pm.png" alt="VIDEO: Gay valedictorian finally delivers speech">
+    </span>
+    <div class="c-tile__body">
+     <div class="meta">
+      <span class="source">
+       <img src="https://www.natwerth.com/wp-content/uploads/2024/03/Today-Show-900x0-1.png" alt="" aria-hidden="true">
+       TODAY • <span class="age" id="article-age-4">—</span>
+      </span>
+      <h3 class="title">VIDEO: Gay valedictorian finally delivers speech</h3>
+     </div>
+    </div>
+   </a>
+
+   <!-- TILE 5 -->
+   <a class="c-tile tile" href="https://www.sheboyganpress.com/story/news/2019/05/30/sheboygan-lutheran-valedictorian-says-speech-homosexuality-nixed/1225636001/" target="_blank" rel="noopener">
+    <span class="tile__media">
+     <img src="https://www.natwerth.com/wp-content/uploads/2023/11/screenshot-2023-11-21-at-8.41.21-pm.png" alt="Valedictorian denied speech for writing about being gay">
+    </span>
+    <div class="c-tile__body">
+     <div class="meta">
+      <span class="source">
+       <img src="https://www.natwerth.com/wp-content/uploads/2024/06/shebpress2.jpeg" alt="" aria-hidden="true">
+       Sheboygan Press • <span class="age" id="article-age-5">—</span>
+      </span>
+      <h3 class="title">Valedictorian denied speech for writing about being gay</h3>
+     </div>
+    </div>
+   </a>
+  </div>
+
+  <!-- controls row: arrows left, dots right -->
+  <div class="controls">
+   <div class="arrows" id="pressArrows">
+    <button class="arrow" id="prevBtn" aria-label="Previous item" type="button">&larr;</button>
+    <button class="arrow" id="nextBtn" aria-label="Next item" type="button">&rarr;</button>
+   </div>
+   <div class="dots" id="pressDots" aria-label="Carousel position"></div>
+  </div>
+ </div>
+<!-- removed duplicate home.js include -->
+</section>
+
+<!-- Quotes tiles -->
+<section class="card-section bg-footer" aria-label="Showcase Card">
+ <div class="container">
+  <div class="c-card u-bleed-mobile sharp">
+   <h2>What People are Saying</h2>
+
+   <div class="c-quotes" aria-label="Testimonials carousel">
+    <div class="c-quotes__view">
+     <ul class="c-quotes__track" role="list" aria-label="Quotes" tabindex="0">
+      <li class="c-quotes__slide" id="quote-1">
+       <div class="c-quotes__tile">
+        <p class="c-quotes__text">“…Nat executed and communicated extremely well, took direction to refine his work, and ultimately presented and trained on what he had accomplished. I would absolutely recommend Nat.”</p>
+        <div>
+         <p class="c-quotes__name">– A. Weil</p>
+         <a href="https://www.linkedin.com/in/nat-werth/details/recommendations/" class="c-quotes__more" target="_blank" rel="noopener">See more →</a>
+        </div>
+       </div>
+      </li>
+
+      <li class="c-quotes__slide" id="quote-2">
+       <div class="c-quotes__tile">
+        <p class="c-quotes__text">“I wholeheartedly recommend [Nat] for his skills, focus, fast learning abilities, and because he is a pleasure to work with.”</p>
+        <div>
+         <p class="c-quotes__name">– S. Dummer</p>
+         <a href="https://www.linkedin.com/in/nat-werth/details/recommendations/" class="c-quotes__more" target="_blank" rel="noopener">See more →</a>
+        </div>
+       </div>
+      </li>
+
+      <li class="c-quotes__slide" id="quote-3">
+       <div class="c-quotes__tile">
+        <p class="c-quotes__text">“Admirable”</p>
+        <div>
+         <p class="c-quotes__name">– TIME Magazine</p>
+         <a href="https://time.com/5603056/high-school-graduation-speeches-censored/" class="c-quotes__more" target="_blank" rel="noopener">See more →</a>
+        </div>
+       </div>
+      </li>
+
+      <li class="c-quotes__slide" id="quote-4">
+       <div class="c-quotes__tile">
+        <p class="c-quotes__text">“Always standing with you.”</p>
+        <div>
+         <p class="c-quotes__name">– J. Lopez</p>
+         <a href="https://twitter.com/JLo/status/1147265042892709895" class="c-quotes__more" target="_blank" rel="noopener">See more →</a>
+        </div>
+       </div>
+      </li>
+
+      <li class="c-quotes__slide" id="quote-5">
+       <div class="c-quotes__tile">
+        <p class="c-quotes__text">“Furry freak”</p>
+        <div>
+         <p class="c-quotes__name">– Sandman308</p>
+         <a href="https://www.reddit.com/r/boston/comments/10vdhm0/which_one_of_you_freaks_hijacked_the_south_boston/" class="c-quotes__more" target="_blank" rel="noopener">See more →</a>
+        </div>
+       </div>
+      </li>
+
+      <li class="c-quotes__slide" id="quote-6">
+       <div class="c-quotes__tile">
+        <p class="c-quotes__text">“Moving on”</p>
+        <div>
+         <p class="c-quotes__name">– The Sheboygan Press</p>
+         <a href="https://www.sheboyganpress.com/story/news/2019/05/30/sheboygan-lutheran-valedictorian-says-speech-homosexuality-nixed/1225636001/" class="c-quotes__more" target="_blank" rel="noopener">See more →</a>
+        </div>
+       </div>
+      </li>
+     </ul>
+    </div>
+
+    <div class="c-quotes__controls">
+     <div class="c-quotes__arrows">
+      <button class="c-quotes__arrow prev" type="button" aria-label="Previous slide">‹</button>
+      <button class="c-quotes__arrow next" type="button" aria-label="Next slide">›</button>
+     </div>
+     <div class="c-quotes__dots" aria-label="Slide selectors"></div>
+    </div>
+
+    <!-- Live region for screen reader announcements -->
+    <p class="sr-only" aria-live="polite" id="quotesAnnouncer"></p>
+   </div>
+
+   <div class="linkedin-button-container">
+    <a href="https://www.linkedin.com/in/nat-werth/" class="linkedin-button" target="_blank" rel="noopener">Connect with Nat</a>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="c-showcase pgames" aria-label="Command Line Games">
+ <div class="c-showcase__inner">
+  <h2 class="pgames__title">Command Line Games</h2>
+
+  <div class="c-card c-card--white">
+   <header class="pgames__head">
+    <h3 class="h-section" id="pgames-heading">Python Games</h3>
+    <span class="text-muted" aria-hidden="true">Make the most of your command line</span>
+   </header>
+
+   <div class="pgames__rail" role="list" aria-labelledby="pgames-heading">
+    <!-- Item 1 -->
+    <a class="pgames__item" role="listitem" href="https://github.com/natwerth/Nat-Store-/blob/main/lemonadeSideHustle.py" target="_blank" rel="noopener noreferrer">
+     <article class="c-tile">
+      <img class="c-tile__image" loading="lazy" decoding="async" src="https://www.natwerth.com/wp-content/uploads/2024/04/LemonadeSideHustleIcon.png" alt="Lemonade Side Hustle" />
+      <div class="c-tile__body">
+       <h4 class="c-tile__title">Lemonade Side Hustle</h4>
+       <div class="c-tile__meta">
+        <p class="c-tile__text" aria-label="Rated 5 out of 5">★★★★★<br>YOU could make MILLION$!</p>
+        <span class="badge badge--get">GET</span>
+       </div>
+      </div>
+     </article>
+    </a>
+
+    <!-- Item 2 -->
+    <a class="pgames__item" role="listitem" href="https://github.com/natwerth/Nat-Store-/blob/main/hangPerson.py" target="_blank" rel="noopener noreferrer">
+     <article class="c-tile">
+      <img class="c-tile__image" loading="lazy" decoding="async" src="https://www.natwerth.com/wp-content/uploads/2024/04/hangPersonIcon.png" alt="Hang Person" />
+      <div class="c-tile__body">
+       <h4 class="c-tile__title">Hang Person</h4>
+       <div class="c-tile__meta">
+        <p class="c-tile__text" aria-label="Rated 4 out of 5">★★★★☆<br>The gender-inclusive murder game</p>
+        <span class="badge badge--get">GET</span>
+       </div>
+      </div>
+     </article>
+    </a>
+
+    <!-- Item 3 -->
+    <a class="pgames__item" role="listitem" href="https://github.com/natwerth/Nat-Store-/blob/main/textAdventure.py" target="_blank" rel="noopener noreferrer">
+     <article class="c-tile">
+      <img class="c-tile__image" loading="lazy" decoding="async" src="https://www.natwerth.com/wp-content/uploads/2024/04/textAdventure.png" alt="Text Adventure" />
+      <div class="c-tile__body">
+       <h4 class="c-tile__title">Text Adventure</h4>
+       <div class="c-tile__meta">
+        <p class="c-tile__text" aria-label="Rated 5 out of 5">★★★★★<br>Explore a haunted spooky house</p>
+        <span class="badge badge--get">GET</span>
+       </div>
+      </div>
+     </article>
+    </a>
+
+    <!-- Item 4 -->
+    <a class="pgames__item" role="listitem" href="https://github.com/natwerth/Nat-Store-/blob/main/MagicCalculator.py" target="_blank" rel="noopener noreferrer">
+     <article class="c-tile">
+      <img class="c-tile__image" loading="lazy" decoding="async" src="https://www.natwerth.com/wp-content/uploads/2024/04/MagicCalculatorIcon-1.png" alt="Magic Calculator" />
+      <div class="c-tile__body">
+       <h4 class="c-tile__title">Magic Calculator</h4>
+       <div class="c-tile__meta">
+        <p class="c-tile__text" aria-label="Rated 2 out of 5">★★☆☆☆<br>The Oracle predicts your future age</p>
+        <span class="badge badge--get">GET</span>
+       </div>
+      </div>
+     </article>
+    </a>
+   </div>
+
+   <!-- Controls -->
+   <div class="pgames__controls">
+    <div class="pgames__arrows" aria-label="Carousel controls">
+     <button class="pgames__btn" data-dir="-1" type="button" aria-label="Previous">
+      ‹
+     </button>
+     <button class="pgames__btn" data-dir="1" type="button" aria-label="Next">
+      ›
+     </button>
+    </div>
+    <div class="pgames__dots" aria-label="Carousel position" role="tablist"></div>
+   </div>
+  </div>
+ </div>
+<!-- removed duplicate home.js include -->
+
+</section>
+
+<section class="section-pad">
+  <div class="container">
+    <h2 class="text-footer-text">Feedback Form</h2>
+
+    <div class="c-card c-card--white c-card--elevated gap-md">
+      <form action="#" method="post" class="grid gap-md">
+        
+        <div class="form-row form-row--2">
+          <input type="text" name="name" placeholder="Your Name" class="input-clean" required>
+          <input type="email" name="email" placeholder="Your Email" class="input-clean" required>
+        </div>
+
+        <div class="form-row">
+          <select name="topic" class="select-clean" required>
+            <option value="">Select a topic</option>
+            <option value="website">Website</option>
+            <option value="services">Services</option>
+            <option value="support">Support</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <textarea name="message" placeholder="Your Feedback" rows="5" class="textarea-clean" required></textarea>
+        </div>
+
+        <div class="form-row">
+          <button type="submit" class="c-btn c-btn--primary">Submit Feedback</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Include the footer partial when you have it -->
+<section data-include="/partials/footer.html"></section>
+
+</body>
+</html>

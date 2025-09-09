@@ -1,0 +1,125 @@
+<div id="letterboxd-carousel" class="letterboxd embla" aria-roledescription="carousel" aria-label="Latest Letterboxd reviews">
+
+  <div class="embla__viewport" aria-live="polite">
+    <div class="embla__container">
+      <!-- Slide 1 -->
+      <div class="embla__slide" id="letterboxd-slide-1">
+        <article class="tile" aria-label="Review 1">
+          <img class="tile__img tile__img--poster" src="https://placehold.co/600x360/png" alt="Poster for Movie 1" draggable="false" />
+          <h3 class="tile__title">Movie 1 • ★★★★☆</h3>
+          <div class="tile__text-wrap">
+            <p class="tile__text">Slick, mean, and weirdly tender. The third act goes full gremlin in the best way.</p>
+            <div class="tile__fade"></div>
+            <button class="tile__more" type="button" aria-expanded="false"><i class="fa-solid fa-chevron-down"></i></button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="embla__slide" id="letterboxd-slide-2">
+        <article class="tile" aria-label="Review 2">
+          <img class="tile__img" src="https://placehold.co/600x360/png" alt="Poster for Movie 2" draggable="false" />
+          <h3 class="tile__title">Movie 2 • ★★★☆☆</h3>
+          <div class="tile__text-wrap">
+            <p class="tile__text">Big vibes, medium plot. Still ate. Costumes did the heavy lifting.</p>
+            <div class="tile__fade"></div>
+            <button class="tile__more" type="button" aria-expanded="false"><i class="fa-solid fa-chevron-down"></i></button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="embla__slide" id="letterboxd-slide-3">
+        <article class="tile" aria-label="Review 3">
+          <img class="tile__img" src="https://placehold.co/600x360/png" alt="Poster for Movie 3" draggable="false" />
+          <h3 class="tile__title">Movie 3 • ★★★★★</h3>
+          <div class="tile__text-wrap">
+            <p class="tile__text">Cinema as a controlled detonation. I sat there, obliterated, grinning.</p>
+            <div class="tile__fade"></div>
+            <button class="tile__more" type="button" aria-expanded="false"><i class="fa-solid fa-chevron-down"></i></button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Slide 4 -->
+      <div class="embla__slide" id="letterboxd-slide-4">
+        <article class="tile" aria-label="Review 4">
+          <img class="tile__img" src="https://placehold.co/600x360/png" alt="Poster for Movie 4" draggable="false" />
+          <h3 class="tile__title">Movie 4 • ★★☆☆☆</h3>
+          <div class="tile__text-wrap">
+            <p class="tile__text">Two stars for the soundtrack and one joke that actually landed.</p>
+            <div class="tile__fade"></div>
+            <button class="tile__more" type="button" aria-expanded="false"><i class="fa-solid fa-chevron-down"></i></button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Slide 5 -->
+      <div class="embla__slide" id="letterboxd-slide-5">
+        <article class="tile" aria-label="Review 5">
+          <img class="tile__img" src="https://placehold.co/600x360/png" alt="Poster for Movie 5" draggable="false" />
+          <h3 class="tile__title">Movie 5 • ★★★★☆</h3>
+          <div class="tile__text-wrap">
+            <p class="tile__text">A cozy chaos gremlin of a film. I want the production designer’s job.</p>
+            <div class="tile__fade"></div>
+            <button class="tile__more" type="button" aria-expanded="false"><i class="fa-solid fa-chevron-down"></i></button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Slide 6 -->
+      <div class="embla__slide" id="letterboxd-slide-6">
+        <article class="tile" aria-label="Review 6">
+          <img class="tile__img" src="https://placehold.co/600x360/png" alt="Poster for Movie 6" draggable="false" />
+          <h3 class="tile__title">Movie 6 • ★★★☆☆</h3>
+          <div class="tile__text-wrap">
+            <p class="tile__text">If vibes paid rent, this would own the building. Script… subletting.</p>
+            <div class="tile__fade"></div>
+            <button class="tile__more" type="button" aria-expanded="false"><i class="fa-solid fa-chevron-down"></i></button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer controls -->
+  <div class="embla__footer" aria-label="Carousel controls">
+    <div class="embla__nav-left">
+      <button class="embla__button embla__button--prev" type="button" aria-label="Previous slide"><i class="fa-solid fa-arrow-left"></i></button>
+      <button class="embla__button embla__button--next" type="button" aria-label="Next slide"><i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+    <div class="embla__nav-right">
+      <div class="embla__dots" role="tablist" aria-label="Slide navigation dots">
+        <button class="embla__dot" type="button" role="tab" aria-label="Go to slide 1" aria-controls="letterboxd-slide-1"></button>
+        <button class="embla__dot" type="button" role="tab" aria-label="Go to slide 2" aria-controls="letterboxd-slide-2"></button>
+        <button class="embla__dot" type="button" role="tab" aria-label="Go to slide 3" aria-controls="letterboxd-slide-3"></button>
+        <button class="embla__dot" type="button" role="tab" aria-label="Go to slide 4" aria-controls="letterboxd-slide-4"></button>
+        <button class="embla__dot" type="button" role="tab" aria-label="Go to slide 5" aria-controls="letterboxd-slide-5"></button>
+        <button class="embla__dot" type="button" role="tab" aria-label="Go to slide 6" aria-controls="letterboxd-slide-6"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Button background fix */
+#letterboxd-carousel .embla__button {
+  background: var(--footer-bg); /* force the button base to match footer background */
+  border: 1px solid color-mix(in srgb, var(--footer-text) 30%, white 70%);
+  color: var(--footer-text);
+}
+
+/* Hover state stays subtle */
+#letterboxd-carousel .embla__button:hover {
+  background: color-mix(in srgb, var(--footer-bg) 80%, var(--muted) 10%);
+}
+
+#letterboxd-carousel .embla__dot {
+  background: var(--footer-text);
+  opacity: 0.4; /* idle state */
+}
+#letterboxd-carousel .embla__dot[aria-selected="true"] {
+  opacity: 1;
+  background: color-mix(in srgb, var(--footer-text) 80%, black);
+}
+</style>

@@ -1,0 +1,66 @@
+<header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <div class="brand">
+      <a href="/" aria-label="Nat Werth homepage">
+        <!-- SVG logo unchanged -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -1 152.5 96.57" role="img" aria-label="Nat Werth Logo" style="height:32px;width:auto;display:block;color:#111">
+          <title>Nat Werth Logo</title>
+          <path fill="currentColor" d="M13.5,30.56c18,0,27,18,27,18,0,0-9-18,9-18s18,63,0,63-27-27-27-27c0,0,9,27-9,27s-18-63,0-63h0Z"/>
+          <path fill="currentColor" d="M148.5,30.56c0,18-18,18-18,18,0,0,9,54-18,45,0,0,18-63-18-72h0c9-9,54-9,54,9Z"/>
+          <path fill="currentColor" d="M68.79,0s2.6,20.33,21.59,21.55c0,0-18.87,2.24-21.59,21.55,0,0-2.68-19.69-21.59-21.55,0,0,17.69-2.01,21.59-21.55Z"/>
+          <path fill="currentColor" d="M91.22,38.8s1.11,8.2,9.22,8.7c0,0-8.06.91-9.22,8.7,0,0-1.15-7.95-9.22-8.7,0,0,7.56-.81,9.22-8.7Z"/>
+        </svg>
+      </a>
+    </div>
+
+    <nav class="desktop-nav" aria-label="Primary">
+      <a href="/bnb/">B&amp;B</a>
+      <a href="/consulting/">Links</a>
+      <a href="/store/">Store</a>
+      <a href="/press/">Press</a>
+      <a href="/blog/">Blog</a>
+    </nav>
+
+    <div class="desktop-tools">
+      <button class="search-button" id="searchToggle" aria-label="Open search" aria-expanded="false" aria-controls="desktopSearch">
+        <span class="icon-search" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="9" cy="9" r="6.5" stroke="#111" stroke-width="2"></circle>
+            <line x1="13.5" y1="13.5" x2="18" y2="18" stroke="#111" stroke-width="2" stroke-linecap="round"></line>
+          </svg>
+        </span>
+      </button>
+      <form class="desktop-search" id="desktopSearch" action="/" method="get" role="search">
+        <input type="text" name="s" placeholder="Search all things Nat Werth..." />
+        <button type="button" class="icon-close" id="closeSearch" aria-label="Close search">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <line x1="4" y1="4" x2="16" y2="16" stroke="#111" stroke-width="2" stroke-linecap="round"></line>
+            <line x1="16" y1="4" x2="4" y2="16" stroke="#111" stroke-width="2" stroke-linecap="round"></line>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <button class="hamburger hamburger--spring" id="menuToggle" aria-expanded="false" aria-controls="mobilePanel" aria-label="Menu">
+      <span class="hamburger-box"><span class="hamburger-inner"></span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Shared backdrop -->
+<div class="backdrop" id="sharedBackdrop" aria-hidden="true"></div>
+
+<!-- Mobile Panel -->
+<section class="mobile-panel" id="mobilePanel" hidden aria-label="Mobile navigation">
+  <nav>
+    <form class="mobile-search" action="/" method="get" role="search" aria-label="Search site">
+      <input type="text" name="s" placeholder="Search all things Nat Werth..." />
+    </form>
+
+    <a class="mobile-link" href="/bnb/"><span class="label">B&amp;B</span><span class="arrow">›</span></a>
+    <a class="mobile-link" href="/consulting/"><span class="label">Links</span><span class="arrow">›</span></a>
+    <a class="mobile-link" href="/store/"><span class="label">Store</span><span class="arrow">›</span></a>
+    <a class="mobile-link" href="/press/"><span class="label">Press</span><span class="arrow">›</span></a>
+    <a class="mobile-link" href="/blog/"><span class="label">Blog</span><span class="arrow">›</span></a>
+  </nav>
+</section>
