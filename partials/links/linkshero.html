@@ -52,7 +52,6 @@
 .profile-card:hover{ transform: translateY(-4px); box-shadow: 0 4px 16px rgba(0,0,0,.12); }
 .profile-head{ display:flex; align-items:center; gap:8px; padding:12px 12px; color:#fff; min-height:40px; }
 .profile-card .profile-head{ background: var(--header-bg, #222); color:#fff; }
-.profile-card[data-header-bg] .profile-head{ --header-bg: attr(data-header-bg color); }
 
 /* Uniform header sizing & typography */
 .profile-head{
@@ -62,6 +61,7 @@
   font-weight: 700;
   line-height: 1;
 }
+.profile-head .logo{ width:22px; height:22px; display:block; flex:0 0 auto; margin-left:auto; }
 .profile-head .meta {
   line-height: 1.1;
 }
@@ -71,7 +71,9 @@
 }
 .profile-head .avatar{ display:none; }
 .profile-handle{ font-weight:700; }
-.profile-body{ padding:16px 14px; display:grid; gap:6px; }
+.profile-body{ padding:0px 0px; display:grid; gap:6px; }
+/* Per‑tile body background override */
+.profile-card[data-tile="YouTube"] .profile-body{ background:#000; }
 .profile-actions{
   display:flex;
   align-items:center;
@@ -133,17 +135,18 @@
 .preview > *{ margin-block: 0; }
 .profile-body > .preview{
   height: var(--tile-preview-h);
-  border-radius:10px;
   overflow:hidden;
-  padding:10px;
+  padding:0px;
   box-sizing: border-box;
-  border-top: 1px solid rgba(0,0,0,.06);
-  border-bottom: 1px solid rgba(0,0,0,.06);
 }
 /* Toast */
 .c-toast{ position:fixed; left:50%; bottom:16px; transform:translateX(-50%) translateY(8px); background:#111827; color:#fff; border-radius:10px; padding:10px 12px; font:600 13px/1 ui-sans-serif, system-ui; opacity:0; pointer-events:none; transition:opacity .18s, transform .18s; box-shadow:0 10px 30px rgba(0,0,0,.15); z-index:1000; }
 .c-toast.is-visible{ opacity:1; transform: translateX(-50%) translateY(0); }
 @media (max-width:767px){ .u-bleed-mobile{ width:100dvw; margin-left:calc(50% - 50dvw); margin-right:calc(50% - 50dvw); border-radius:0; } }
+@media (prefers-reduced-motion: reduce){
+  .profile-card{ transition:none; }
+  .profile-btn{ transition:none; }
+}
   </style>
 </head>
 <body>
@@ -172,20 +175,84 @@ const ORDER = ["linkedin","instagram","letterboxd","spotify","github","youtube",
 const $profiles = document.getElementById('profiles');
 const toastEl = document.getElementById('toast');
 
-function showToast(msg){
-  toastEl.textContent = msg;
-  toastEl.classList.add('is-visible');
-  clearTimeout(showToast._t);
-  showToast._t = setTimeout(() => toastEl.classList.remove('is-visible'), 1600);
-}
+const CONFIG = {
+  linkedin:   { name:'LinkedIn',   url:'https://www.linkedin.com/in/nat-werth', copy:'https://www.linkedin.com/in/nat-werth', headerBg:'#0a66c2', footer:'solid',  vars:{ '--footer-bg':'#eef5fb','--footer-text':'#0b5394','--btn-fg':'#0b5394','--btn-brd':'#a3c3e5','--btn-bg':'transparent','--btn-bg-h':'rgba(10,102,194,.08)'} },
+  instagram:  { name:'Instagram',  url:'https://www.instagram.com/natwerth',    copy:'https://www.instagram.com/natwerth', headerBg:'#e1306c', footer:'frosted', vars:{ '--footer-bg':'#fff','--footer-text':'#6b7280','--btn-fg':'#6b7280','--btn-brd':'#e5e7eb','--btn-bg':'transparent','--btn-bg-h':'rgba(0,0,0,.06)'} },
+  letterboxd: { name:'Letterboxd', url:'https://boxd.it/yourid',               copy:'https://boxd.it/yourid', headerBg:'#181818', footer:'solid',  vars:{ '--footer-bg':'#111827','--footer-text':'#cbd5e1','--btn-fg':'#cbd5e1','--btn-brd':'#374151','--btn-bg':'transparent','--btn-bg-h':'rgba(203,213,225,.08)'} },
+  spotify:    { name:'Spotify',    url:'https://open.spotify.com/user/nat',    copy:'https://open.spotify.com/user/nat', headerBg:'#1db954', footer:'solid',  vars:{ '--footer-bg':'#0a0a0a','--footer-text':'#d1d5db','--btn-fg':'#d1d5db','--btn-brd':'#374151','--btn-bg':'transparent','--btn-bg-h':'rgba(209,213,219,.08)'} },
+  github:     { name:'GitHub',     url:'https://github.com/natwerth',          copy:'https://github.com/natwerth', headerBg:'#24292f', footer:'solid',  vars:{ '--footer-bg':'#0d1117','--footer-text':'#c9d1d9','--btn-fg':'#c9d1d9','--btn-brd':'#30363d','--btn-bg':'transparent','--btn-bg-h':'rgba(201,209,217,.08)'} },
+  youtube:    { name:'YouTube',    url:'https://www.youtube.com/@natwerth',    copy:'https://www.youtube.com/@natwerth', headerBg:'#ff0000', footer:'solid',  vars:{ '--footer-bg':'#111111','--footer-text':'#e5e7eb','--btn-fg':'#e5e7eb','--btn-brd':'#333','--btn-bg':'transparent','--btn-bg-h':'rgba(229,231,235,.08)'} },
+  venmo:      { name:'Venmo',      url:'https://venmo.com/u/natwerth',         copy:'https://venmo.com/u/natwerth', headerBg:'#3d95ce', footer:'solid',  vars:{ '--footer-bg':'#f1f7fc','--footer-text':'#3b82f6','--btn-fg':'#3b82f6','--btn-brd':'#bfdbfe','--btn-bg':'transparent','--btn-bg-h':'rgba(59,130,246,.08)'} },
+  googlemaps: { name:'Google Maps',url:'https://maps.app.goo.gl/your',         copy:'https://maps.app.goo.gl/your', headerBg:'#4285f4', footer:'solid',  vars:{ '--footer-bg':'#f8f9fa','--footer-text':'#374151','--btn-fg':'#374151','--btn-brd':'#d1d5db','--btn-bg':'transparent','--btn-bg-h':'rgba(55,65,81,.06)'} },
+  telegram:   { name:'Telegram',   url:'https://t.me/natwerth',                copy:'https://t.me/natwerth', headerBg:'#229ED9', footer:'solid',  vars:{ '--footer-bg':'#ffffff','--footer-text':'#000000','--btn-fg':'#0369a1','--btn-brd':'#d4eaf7','--btn-bg':'transparent','--btn-bg-h':'rgba(3,105,161,.08)'} },
+  facebook:   { name:'Facebook',   url:'https://facebook.com/natwerth',        copy:'https://facebook.com/natwerth', headerBg:'#0866ff', footer:'solid',  vars:{ '--footer-bg':'#eef2ff','--footer-text':'#1f2937','--btn-fg':'#1f2937','--btn-brd':'#c7d2fe','--btn-bg':'transparent','--btn-bg-h':'rgba(31,41,55,.06)'} }
+};
+
+const ICONS = {
+  linkedin: 'linkedin.png',
+  instagram: 'instagram.png',
+  letterboxd: 'letterboxd.png',
+  spotify: 'spotify.png',
+  github: 'github.png',
+  youtube: 'youtube.png',
+  venmo: 'venmo.png',
+  googlemaps: 'maps.svg',
+  telegram: 'telegram.png',
+  facebook: 'facebook.png'
+};
 
 async function loadFragments(){
-  const htmls = await Promise.all(ORDER.map(async key => {
-    const res = await fetch(`/partials/links/tilefragments/${key}.html`, {cache:'no-cache'});
-    if(!res.ok) throw new Error(`Missing fragment: ${key}`);
-    return await res.text();
-  }));
+  const htmls = ORDER.map(key => renderTile(key));
   $profiles.innerHTML = htmls.join('');
+}
+
+function renderTile(key){
+  const cfg = CONFIG[key] || { name: key.charAt(0).toUpperCase()+key.slice(1), url:'#', copy:'#', headerBg:'#222', footer:'solid', vars:{} };
+  const serviceName = cfg.name;
+  const varStyle = (
+    Object.entries(cfg.vars || {}).map(([k,v]) => `${k}:${v}`).join(';')
+    + `;--header-bg:${cfg.headerBg}`
+  );
+  const footerAttr = cfg.footer === 'frosted' ? ' data-footer="frosted"' : '';
+  return `
+  <div class="profile-card" data-tile="${serviceName}" data-url="${cfg.url}" data-header-bg="${cfg.headerBg}" style="${varStyle}"${footerAttr}>
+    <div class="profile-head">
+      <div class="meta">
+        <p class="profile-username" style="font-weight:700;margin:0;">${serviceName}</p>
+        <p class="profile-handle" style="opacity:.9;margin:0;">@natwerth</p>
+      </div>
+      <img class="logo" src="/assets/icons/${ICONS[key] || (key + '.png')}" alt="" aria-hidden="true" loading="lazy" decoding="async">
+    </div>
+    <div class="profile-body">
+      <div class="preview" data-preview-fragment="/partials/links/tilefragments/${key}.html" aria-label="${serviceName} preview">
+        <p style="font-size:.85rem;color:var(--brand-muted);">Loading ${serviceName} preview…</p>
+      </div>
+    </div>
+    <div class="profile-actions">
+      <div class="left">
+        <a class="profile-btn" href="${cfg.url}" target="_blank" rel="noopener" aria-label="Visit ${serviceName}">Visit</a>
+      </div>
+      <div class="right">
+        <button class="profile-btn profile-copy" data-copy="${cfg.copy}" aria-label="Copy ${serviceName} link">Copy link</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function populatePreviewFragments(){
+  const nodes = $profiles.querySelectorAll('.preview[data-preview-fragment]');
+  await Promise.all(Array.from(nodes).map(async (el) => {
+    const url = el.getAttribute('data-preview-fragment');
+    if(!url) return;
+    try{
+      const res = await fetch(url, {cache:'no-cache'});
+      if(!res.ok) throw new Error('missing');
+      const html = await res.text();
+      el.innerHTML = html;
+    } catch {
+      // Leave the placeholder text intact if missing
+    }
+  }));
 }
 
 function wireInteractions(){
@@ -207,9 +274,23 @@ function wireInteractions(){
 }
 
 (async function init(){
-  try{ await loadFragments(); wireInteractions(); }
-  catch(err){ console.error(err); $profiles.innerHTML = '<p style="color:#6b7280">Some fragments are missing.</p>'; }
+  try{
+    await loadFragments();
+    wireInteractions();
+    await populatePreviewFragments();
+  }
+  catch(err){
+    console.error(err);
+    $profiles.innerHTML = '<p style="color:#6b7280">Some fragments are missing.</p>';
+  }
 })();
+
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('is-visible');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toastEl.classList.remove('is-visible'), 1600);
+}
   </script>
 </body>
 </html>

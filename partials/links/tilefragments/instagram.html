@@ -1,58 +1,42 @@
-<article class="profile-card is-instagram" data-url="https://instagram.com/natwerth" data-user="@natwerth">
-  <div class="profile-head" style="background:linear-gradient(135deg,#f58529,#dd2a7b 55%,#8134af);box-shadow:inset 0 -1px 0 rgba(0,0,0,.12);">
-    <div class="meta">
-      <div class="profile-handle">Instagram</div>
-      <div class="profile-username">@natwerth</div>
-    </div>
-    <div class="ig-kebab" style="margin-left:auto;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1;color:#fff;opacity:.95;cursor:pointer;border-radius:6px;">⋯</div>
-  </div>
-  <div class="profile-body" style="border-radius:0 0 14px 14px; overflow:hidden; box-shadow: inset 0 0 0 1px #e5e7eb; padding:0;">
-    <div class="preview ig-post" style="position:relative;height:100%;padding:0;">
-      <div class="ig-media" style="position:absolute;inset:0;background:#e6e6e6;display:flex;align-items:center;justify-content:center;">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="72" height="72" fill="none" stroke="#d1d5db" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <!-- Camera body -->
-          <rect x="14" y="14" width="92" height="92" rx="28" ry="28"/>
-          <!-- Lens -->
-          <circle cx="60" cy="60" r="24"/>
-          <!-- Viewfinder dot -->
-          <circle cx="84" cy="36" r="8" fill="#d1d5db" stroke="none"/>
-        </svg>
-      </div>
-      <div class="ig-fade" style="position:absolute;left:0;right:0;bottom:0;height:50%;background:linear-gradient(0deg, rgba(0,0,0,.55), rgba(0,0,0,0));"></div>
-      <div class="ig-actions" style="position:absolute;left:10px;right:10px;bottom:36px;display:flex;gap:14px;align-items:center;color:#fff;opacity:.95;">
-        <span class="ig-action" style="display:inline-flex;gap:6px;align-items:center;">
-          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
-          <span>Likes</span>
-        </span>
-        <span class="ig-action" style="display:inline-flex;gap:6px;align-items:center;">
-          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 0 1-4 4H8l-5 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8z"/></svg>
-          <span>13</span>
-        </span>
-        <span class="ig-action" style="display:inline-flex;gap:6px;align-items:center;">
-          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l16-8-8 16-1.5-6L4 12z"/></svg>
-          <span>Share</span>
-        </span>
-      </div>
-      <div class="ig-caption" style="position:absolute;left:10px;right:10px;bottom:10px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;color:#fff;">
-        <div style="min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><strong>@natwerth</strong> Live, laugh, latex.</div>
-        <span style="color:rgba(255,255,255,.85);white-space:nowrap;font-size:.85rem;">2h</span>
-      </div>
-    </div>
-  </div>
-  <div class="profile-actions" style="border-top:none;">
-    <div class="left">
-      <a class="profile-btn" href="https://instagram.com/natwerth" target="_blank" rel="noopener" style="border:2px solid transparent; border-image:conic-gradient(from 180deg,#f58529,#dd2a7b,#8134af,#515bd4,#f58529) 1; border-image-slice:1; border-radius:20px;">Visit</a>
-    </div>
-    <div class="right">
-      <button class="profile-btn profile-copy" data-copy="https://instagram.com/natwerth">⋯ Copy link</button>
-    </div>
-  </div>
+<div data-ig="preview">
   <style>
-    .profile-card.is-instagram .profile-actions .left .profile-btn{
-      border-radius:20px !important;
-      -webkit-border-radius:20px !important;
-      overflow:hidden;
-      background-clip:padding-box;
-    }
+    /* Scope everything to this fragment */
+    [data-ig="preview"]{position:relative;height:100%;border-radius:0 0 14px 14px;overflow:hidden;background:#e6e6e6;}
+    [data-ig="preview"] .media{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f58529 0%,#f56040 18%,#fd1d1d 36%,#e1306c 54%,#c13584 72%,#833ab4 86%,#5851db 100%);} 
+    [data-ig="preview"] .fade{position:absolute;left:0;right:0;bottom:0;height:50%;background:linear-gradient(0deg,rgba(0,0,0,.55),rgba(0,0,0,0));}
+    [data-ig="preview"] .hud{position:absolute;left:10px;right:10px;bottom:36px;display:flex;gap:14px;align-items:center;color:#fff;opacity:.95;}
+    [data-ig="preview"] .hud .btn{display:inline-flex;gap:6px;align-items:center;font-weight:600;}
+    [data-ig="preview"] .caption{position:absolute;left:10px;right:10px;bottom:10px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;color:#fff;}
+    [data-ig="preview"] .caption time{color:rgba(255,255,255,.85);font-size:.85rem;white-space:nowrap;}
+    [data-ig="preview"] svg{display:block}
+    @media (prefers-reduced-motion: reduce){ [data-ig="preview"] *{ transition:none; } }
   </style>
-</article>
+
+  <div class="media">
+    <!-- Minimal camera icon placeholder -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="72" height="72" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    </svg>
+  </div>
+
+  <div class="fade"></div>
+
+  <div class="hud">
+    <span class="btn" aria-label="Likes">
+      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+      <span>Likes</span>
+    </span>
+    <span class="btn" aria-label="Comments">
+      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 0 1-4 4H8l-5 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8z"/></svg>
+      <span>13</span>
+    </span>
+    <span class="btn" aria-label="Share">
+      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l16-8-8 16-1.5-6L4 12z"/></svg>
+      <span>Share</span>
+    </span>
+  </div>
+
+  <div class="caption">
+    <div style="min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><strong>@natwerth</strong> Live, laugh, latex.</div>
+    <time>2h</time>
+  </div>
+</div>

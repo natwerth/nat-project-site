@@ -1,93 +1,88 @@
-<style>
-.is-facebook { --fb-blue:#1877F2; --fb-bg:#ffffff; --fb-text:#050505; --fb-sub:#65676b; --fb-line:#e4e6eb; --fb-hover:#f2f3f5; }
-.is-facebook { border:1px solid var(--fb-line); border-radius:12px; background:var(--fb-bg); box-shadow:0 1px 2px rgba(0,0,0,.05); overflow:hidden; }
-.is-facebook .profile-head{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:var(--fb-blue); color:#fff; }
-.is-facebook .profile-head .avatar{ width:32px; height:32px; border-radius:999px; display:grid; place-items:center; font-weight:700; background:#fff; color:var(--fb-blue); }
-.is-facebook .profile-head .meta{ margin-left:10px; }
-.is-facebook .profile-head .meta .profile-handle{ font-weight:700; line-height:1; }
-.is-facebook .profile-head .meta .profile-username{ opacity:.9; font-size:.85rem; }
-.is-facebook .profile-head .fb-logo{ margin-left:auto; display:block; width:24px; height:24px; opacity:.95; }
-.is-facebook .profile-body{
-  padding:0;
-  border-bottom-left-radius:12px;
-  border-bottom-right-radius:12px;
-  overflow:hidden;
-  border:1px solid var(--fb-line);
-  border-top:0;
-}
-.is-facebook .preview.fb{
-  width:100%;
-  height:100%;
-  border:0;
-  border-radius:0;
-  padding:0;
-  background:#fff;
-  overflow:hidden;
-}
-.is-facebook .fb-author{ display:flex; gap:10px; align-items:center; margin-bottom:8px; }
-.is-facebook .fb-avatar{ width:36px; height:36px; border-radius:999px; background:#e7f0ff; color:var(--fb-blue); display:grid; place-items:center; font-weight:700; border:1px solid #d6e2ff; }
-.is-facebook .fb-name{ font-weight:600; color:var(--fb-text); }
-.is-facebook .fb-sub{ font-size:.8rem; color:var(--fb-sub); }
-.is-facebook .fb-text{ color:var(--fb-text); margin:6px 0 10px; }
-.is-facebook .fb-media{ background:#f0f2f5; border:1px solid var(--fb-line); border-radius:8px; height:140px; margin-bottom:10px; }
-.is-facebook .fb-actions{ display:flex; justify-content:space-between; border-top:1px solid var(--fb-line); border-bottom:1px solid var(--fb-line); padding:6px 0; margin:8px 0; }
-.is-facebook .fb-btn{ flex:1; background:transparent; border:0; padding:8px 0; font-weight:600; color:#4b4f56; cursor:pointer; border-radius:6px; }
-.is-facebook .fb-btn:hover{ background:var(--fb-hover); }
-.is-facebook .fb-stats{ color:var(--fb-sub); font-size:.85rem; }
-.is-facebook .profile-actions{
-  padding:12px 14px;
-  background:transparent;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  border-top:0 !important;
-  box-shadow:none;
-  outline:0;
-}
-.is-facebook .profile-actions .left,
-.is-facebook .profile-actions .right{ display:flex; align-items:center; gap:10px; }
-.is-facebook .profile-copy{ opacity:.9; }
-.is-facebook .profile-actions a:focus,
-.is-facebook .profile-actions button:focus{ outline:none; box-shadow:none; }
-  .is-facebook .fb-cover{ width:100%; height:100px; background:#d8dfea; }
-  .is-facebook .fb-profileinfo{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-  }
-  .is-facebook .fb-profilepic{ width:72px; height:72px; border-radius:999px; background:#eee; border:3px solid #fff; margin:-36px 0 8px; position:relative; z-index:1; }
-  .is-facebook .fb-namebig{ font-weight:700; font-size:1rem; color:var(--fb-text); margin:4px 0 4px; text-align:center; }
-  .is-facebook .fb-friends{ font-size:.8rem; color:var(--fb-sub); margin:0 0 8px; text-align:center; }
-</style>
-<article class="profile-card is-facebook" data-url="https://facebook.com/natwerth" data-user="natwerth">
-  <div class="profile-head" style="background:#1877F2">
-    <div style="display:flex; align-items:center; gap:10px;">
-      <div class="avatar">NW</div>
-      <div class="meta">
-        <div class="profile-handle">Facebook</div>
-        <div class="profile-username">natwerth</div>
-      </div>
-    </div>
-    <svg class="fb-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M22 12.06C22 6.48 17.52 2 11.94 2S2 6.48 2 12.06c0 5.02 3.68 9.19 8.49 9.94v-7.03H8.41v-2.91h2.08v-2.22c0-2.06 1.23-3.2 3.12-3.2.9 0 1.84.16 1.84.16v2.03h-1.04c-1.03 0-1.35.64-1.35 1.29v1.94h2.3l-.37 2.91h-1.93V22c4.81-.75 8.49-4.92 8.49-9.94Z"/></svg>
+<div class="is-facebook" role="article" aria-label="Facebook profile preview" style="width:100%; height:100%; overflow: hidden; background: #fff; color: #050505; display: flex; flex-direction: column;">
+  <style>
+    /* Scope to Facebook preview only */
+    .is-facebook {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      color: #050505;
+      border-radius: 0 0 0px 0px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      border-top: 0;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+    }
+    .is-facebook .fb-cover {
+      height: 110px;
+      background: #d8dfea;
+      flex-shrink: 0;
+    }
+    .is-facebook .fb-profileinfo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-top: -36px;
+      padding: 0 12px;
+      flex-shrink: 0;
+    }
+    .is-facebook .fb-profilepic {
+      width: 72px;
+      height: 72px;
+      border-radius: 999px;
+      background: #eee;
+      border: 3px solid #fff;
+      flex-shrink: 0;
+    }
+    .is-facebook .fb-namebig {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .is-facebook .fb-friends {
+      font-size: 0.8rem;
+      color: #65676b;
+    }
+    .is-facebook .fb-author {
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0 12px 4px;
+      color: #050505;
+      flex-shrink: 0;
+    }
+    .is-facebook .fb-text {
+      font-size: 0.9rem;
+      color: #4b4f56;
+      padding: 0 12px 8px;
+      flex-shrink: 0;
+    }
+    .is-facebook .fb-media {
+      background: #f7f8fa;
+      height: 120px;
+      margin: 0 12px 12px;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .is-facebook .spacer {
+      margin-top: auto;
+      flex-shrink: 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .is-facebook * {
+        transition: none;
+      }
+    }
+  </style>
+
+  <div class="fb-cover" aria-hidden="true"></div>
+  <div class="fb-profileinfo">
+    <div class="fb-profilepic" aria-hidden="true"></div>
+    <div class="fb-namebig">Nat Werth</div>
+    <div class="fb-friends">956 friends</div>
   </div>
-  <div class="profile-body">
-    <div class="preview fb" role="article" aria-label="Facebook profile preview">
-      <div class="fb-cover"></div>
-      <div class="fb-profileinfo">
-        <div class="fb-profilepic"></div>
-        <div class="fb-namebig">Nat Werth</div>
-        <div class="fb-friends">956 friends</div>
-      </div>
-    </div>
-  </div>
-  <div class="profile-actions">
-    <div class="left">
-      <a class="profile-btn" href="https://facebook.com/natwerth" target="_blank" rel="noopener">Visit</a>
-    </div>
-    <div class="right">
-      <button class="profile-btn profile-copy" data-copy="https://facebook.com/natwerth">⋯ Copy link</button>
-    </div>
-  </div>
-</article>
+  <div class="spacer"></div>
+</div>

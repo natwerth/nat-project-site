@@ -1,43 +1,75 @@
-<article class="profile-card is-googlemaps" data-url="https://maps.app.goo.gl/natwerth" data-user="natwerth">
-  <div class="profile-head" style="background:#f3f4f6;box-shadow:inset 0 -1px 0 rgba(0,0,0,.12);">
-    <div class="meta">
-      <div class="profile-handle" style="color:#111;">Google Maps</div>
-      <div class="profile-username" style="color:#4b5563;">@natwerth</div>
+<div data-gm="preview">
+  <style>
+    /* Scope to Google Maps profile preview only */
+    [data-gm="preview"]{position:relative;width:100%;height:100%;background:#fff;color:#111827;border-radius:0 0 14px 14px;overflow:hidden;}
+    [data-gm="preview"] .wrap{display:flex;flex-direction:column;gap:12px;padding:14px;height:100%;box-sizing:border-box;}
+
+    /* Top: avatar + name + handle */
+    [data-gm="preview"] .profile{display:flex;align-items:center;gap:12px;}
+    [data-gm="preview"] .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:grid;place-items:center;color:#1d4ed8;font-weight:800;border:1px solid #c7d2fe}
+    [data-gm="preview"] .who{min-width:0}
+    [data-gm="preview"] .name{font-weight:800;letter-spacing:.2px}
+    [data-gm="preview"] .handle{font-size:.8rem;color:#6b7280}
+
+    /* Badges row */
+    [data-gm="preview"] .badges{display:flex;flex-wrap:wrap;gap:8px}
+    [data-gm="preview"] .chip{display:inline-flex;align-items:center;gap:6px;background:#111827;color:#fff;border-radius:999px;padding:6px 10px;font-weight:700;font-size:.72rem;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+    [data-gm="preview"] .chip.lvl{background:#1d4ed8}
+    [data-gm="preview"] .chip.ph{background:#059669}
+    [data-gm="preview"] .chip.guide{background:#f97316}
+
+    /* Progress to next level */
+    [data-gm="preview"] .progress{margin-top:2px}
+    [data-gm="preview"] .progress .label{display:flex;justify-content:space-between;font-size:.75rem;color:#6b7280;margin-bottom:6px}
+    [data-gm="preview"] .bar{height:6px;background:#e5e7eb;border-radius:999px;overflow:hidden}
+    [data-gm="preview"] .bar span{display:block;height:100%;width:68%;background:linear-gradient(90deg,#60a5fa,#2563eb)}
+
+    /* Stats grid fills remaining height nicely */
+    [data-gm="preview"] .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:auto}
+    [data-gm="preview"] .stat{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:10px;display:grid;gap:2px;align-content:center;justify-items:center}
+    [data-gm="preview"] .stat .num{font:800 1rem/1 ui-sans-serif,system-ui;color:#111827}
+    [data-gm="preview"] .stat .lbl{font-size:.72rem;color:#6b7280}
+
+    /* Footer CTA row */
+    [data-gm="preview"] .footer{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
+    [data-gm="preview"] .btn{padding:6px 10px;border-radius:6px;border:1px solid #d1d5db;background:#fff;color:#1d4ed8;font-size:.8rem;font-weight:700}
+    [data-gm="preview"] .btn:hover{background:#f3f4f6}
+
+    @media (prefers-reduced-motion: reduce){ [data-gm="preview"] *{ transition:none; } }
+  </style>
+
+  <div class="wrap">
+    <div class="profile">
+      <div class="avatar" aria-hidden="true">N</div>
+      <div class="who">
+        <div class="name">Nat Werth</div>
+        <div class="handle">Level 7 Local Guide</div>
+      </div>
     </div>
-    <div class="gm-logo" style="margin-left:auto;width:20px;height:20px;display:flex;align-items:center;justify-content:center;">
-      <img src="/assets/mapsicon.svg" alt="Google Maps" width="22" height="22" style="display:block;filter:drop-shadow(0 0 1px rgba(255,255,255,.9));">
+
+    <div class="badges" aria-label="Achievements">
+      <span class="chip lvl">L7 • 12,480 pts</span>
+      <span class="chip ph">Master Photographer</span>
+      <span class="chip guide">Neighborhood Expert</span>
+    </div>
+
+    <div class="progress" aria-label="Progress to next level">
+      <div class="label"><span>To Level 8</span><span>68%</span></div>
+      <div class="bar"><span aria-hidden="true"></span></div>
+    </div>
+
+    <div class="stats" role="list" aria-label="Profile stats">
+      <div class="stat" role="listitem"><div class="num">312</div><div class="lbl">Reviews</div></div>
+      <div class="stat" role="listitem"><div class="num">1.9k</div><div class="lbl">Photos</div></div>
+      <div class="stat" role="listitem"><div class="num">87</div><div class="lbl">Edits</div></div>
+      <div class="stat" role="listitem"><div class="num">54</div><div class="lbl">Answers</div></div>
+      <div class="stat" role="listitem"><div class="num">6.3k</div><div class="lbl">Helpful</div></div>
+      <div class="stat" role="listitem"><div class="num">12</div><div class="lbl">Lists</div></div>
+    </div>
+
+    <div class="footer">
+      <span class="btn">View profile</span>
+      <span class="btn">Contribute</span>
     </div>
   </div>
-  <div class="profile-body" style="border:1px solid #e5e7eb; border-top:0; border-bottom-left-radius:12px; border-bottom-right-radius:12px; overflow:hidden;">
-    <div class="preview map" style="display:grid;gap:8px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:10px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <div>
-          <div class="gm-title" style="font-weight:700;">Natb&amp;b</div>
-          <div class="gm-sub meta" style="font-size: .65rem;">Chicago · Vacation Rental</div>
-          <div class="gm-stars" style="color:#f59e0b;">
-            ★★★★★ <span class="meta" style="font-size: .6rem; margin-left:5px;color:#6b7280;">5.0 · 3 reviews</span>
-          </div>
-        </div>
-        <div style="flex-shrink:0;">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40" aria-hidden="true">
-            <path d="M12 2c-3.86 0-7 3.14-7 7 0 5.1 7 13 7 13s7-7.9 7-13c0-3.86-3.14-7-7-7z" fill="#EA4335"/>
-            <circle cx="12" cy="9" r="3" fill="#FFF"/>
-          </svg>
-        </div>
-      </div>
-      <div class="gm-review" style="font-size:.9rem;background:#f9fafb;border-radius:8px;padding:6px;">
-        <span class="meta">“Nat has great taste!”</span>
-      </div>
-      <div style="display:flex;gap:8px;justify-content:flex-end;">
-      </div>
-    </div>
-  </div>
-  <div class="profile-actions" style="border-top:none;">
-    <div class="left">
-      <a class="profile-btn" href="https://maps.app.goo.gl/natwerth" target="_blank" rel="noopener">Visit</a>
-    </div>
-    <div class="right">
-      <button class="profile-btn profile-copy" data-copy="https://maps.app.goo.gl/natwerth">⋯ Copy link</button>
-    </div>
-  </div>
-</article>
+</div>

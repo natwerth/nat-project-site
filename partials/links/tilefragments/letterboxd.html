@@ -1,39 +1,35 @@
-<article class="profile-card is-letterboxd" data-url="https://letterboxd.com/natwerth" data-user="natwerth">
-  <div class="profile-head" style="background:#14181C;box-shadow: inset 0 -1px 0 #2c3440;">
-    <div class="avatar">NW</div>
-    <div class="meta">
-      <div class="profile-handle">Letterboxd</div>
-      <div class="profile-username">natwerth</div>
-    </div>
-    <span class="lb-logo" style="display:flex;align-items:center;gap:4px;margin-left:auto;">
-      <span style="width:10px;height:10px;border-radius:50%;background:#FF8000;display:inline-block;"></span>
-      <span style="width:10px;height:10px;border-radius:50%;background:#00E054;display:inline-block;"></span>
-      <span style="width:10px;height:10px;border-radius:50%;background:#40BCF4;display:inline-block;"></span>
-    </span>
-  </div>
-  <div class="profile-body" style="background:#14181C;color:#d8d8d8;border-radius:0 0 14px 14px;padding:16px;font-family:Arial, sans-serif;">
-    <div class="lb-preview" style="display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:start;background:#14181C;color:#d8d8d8;">
-      <div class="lb-poster" style="width:48px;height:72px;border-radius:6px;background:#2c3440;box-shadow:0 6px 12px rgba(0,0,0,.15),inset 0 0 0 1px rgba(0,0,0,.05);"></div>
-      <div class="lb-info" style="display:grid;gap:6px;">
-        <div class="lb-title" style="font-weight:600; font-size:.8rem; color:#fff;">Everything Everywhere All at Once <span style="opacity:.6; font-weight:500;">(2022)</span></div>
-        <div class="lb-rating" style="color:#00E054; letter-spacing:.15ch;text-shadow:0 0 4px rgba(0,224,84,.6);">★★★★★</div>
-        <div class="lb-meta meta" style="color:#9aa5b1; font-size:8px;";>Logged Sep 5 · 139m · A24</div>
-        <div class="lb-tags" style="display:flex;gap:6px;flex-wrap:wrap;">
-          <span style="background:#2c3440;color:#c8d1dc;border-radius:999px;padding:3px 8px;font-weight:600;font-size:.6rem;">Rewatch</span>
-          <span style="background:#2c3440;color:#c8d1dc;border-radius:999px;padding:3px 8px;font-weight:600;font-size:.6rem;">Sci‑Fi</span>
-        </div>
-        <div class="lb-actions meta" style="display:flex;gap:12px;color:#9aa5b1;opacity:.9;">
-          <span>★</span><span>↺</span><span>💬</span>
-        </div>
+
+<div data-lb="preview">
+  <style>
+    /* Scope to Letterboxd preview only */
+    [data-lb="preview"]{position:relative;width:100%;height:100%;background:#14181C;color:#d8d8d8;overflow:hidden;}
+    [data-lb="preview"] .wrap{display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:start;padding:16px;}
+    [data-lb="preview"] .poster{width:48px;height:72px;border-radius:6px;background:#2c3440;}
+    [data-lb="preview"] .title{font-weight:600;font-size:.8rem;color:#fff;}
+    [data-lb="preview"] .year{opacity:.6;font-weight:500;}
+    [data-lb="preview"] .rating{color:#00E054;letter-spacing:.15ch;}
+    [data-lb="preview"] .meta{color:#9aa5b1;font-size:8px;}
+    [data-lb="preview"] .tags{display:flex;gap:6px;flex-wrap:wrap;}
+    [data-lb="preview"] .tag{background:#2c3440;color:#c8d1dc;border-radius:999px;padding:3px 8px;font-weight:600;font-size:.6rem;}
+    [data-lb="preview"] .actions{display:flex;gap:12px;color:#9aa5b1;opacity:.9;}
+    [data-lb="preview"] svg{display:block}
+    @media (prefers-reduced-motion: reduce){ [data-lb="preview"] *{ transition:none; } }
+  </style>
+
+  <div class="wrap">
+    <div class="poster" aria-hidden="true"></div>
+    <div class="info" style="display:grid;gap:6px;">
+      <div class="title">Everything Everywhere All at Once <span class="year">(2022)</span></div>
+      <div class="rating">★★★★★</div>
+      <div class="meta">Logged Sep 5 · 139m · A24</div>
+      <div class="tags"><span class="tag">Rewatch</span><span class="tag">Sci‑Fi</span></div>
+      <div class="actions" aria-label="Post actions">
+        <span aria-label="Rate">★</span>
+        <span aria-label="Rewatch">↺</span>
+        <span aria-label="Comments">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 0 1-4 4H8l-5 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8z"/></svg>
+        </span>
       </div>
     </div>
   </div>
-  <div class="profile-actions">
-    <div class="left">
-      <a class="profile-btn" href="https://letterboxd.com/natwerth" target="_blank" rel="noopener">Visit</a>
-    </div>
-    <div class="right">
-      <button class="profile-btn profile-copy" data-copy="https://letterboxd.com/natwerth">Copy link</button>
-    </div>
-  </div>
-</article>
+</div>
