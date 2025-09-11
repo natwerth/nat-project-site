@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nat · Links</title>
+  <style>
+/* Minimal local styles kept in controller */
+/* Layout */
+:root{
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px; --space-6: 24px; --space-8: 32px;
+  --radius-lg: 14px; --color-border: #e5e7eb; --footer-bg:#fdf8f4; --footer-text:#a09484; --brand-muted:#6b7280;
+}
+:root{
+  --tile-header-h: 56px;
+  --tile-preview-h: 220px;
+  --tile-footer-h: 56px;
+  --frost-alpha: 0.6;           /* opacity of frosted pane */
+  --frost-blur: 10px;           /* blur radius */
+  --frost-brd: rgba(255,255,255,0.35);
+}
+.u-text-footer{ color: var(--footer-text); }
+.c-showcase{ background: var(--footer-bg); min-height: 100vh; padding-block: clamp(20px,4vw,48px); }
+.c-showcase__inner{ max-width:1100px; margin-inline:auto; padding-inline:var(--space-4); }
+.page-title{ font-size: clamp(28px,4.5vw,40px); font-weight:700; }
+.c-card-grid{ display:grid; gap:var(--space-4); grid-template-columns:1fr; }
+@media (min-width:900px){ .c-card-grid{ grid-template-columns:1fr } }
+.c-card{ background:#fff; border:1px solid var(--color-border); border-radius:var(--radius-lg); box-shadow:0 4px 16px rgba(0,0,0,.12); padding:clamp(16px,3vw,24px); }
+.c-section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:var(--space-3); padding-bottom:12px; margin-bottom:16px; border-bottom:1px dashed var(--color-border); }
+.c-section-head h2{ margin:0; font-size:clamp(20px,3.5vw,24px); }
+.c-section-head__sub{ color:var(--brand-muted); font-size:12px; }
+.profile-grid{ display:grid; gap:16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); grid-auto-rows: 1fr; }
+.profile-card{
+  border-radius:14px;
+  overflow:hidden;
+  background:#fff;
+  border:1px solid var(--color-border);
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  display:grid;
+  grid-template-rows: var(--tile-header-h) var(--tile-preview-h) var(--tile-footer-h);
+  height:100%;
+  min-height: calc(var(--tile-header-h) + var(--tile-preview-h) + var(--tile-footer-h));
+  transition: transform .18s ease, box-shadow .18s ease;
+  /* Per-tile theming hooks (override these via inline style on .profile-card) */
+  --footer-bg: var(--footer-bg);
+  --footer-text: var(--footer-text);
+  --btn-fg: var(--footer-text);
+  --btn-bg: transparent;
+  --btn-brd: color-mix(in oklab, var(--btn-fg) 30%, transparent);
+  --btn-bg-h: color-mix(in oklab, var(--btn-fg) 10%, transparent);
+}
+.profile-card:hover{ transform: translateY(-4px); box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.profile-head{ display:flex; align-items:center; gap:8px; padding:12px 12px; color:#fff; min-height:40px; }
+.profile-card .profile-head{ background: var(--header-bg, #222); color:#fff; }
+.profile-card[data-header-bg] .profile-head{ --header-bg: attr(data-header-bg color); }
+
+/* Uniform header sizing & typography */
+.profile-head{
+  height: var(--tile-header-h);
+  padding: 0 12px;
+  font-size: clamp(14px, 3.2vw, 15px);
+  font-weight: 700;
+  line-height: 1;
+}
+.profile-head .meta {
+  line-height: 1.1;
+}
+.profile-handle,
+.profile-username {
+  margin: 0;
+}
+.profile-head .avatar{ display:none; }
+.profile-handle{ font-weight:700; }
+.profile-body{ padding:16px 14px; display:grid; gap:6px; }
+.profile-actions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:0 14px;
+  height: var(--tile-footer-h);
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  border-top: none;
+}
+/* --- Frosted footer variant (opt-in per tile) --- */
+.profile-card[data-footer="frosted"]{ --footer-text:#222; }
+.profile-card[data-footer="frosted"] .profile-actions{
+  /* Use a translucent layer + blur to create the glass effect */
+  background: rgba(255,255,255,var(--frost-alpha));
+  backdrop-filter: saturate(1.2) blur(var(--frost-blur));
+  -webkit-backdrop-filter: saturate(1.2) blur(var(--frost-blur));
+  border-top: 1px solid var(--frost-brd);
+}
+/* Improve button contrast on frosted panes */
+.profile-card[data-footer="frosted"] .profile-btn{
+  --btn-fg:#222;
+  --btn-brd: rgba(0,0,0,.14);
+  --btn-bg-h: rgba(0,0,0,.06);
+}
+/* Fallback when blur isn't supported */
+@supports not (backdrop-filter: blur(1px)) {
+  .profile-card[data-footer="frosted"] .profile-actions{
+    background: color-mix(in oklab, #fff 80%, var(--footer-bg) 20%);
+  }
+}
+.profile-actions .left,.profile-actions .right{ display:flex; gap:8px; }
+.profile-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  height:36px;
+  padding:0 12px;
+  border-radius:10px;
+  border:1px solid var(--btn-brd);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  text-decoration:none;
+  font-weight:600;
+  font-size:.9rem;
+  cursor:pointer;
+  user-select:none;
+  transition: background .15s, transform .08s, border-color .15s;
+}
+.profile-btn:hover{ background: var(--btn-bg-h); }
+.profile-btn:active{ transform: translateY(1px); }
+.profile-btn .icon{ font-size:16px; line-height:0; }
+.profile-btn svg{ width:16px; height:16px; display:block; }
+/* Preview sizing clamp */
+.preview{ font-size:.9rem; line-height:1.45; }
+.preview .meta{ font-size:.75rem; color: var(--brand-muted); display:block; margin-top:4px; }
+/* Kill random margins inside preview */
+.preview > *{ margin-block: 0; }
+.profile-body > .preview{
+  height: var(--tile-preview-h);
+  border-radius:10px;
+  overflow:hidden;
+  padding:10px;
+  box-sizing: border-box;
+  border-top: 1px solid rgba(0,0,0,.06);
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+/* Toast */
+.c-toast{ position:fixed; left:50%; bottom:16px; transform:translateX(-50%) translateY(8px); background:#111827; color:#fff; border-radius:10px; padding:10px 12px; font:600 13px/1 ui-sans-serif, system-ui; opacity:0; pointer-events:none; transition:opacity .18s, transform .18s; box-shadow:0 10px 30px rgba(0,0,0,.15); z-index:1000; }
+.c-toast.is-visible{ opacity:1; transform: translateX(-50%) translateY(0); }
+@media (max-width:767px){ .u-bleed-mobile{ width:100dvw; margin-left:calc(50% - 50dvw); margin-right:calc(50% - 50dvw); border-radius:0; } }
+  </style>
+</head>
+<body>
+  <section class="c-showcase" aria-label="Brand & Components Showcase">
+    <div class="c-showcase__inner">
+      <h1 class="page-title u-text-footer" style="margin:0 0 var(--space-5);">Nat. Everywhere.</h1>
+      <div class="c-card-grid">
+        <div class="c-card u-bleed-mobile">
+          <header class="c-section-head">
+            <h2>Socials</h2>
+            <div class="c-section-head__sub">Tap a card to open. Use ⋯ to copy.</div>
+          </header>
+          <div id="profiles" class="profile-grid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="about">
+    <p><a href="/">← Back to Homepage</a></p>
+  </section>
+  <div class="c-toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+/* Super-lean controller: just load fragments and wire interactions */
+const ORDER = ["linkedin","instagram","letterboxd","spotify","github","youtube","venmo","googlemaps","telegram","facebook"];
+const $profiles = document.getElementById('profiles');
+const toastEl = document.getElementById('toast');
+
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('is-visible');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toastEl.classList.remove('is-visible'), 1600);
+}
+
+async function loadFragments(){
+  const htmls = await Promise.all(ORDER.map(async key => {
+    const res = await fetch(`/partials/links/tilefragments/${key}.html`, {cache:'no-cache'});
+    if(!res.ok) throw new Error(`Missing fragment: ${key}`);
+    return await res.text();
+  }));
+  $profiles.innerHTML = htmls.join('');
+}
+
+function wireInteractions(){
+  // Open card on click (if data-url present), ignore buttons
+  $profiles.addEventListener('click', (e) => {
+    const btn = e.target.closest('a,button'); if(btn) return;
+    const card = e.target.closest('.profile-card'); if(!card) return;
+    const href = card.getAttribute('data-url'); if(href) window.open(href, '_blank');
+  });
+  // Copy link buttons
+  $profiles.addEventListener('click', (e) => {
+    const btn = e.target.closest('.profile-copy'); if(!btn) return;
+    const value = btn.getAttribute('data-copy') || '';
+    if(!value) return;
+    navigator.clipboard.writeText(value)
+      .then(() => showToast('Link copied'))
+      .catch(() => showToast('Copy failed'));
+  });
+}
+
+(async function init(){
+  try{ await loadFragments(); wireInteractions(); }
+  catch(err){ console.error(err); $profiles.innerHTML = '<p style="color:#6b7280">Some fragments are missing.</p>'; }
+})();
+  </script>
+</body>
+</html>

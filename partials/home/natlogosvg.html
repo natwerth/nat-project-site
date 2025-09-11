@@ -1,0 +1,188 @@
+<section class="reveal-anim-section bg-footer" aria-label="Hero image reveal">
+
+ <!-- Nat SVG animation -->
+ <div class="reveal-anim-box" id="revealAnim">
+  <svg viewBox="-2 -1 152.5 96.57" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Nat logo reveal">
+   <defs>
+    <symbol id="revealLogo" viewBox="-2 -1 152.5 96.57">
+     <g>
+      <path d="M13.5,30.56c18,0,27,18,27,18,0,0-9-18,9-18s18,63,0,63-27-27-27-27c0,0,9,27-9,27s-18-63,0-63h0Z"/>
+      <path d="M148.5,30.56c0,18-18,18-18,18,0,0,9,54-18,45,0,0,18-63-18-72h0c9-9,54-9,54,9Z"/>
+      <path d="M68.79,0s2.6,20.33,21.59,21.55c0,0-18.87,2.24-21.59,21.55,0,0-2.68-19.69-21.59-21.55,0,0,17.69-2.01,21.59-21.55Z"/>
+      <path id="revealStarPathDef" d="M91.22,38.8s1.11,8.2,9.22,8.7c0,0-8.06.91-9.22,8.7,0,0-1.15-7.95-9.22-8.7,0,0,7.56-.81,9.22-8.7Z"/>
+     </g>
+    </symbol>
+
+    <mask id="revealLogoMask">
+     <rect x="-2" y="-1" width="152.5" height="96.57" fill="#000"/>
+     <g class="reveal-mask-ink" data-reveal-box>
+      <use href="#revealLogo" fill="#fff"/>
+     </g>
+    </mask>
+   </defs>
+
+   <path id="revealStarProbe" d="M91.22,38.8s1.11,8.2,9.22,8.7c0,0-8.06.91-9.22,8.7,0,0-1.15-7.95-9.22-8.7,0,0,7.56-.81,9.22-8.7Z"
+         fill="none" stroke="none" visibility="hidden"/>
+
+   <image
+     class="reveal-photo"
+     href="https://www.natwerth.com/wp-content/uploads/2024/06/IMG_8141-scaled.jpeg"
+     x="-2" y="-1" width="152.5" height="96.57"
+     preserveAspectRatio="xMidYMid slice"
+     mask="url(#revealLogoMask)"/>
+
+   <g class="reveal-rings" data-reveal-box>
+    <use href="#revealLogo" class="reveal-ring reveal-ring--1" data-reveal-box/>
+    <use href="#revealLogo" class="reveal-ring reveal-ring--2" data-reveal-box/>
+    <use href="#revealLogo" class="reveal-ring reveal-ring--3" data-reveal-box/>
+   </g>
+  </svg>
+ </div>
+
+</section>
+
+<style>
+
+/* ─────────────── Scroll-linked logo mask (star-centered) + parallax ─────────────── */
+   .reveal-anim-section{
+    padding:0;
+    --reveal-size: clamp(280px, 62vw, 860px);
+    --start-scale: .05;
+    --end-scale:   85;
+    --ring-end:    0;
+    --ring-opacity:0;
+    display:grid; place-items:center;
+   }
+
+   .reveal-anim-box{
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    background: var(--footer-bg);
+    position: relative;
+    padding:0;
+    box-shadow:none;
+   }
+
+   .reveal-anim-box svg{ width:100%; height:auto; display:block; }
+
+   [data-reveal-box]{
+    transform-box: view-box;
+    transform-origin: var(--cx, 50%) var(--cy, 50%);
+   }
+
+   .reveal-mask-ink{
+    transform: scale(calc(var(--start-scale) + (var(--end-scale) - var(--start-scale)) * var(--p, 0)));
+    transition: none;
+   }
+
+   .reveal-rings{ mix-blend-mode: multiply; pointer-events:none; }
+   .reveal-ring{
+    fill:none; opacity: calc(var(--ring-opacity) * (1 - var(--p, 0)));
+    transform: scale(calc(var(--start-scale) + (var(--ring-end) - var(--start-scale)) * var(--p, 0)));
+   }
+   .reveal-ring--1{ stroke: var(--brand-primary);   stroke-width: 2.2; }
+   .reveal-ring--2{ stroke: var(--brand-accent);    stroke-width: 1.8; }
+   .reveal-ring--3{ stroke: var(--brand-secondary); stroke-width: 1.6; }
+
+   .reveal-photo{
+    transform: translateY(var(--py, 0px)) scale(var(--img-scale, 1));
+    transform-origin: 50% 50%;
+    transition: none;
+   }
+
+
+   @media (prefers-reduced-motion: reduce){
+    .reveal-mask-ink, .reveal-ring, .reveal-photo{ transition: none !important; }
+   }
+
+</style>
+
+
+<script>
+
+ (function(){
+   const root = document.getElementById('revealAnim');
+   if(!root) return;
+
+   const CONFIG = {
+    scrollStartPct: 1.5,
+    scrollEndPct:   0.25,
+    easePow:        10,
+    endScale:       85,
+    ringEnd:        0,
+    parallaxPX:     0,
+    parallaxZoom:   0.045
+   };
+
+   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+   const svg = root.querySelector('svg');
+   const starProbe = svg.querySelector('#revealStarProbe');
+
+   function setStarOrigin(){
+    if(!starProbe) return;
+    try{
+      const bb = starProbe.getBBox();
+      const cx = bb.x + bb.width/2;
+      const cy = bb.y + bb.height/2;
+      svg.style.setProperty('--cx', '94.5px');
+      svg.style.setProperty('--cy', '48px');
+    }catch(e){
+      svg.style.setProperty('--cx', '50%');
+      svg.style.setProperty('--cy', '50%');
+    }
+   }
+   setStarOrigin();
+
+   const clamp = (n,min,max)=> Math.max(min, Math.min(max,n));
+   const ease  = t => Math.pow(t, CONFIG.easePow);
+
+   function computeProgress(){
+    const rect = root.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+
+    const startY = vh * CONFIG.scrollStartPct;
+    const endY   = vh * CONFIG.scrollEndPct;
+    const center = rect.top + rect.height/2;
+
+    const raw = 1 - (center - endY) / (startY - endY);
+    const p   = clamp(raw, 0, 1);
+    const e   = ease(p);
+
+    svg.style.setProperty('--p', e.toFixed(4));
+    svg.style.setProperty('--end-scale', CONFIG.endScale.toString());
+    svg.style.setProperty('--ring-end',  CONFIG.ringEnd.toString());
+
+    const y = (1 - e) * CONFIG.parallaxPX - e * CONFIG.parallaxPX;
+    const s = 1 + CONFIG.parallaxZoom - (e * CONFIG.parallaxZoom);
+
+    svg.style.setProperty('--py', y.toFixed(2) + 'px');
+    svg.style.setProperty('--img-scale', s.toFixed(3));
+   }
+
+   let running = false;
+   function frame(){ if(!running) return; computeProgress(); requestAnimationFrame(frame); }
+
+   const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+     if(entry.isIntersecting){ running = true; frame(); }
+     else { running = false; }
+    });
+   }, {threshold:[0, 0.1, 0.25, 0.4, 0.6, 0.8, 1]});
+
+   if(prefersReduced){
+    svg.style.setProperty('--p', 1);
+    svg.style.setProperty('--py', '0px');
+    svg.style.setProperty('--img-scale', '1');
+    return;
+   }
+
+   io.observe(root);
+   ['resize','orientationchange'].forEach(ev=>{
+     window.addEventListener(ev, ()=>{ setStarOrigin(); if(!running) computeProgress(); }, {passive:true});
+   });
+
+   computeProgress();
+ })();
+
+</script>

@@ -1,0 +1,119 @@
+<section class="home-hero bg-footer" aria-label="Homepage hero">
+
+
+ <div class="container hero-inner">
+  <div class="col-text">
+   <h1 class="h-display">Nat. <em class="light-italic">Reimagined.</em></h1>
+   <p>The world awaits. Discover more Nat right here, right now.</p>
+
+   <div class="hero-cta">
+    <div class="cta-row">
+     <a class="c-btn c-btn--primary" href="/about/">About</a>
+     <a class="c-btn c-btn--primary c-btn--outline" href="/links/">Stalk Me</a>
+    </div>
+    <p class="hero-subtext">Built exclusively with <strong>custom code</strong> and <strong>open-source</strong> tools</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<style>
+
+  .light-italic {
+   font-weight: 400;
+   font-style: italic;
+  }
+
+  .home-hero{ text-align:center; padding-block: clamp(32px, 8vw, 120px); }
+  .home-hero .hero-inner{
+   display:grid; gap: var(--space-6);
+   align-items:center;
+  }
+  @media (min-width:768px){
+   .home-hero .hero-inner{ grid-template-columns: 1fr 1fr; }
+  }
+
+  .home-hero .hero-inner h1,
+  .home-hero .hero-inner p,
+  .home-hero .hero-subtext{ color: var(--footer-text); }
+
+  @media (min-width:768px){
+    .home-hero .hero-inner h1{ font-size: clamp(3rem, 5vw, 5rem); }
+  }
+
+  .home-hero .hero-inner h1{ margin-block: var(--space-6) var(--space-2); }
+  .home-hero .hero-inner p{ margin-block: var(--space-2) var(--space-6); max-width:60ch; margin-inline:auto; }
+
+  @media (min-width:768px){
+    .home-hero{ text-align:left; }
+    .home-hero .hero-inner p{ margin-inline:0; }
+  }
+
+  .home-hero .hero-image{
+   width:100%; height:auto;
+   border-radius: var(--radius-lg);
+   box-shadow: var(--shadow-md);
+   display:block;
+   margin-inline:auto;
+  }
+
+  /* CTA stack */
+  .hero-cta{
+   display:grid;
+   row-gap: var(--space-6); /* ↑ more vertical space between lede / buttons / subtext */
+  }
+  .hero-cta .cta-row{
+   display:flex; justify-content:center; align-items:center; gap: var(--space-4); flex-wrap:wrap;
+   margin-block: var(--space-5); /* extra breathing room above/below the button group */
+  }
+  @media (min-width:768px){
+   .hero-cta .cta-row{ justify-content:flex-start; }
+  }
+  @media (max-width:767px){
+   .hero-cta{ row-gap: var(--space-7, 32px); } /* a touch more on mobile */
+   .hero-cta .cta-row{ margin-block: var(--space-6); } /* stronger on mobile */
+   .hero-cta .c-btn{ width:100%; }
+   .hero-cta .c-btn:hover{ transform: none; }
+   .no-pad-mobile{ padding-inline:0; }
+  }
+
+  /* Buttons */
+  .hero-cta .c-btn{
+    white-space:nowrap; justify-content:center; text-align:center;
+    padding: 0.7em 2em;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm); /* more square */
+    background: #007E4C;
+    border: 1px solid transparent;
+    color:#fff;
+    transform: scale(1);
+    transition: transform .25s ease, background-color .25s ease, color .25s ease, border-color .25s ease;
+  }
+  .hero-cta .c-btn:hover{ transform: scale(1.03); }
+  .hero-cta .c-btn--primary:hover{ background:#19945F; }
+  .hero-cta .c-btn--outline{
+    background: transparent;
+    color:#007E4C;
+    border: 2px solid #007E4C;
+  }
+  .hero-cta .c-btn--outline:hover{
+    background:#19945F; color:#fff; border-color: transparent;
+  }
+
+  .hero-subtext{ font-size: .9rem; font-weight: 400; margin: 0; }
+  .hero-subtext strong{ font-weight: 550; }
+
+  .home-hero,
+  .home-hero .container{ overflow: clip; }
+
+  .home-hero .follow-card{
+    margin: clamp(12px, 3.5vw, 28px) auto 0;
+    min-height: 220px;
+    --card-bg:#fff; --card-radius:0px; --card-shadow: var(--shadow-lg); --card-border: 0;
+    display:block; width:100%;
+  }
+
+  
+
+</style>

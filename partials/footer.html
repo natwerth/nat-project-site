@@ -53,4 +53,10 @@
     &copy; <span class="js-year">2024</span> · Nat Werth™ · All rights reserved
   </div>
 </div>
-<script type="module" src="/assets/scripts/footer.js"></script>
+<script>
+
+  document.querySelectorAll('.js-year').forEach(el => {
+    el.textContent = String(new Date().getFullYear());
+  });
+
+</script>

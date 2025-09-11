@@ -1,0 +1,144 @@
+<article class="profile-card is-github" data-url="https://github.com/natwerth" data-user="natwerth">
+  <div class="profile-head" style="background:#0d1117; border-bottom:1px solid #30363d">
+    <div class="avatar" aria-label="GitHub">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#ffffff" aria-hidden="true" role="img">
+      <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+    </svg>
+  </div>
+    <div class="meta">
+      <div class="profile-handle">GitHub</div>
+      <div class="profile-username">natwerth</div>
+    </div>
+  </div>
+  <div class="profile-body">
+    <div class="preview repos">
+  <div class="repo"><span class="name">nwdotcom</span><span class="meta"><span class="lang"><span class="dot" style="background:#f1e05a"></span>JS</span><span class="stars">★ 14</span></span></div>
+  <div class="repo"><span class="name">firemebot</span><span class="meta"><span class="lang"><span class="dot" style="background:#3572A5"></span>Py</span><span class="stars">★ 9</span></span></div>
+</div>
+  </div>
+  <div class="profile-actions">
+    <div class="left">
+      <a class="profile-btn" href="https://github.com/natwerth" target="_blank" rel="noopener">Visit</a>
+    </div>
+    <div class="right">
+      <button class="profile-btn profile-copy" data-copy="https://github.com/natwerth">⋯ Copy link</button>
+    </div>
+  </div>
+  <style>
+    /* Container – subtle GitHub-like chrome */
+    .profile-card.is-github {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      overflow: hidden;
+      color: #c9d1d9;
+    }
+    .profile-card.is-github .profile-head {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 0.8rem;
+    }
+    .profile-card.is-github .avatar {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 50%;
+      flex: 0 0 28px;
+    }
+    .profile-card.is-github .meta .profile-handle {
+      font-weight: 600;
+      color: #e6edf3;
+      line-height: 1.1;
+    }
+    .profile-card.is-github .meta .profile-username {
+      color: #8b949e;
+      font-size: 0.9rem;
+    }
+    /* Repo preview area */
+    .profile-card.is-github .profile-body {
+      background: #0d1117;
+      padding: 0.5rem 0.5rem;
+    }
+    .profile-card.is-github .preview.repos {
+      display: grid;
+      gap: 6px;
+    }
+    .profile-card.is-github .repo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 0.55rem;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #0d1117;
+      transition: background 120ms ease, border-color 120ms ease;
+    }
+    .profile-card.is-github .repo:hover {
+      background: #161b22;
+      border-color: #3d444d;
+    }
+    .profile-card.is-github .repo .name {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      color: #e6edf3;
+      font-size: 0.95rem;
+    }
+    .profile-card.is-github .repo .meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #8b949e;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.85rem;
+    }
+    .profile-card.is-github .repo .lang { display: inline-flex; align-items: center; gap: 6px; }
+    .profile-card.is-github .repo .dot {
+      width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+      border: 1px solid #30363d;
+    }
+    .profile-card.is-github .repo .stars { opacity: 0.9; }
+
+    /* Actions row */
+    .profile-card.is-github .profile-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.6rem;
+      padding: 0.65rem 0.8rem;
+      border-top: 1px solid #30363d;
+      background: #0d1117;
+    }
+    .profile-card.is-github .profile-btn {
+      appearance: none;
+      border-radius: 6px;
+      padding: 0.4rem 0.65rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      line-height: 1;
+      border: 1px solid #30363d;
+      background: #21262d;
+      color: #c9d1d9;
+      transition: background 120ms ease, border-color 120ms ease, transform 60ms ease;
+    }
+    .profile-card.is-github .profile-btn:hover { background: #30363d; }
+    .profile-card.is-github .profile-btn:active { transform: translateY(1px); }
+
+    /* Primary (Visit) button in GitHub green */
+    .profile-card.is-github a.profile-btn {
+      background: #238636;
+      border-color: #2ea043;
+      color: #ffffff;
+    }
+    .profile-card.is-github a.profile-btn:hover { background: #2ea043; border-color: #3fb950; }
+
+    /* Copy button stays neutral */
+    .profile-card.is-github .profile-copy { background: #21262d; border-color: #30363d; }
+    .profile-card.is-github .profile-copy:hover { background: #30363d; }
+
+    /* Layout helpers for left/right action groups */
+    .profile-card.is-github .profile-actions .left, 
+    .profile-card.is-github .profile-actions .right { display: flex; gap: 0.5rem; }
+  </style>
+</article>
