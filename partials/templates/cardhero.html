@@ -30,6 +30,7 @@
 .c-card{ background:#fff; border:1px solid var(--color-border); box-shadow:0 4px 16px rgba(0,0,0,.12); padding:clamp(16px,3vw,24px); border-radius:0; }
 @media (min-width:900px){ .c-card{ border-radius:var(--card-radius); } }
 .c-card{ transition: box-shadow .2s ease; }
+.c-card:hover{ box-shadow:0 6px 20px rgba(0,0,0,.16); }
 .c-section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:var(--space-3); padding-block:clamp(16px,3vw,28px); margin-bottom:clamp(16px,3vw,24px); border-bottom:1px dashed var(--color-border); }
 .c-section-head h2{ margin:0; font-size:clamp(20px,3.5vw,24px); }
 .c-section-head__sub{ color:var(--brand-muted); font-size:12px; letter-spacing:.2px; }
@@ -43,18 +44,14 @@
 <body>
   <section class="c-showcase" aria-label="Brand & Components Showcase">
     <div class="c-showcase__inner">
-      <h1 class="page-title u-text-footer" 
-          style="margin:0 0 var(--space-5); font-size:clamp(48px,8vw,96px);">
-        <strong>Nat.</strong> <em style="font-weight:300;">Unhinged.</em>
-      </h1>
+      <h1 class="page-title u-text-footer" style="margin:0 0 var(--space-5);">Nat?</h1>
       <div class="c-card-grid">
         <div class="c-card u-bleed-mobile">
           <header class="c-section-head">
             <h2>Lorem ipsum</h2>
             <div class="c-section-head__sub">dolor sit amet.</div>
           </header>
-          <p>Hello! I’m Nat Werth.</p>
-          <p>Welcome to my scrapbook of design experiments, accolades, and reviews! I also like to tinker with code, APIs, and Salesforce. If you get lost, that's the point!</p>
+          <p>Hello world! I’m Nat Werth. This page is where I share a little about myself, my projects, and what I’m working on. Check out my homepage for the latest updates.</p>
         </div>
       </div>
     </div>
@@ -67,5 +64,3 @@
 
 </body>
 </html>
-
-

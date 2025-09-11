@@ -1,5 +1,93 @@
+<style>
+
+
+  .footer{
+    --pad-x: 2rem;
+    --pad-y: 2rem;
+    --tan: #a09484;
+    --bg:  #fdf8f4;
+  }
+
+  .footer, .footer * { color: var(--tan) !important; }
+  .footer{
+    background: var(--bg);
+    font-family: 'Helvetica Neue', sans-serif;
+    padding: var(--pad-y) var(--pad-x);
+    font-size: .9rem;
+  }
+
+  /* links */
+  .footer a{ color: var(--tan); text-decoration: none; }
+  .footer a:hover{ text-decoration: none; }
+  .footer-columns a:hover{ text-decoration: underline; }
+
+  /* layout */
+  .footer-top{ display:flex; flex-direction:column; gap:1rem; max-width:1000px; margin:0 auto; }
+  .footer-intro{ max-width:500px; }
+
+  .footer-divider {
+    border-top: 1px dashed var(--tan);
+    margin-top: 2rem;
+    margin-bottom: 0rem;
+  }
+
+  /* ICON ROW */
+  .footer-icons{
+    display:flex;
+    gap:1rem;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+    margin-top:0.75rem;
+    padding-left:0;
+  }
+  .footer-icons .icon-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:left;
+    width:28px;
+    height:28px;
+    border-radius:1px;
+    transition: transform .2s ease;
+    text-decoration:none !important;
+  }
+  .footer-icons .icon-btn:hover{ transform: scale(1.15); }
+  .footer-icons i{ font-size:18px; line-height:1; }
+
+  /* columns */
+  .footer-columns{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:2rem;
+    margin-top:2rem;
+  }
+  .footer-col{ flex:1 1 150px; min-width:150px; }
+  .footer-col h4{ font-weight:bold; margin-bottom:.5rem; }
+  .footer-col a{ display:block; margin-bottom:.3rem; }
+
+  /* logo area */
+  .footer-logo{ text-align:center; margin:3.25rem 0 1rem; }
+  .footer-logo svg{
+    width:72px;
+    height:auto;
+    display:inline-block;
+    color: var(--tan);
+  }
+  .footer-logo svg [fill]:not([fill="none"]){ fill: currentColor !important; }
+  .footer-logo svg [stroke]:not([stroke="none"]){ stroke: currentColor !important; }
+
+  .footer-bottom{ text-align:center; font-size:.8rem; margin-top:1rem; }
+
+  @media (max-width:600px){
+    .footer{ --pad-x:16px; --pad-y:8px; padding: var(--pad-y) var(--pad-x); }
+    .footer-columns{ flex-direction:column; align-items:flex-start; gap:1.25rem; }
+    .footer-col{ width:100%; }
+    .footer-logo svg{ width:64px; }
+  }
+
+
+</style>
+
 <div class="footer">
   <div class="footer-top">
+    <div class="footer-divider"></div>
     <div class="footer-intro">
       <p>Last will and testament to have all resources dedicated to maintaining this domain in perpetuity.</p>
       <p>Estd. 2000</p>
