@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nat · Links</title>
+  <style>
+/* Minimal local styles kept in controller */
+/* Layout */
+
+:root{ --card-radius:16px; }
+
+/* Utilities */
+.u-italic{ font-style: italic; }
+
+/* Title option: add .is-italic to .xk-page-title when you want italics */
+.xk-page-title.is-italic{ font-style: italic; }
+
+
+
+.u-text-footer{ color: var(--footer-text); }
+.xk-showcase{ background: var(--footer-bg); min-height: auto; padding-block: clamp(20px,4vw,48px); }
+/* About section adjustments */
+.about{ text-align:center; background:var(--footer-bg); padding:16px; }
+
+.xk-inner{ max-width:1100px; margin-inline:auto; padding-inline:var(--space-4); }
+.xk-page-title{ font-size: clamp(28px,4.5vw,40px); font-weight:700; }
+.xk-grid{ display:grid; gap:var(--space-4); grid-template-columns:1fr; }
+@media (min-width:900px){ .xk-grid{ grid-template-columns:1fr } }
+.xk-card{ background:#fff; border:1px solid var(--color-border); box-shadow:0 4px 16px rgba(0,0,0,.12); padding:clamp(16px,3vw,24px); border-radius:0; }
+@media (min-width:900px){ .xk-card{ border-radius:var(--card-radius); } }
+.xk-card{ transition: box-shadow .2s ease; }
+/* Contain included fragments to the card box */
+.xk-card section[data-include]{
+  display:block;
+  max-width:100%;
+  overflow-x:hidden;
+  overflow-y:visible;
+  min-height:unset;
+}
+/* Normalize spacing inside fragments */
+.xk-card section[data-include] > *:first-child{ margin-top:0 !important; }
+.xk-card section[data-include] > *:last-child{ margin-bottom:0 !important; }
+/* Prevent fixed-width media from blowing out */
+.xk-card section[data-include] img,
+.xk-card section[data-include] video,
+.xk-card section[data-include] canvas{ max-width:100%; height:auto; box-sizing:border-box; }
+/* Force embeds to fit */
+.xk-card section[data-include] iframe{ width:100% !important; max-width:100% !important; border:0; }
+/* Kill rogue full-viewport sections in fragments */
+.xk-card section[data-include] [style*="100vw"],
+.xk-card section[data-include] [style*="100vh"],
+.xk-card section[data-include] .full-bleed,
+.xk-card section[data-include] .u-bleed,
+.xk-card section[data-include] .u-bleed-mobile{
+  width:auto !important;
+  max-width:100% !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+.xk-head{ display:flex; align-items:baseline; justify-content:space-between; gap:var(--space-3); padding-block:clamp(16px,3vw,28px); margin-bottom:clamp(16px,3vw,24px); border-bottom:1px dashed var(--color-border); }
+.xk-head h2{ margin:0; font-size:clamp(20px,3.5vw,24px); }
+.xk-sub{ color:var(--brand-muted); font-size:12px; letter-spacing:.2px; }
+
+/* Back to Homepage link as button */
+.about a{ color:var(--footer-text); text-decoration:none; }
+.about a:hover{ text-decoration:underline; }
+
+/* Mobile-only edge-to-edge card bleed */
+@media (max-width: 899px){
+  /* Remove container padding so the card can touch the viewport edges */
+  .xk-inner{ padding-inline:0; }
+  /* Remove grid gap so there are no gutters */
+  .xk-grid{ gap:0; }
+  /* Make the card flush with the edges; keep desktop rounding above 900px */
+  .xk-card{ border-left:0; border-right:0; border-radius:0; box-shadow:none; }
+  /* Keep the page title readable now that the container has no padding */
+  .xk-page-title{ padding-inline:var(--space-4); }
+}
+  </style>
+</head>
+<body>
+  <section class="xk-showcase" aria-label="Brand & Components Showcase">
+    <div class="xk-inner">
+      <h1 class="xk-page-title u-text-footer" style="margin:0 0 var(--space-5);">Experiments</h1>
+      <div class="xk-grid">
+        <div class="xk-card">
+          <header class="xk-head">
+            <h2>Past Work</h2>
+            <div class="xk-sub">Please mind the mess.</div>
+          </header>
+          <p>Hello world!</p>
+          <section data-include="experiments/certs.html"></section>
+          <section data-include="experiments/letterboxdreviews.html"></section>
+          <section data-include="experiments/education.html"></section>
+          <section data-include="experiments/news.html"></section>
+          <section data-include="experiments/quotes.html"></section>
+          <section data-include="experiments/games.html"></section>
+          <section data-include="experiments/sampleform.html"></section>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="about">
+    <p><a href="/">← Back to home</a></p>
+  </section>
+  <div class="c-toast" id="toast" role="status" aria-live="polite"></div>
+
+
+</body>
+</html>

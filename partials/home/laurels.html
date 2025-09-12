@@ -1,0 +1,56 @@
+<section class="laurel-row bg-footer" aria-label="Awards & Laurels">
+ <style>
+  .laurel-row{
+   padding-block: var(--space-6);
+   background: var(--footer-bg);
+  }
+  .laurel-grid{
+   display:flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   align-items: center;
+   gap: var(--space-1) var(--space-1);
+   margin-inline: auto;
+   max-width: 1000px; /* keep tidy on small screens */
+  }
+  .laurel-item{
+   flex: 0 1 100px;
+   display:flex; align-items:center; justify-content:center;
+  }
+  .laurel-item img{
+   width: 104px;
+   height: auto;
+   display:block;
+  }
+
+  /* Desktop: full-bleed banner layout */
+  @media (min-width: 1024px){
+    .laurel-row .container{
+      max-width: none;
+      padding-inline: 0;
+    }
+    .laurel-grid{
+      max-width: none;
+      justify-content: space-around; /* spread across full width */
+    }
+  }
+ </style>
+
+ <div class="container laurel-grid">
+  <figure class="laurel-item">
+   <img src="https://www.natwerth.com/wp-content/uploads/2024/03/MasterPhotographerLaurel.png" alt="Master Photographer Laurel">
+  </figure>
+  <figure class="laurel-item">
+   <img src="https://www.natwerth.com/wp-content/uploads/2024/03/WHSFAForensicsStateChampionLaurel.png" alt="WHSFA Forensics State Champion Laurel">
+  </figure>
+  <figure class="laurel-item">
+   <img src="https://www.natwerth.com/wp-content/uploads/2024/03/MilwaukeePrideValorAwardLaurel.png" alt="Milwaukee Pride Valor Award Laurel">
+  </figure>
+  <figure class="laurel-item">
+   <img src="https://www.natwerth.com/wp-content/uploads/2024/03/TouchtunesIndieIconLaurel.png" alt="Touchtunes Indie Icon Laurel">
+  </figure>
+  <figure class="laurel-item">
+   <img src="https://www.natwerth.com/wp-content/uploads/2024/03/SheboyganPersonoftheYearLaurel.png" alt="Sheboygan Person of the Year Laurel">
+  </figure>
+ </div>
+</section>

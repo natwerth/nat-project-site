@@ -1,0 +1,298 @@
+<section class="card-section bg-footer" aria-label="Showcase Card">
+ <style>
+  /* ===== QUOTES CAROUSEL (local, .c- namespace) ===== */
+  .card-section{
+   padding-block: var(--space-6);
+   background: var(--footer-bg);
+  }
+  .c-card.sharp{
+   background:#fff;
+   color:#000;
+   --card-radius:0px;
+   box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.15));
+   padding: var(--space-4);
+  }
+  .c-card.sharp h2{ color:#000; }
+
+  .hqs{
+   --hqs-accent: #007E4C;         /* local accent (uses your brand system elsewhere) */
+   --hqs-bleed: var(--space-4);   /* keep bleed in sync with card padding */
+   position:relative;
+   box-sizing: border-box; min-width: 0; max-width: 100%; width: 100%;
+  }
+  .hqs__view{
+   /* no negative margins; prevent page overflow */
+   overflow: clip; /* allows child scroller while clipping paint */
+   box-sizing: border-box; min-width: 0; max-width: 100%; width: 100%;
+   padding-inline: var(--hqs-bleed);
+  }
+  .hqs__track{
+   display:flex; gap: var(--space-4);
+   list-style:none; padding:0; margin:0;
+   overflow-x:auto; -webkit-overflow-scrolling: touch;
+   scrollbar-width: none;
+   scroll-snap-type: x mandatory;
+   scroll-padding-inline: var(--hqs-bleed);
+   box-sizing: border-box; min-width: 0; max-width: 100%; width: 100%;
+   touch-action: pan-x;
+  }
+  .hqs__track::-webkit-scrollbar{ display:none; }
+
+  /* Slides: responsive basis + sane minimum to avoid “postage stamps” */
+  .hqs__slide{
+   flex: 0 0 min(85%, 360px);
+   scroll-snap-align: start;
+  }
+  @media (min-width:768px){
+   .hqs__slide{ flex-basis: min(45%, 340px); }
+  }
+  @media (min-width:1024px){
+   .hqs__slide{ flex-basis: min(30%, 360px); }
+  }
+
+  /* Tile for each quote */
+  .hqs__tile{
+   background: var(--footer-bg);
+   border-radius: var(--radius-md,12px);
+   border:1px solid #d4cdc7;
+   padding: var(--space-4);
+   box-shadow: var(--shadow-sm, 0 2px 6px rgba(0,0,0,0.08));
+   height:100%;
+   display:flex; flex-direction:column; justify-content:space-between; gap: var(--space-3);
+  }
+  /* Make tiles square on tight screens; let them breathe on larger */
+  @media (max-width:640px){
+   .hqs__tile{ aspect-ratio: 1 / 1; }
+  }
+
+  .hqs__text{ font-size:1rem; line-height:1.5; margin:0; }
+  .hqs__name{ font-weight:700; margin:0; }
+
+  /* Use your existing button system for the “See more” */
+  .hqs__more{
+   border:2px solid var(--hqs-accent);
+   background:transparent;
+   color: var(--hqs-accent) !important;
+   padding:6px 16px;
+   border-radius: var(--radius-full,999px);
+   font-size:14px; font-weight:700;
+   display:inline-flex; align-items:center; gap:8px;
+   transition: background .25s ease, color .25s ease, transform .08s ease;
+  }
+  .hqs__more:hover{ background: var(--hqs-accent); color:#fff !important; }
+  .hqs__more:active{ transform: translateY(1px); }
+  .hqs__more:focus-visible{
+   outline:none; box-shadow: 0 0 0 3px color-mix(in oklab, var(--hqs-accent) 35%, transparent);
+  }
+
+  /* Controls row (arrows left, dots right) */
+  .hqs__controls{
+   display:flex; justify-content:center; align-items:center;
+   margin-top: var(--space-4);
+   padding-inline: var(--space-4);
+  }
+  .hqs__arrows{ display:flex; gap: var(--space-2); }
+  .hqs__arrow{
+   width:36px; height:36px; border-radius:50%;
+   background:#fff; border:1px solid #ccc; cursor:pointer;
+   display:grid; place-items:center;
+   box-shadow: var(--shadow-sm, 0 2px 6px rgba(0,0,0,0.08));
+  }
+
+  /* On mobile, hide arrows and center controls */
+  @media (max-width:640px){
+   .hqs__arrows{ display:none; }
+   .hqs__controls{ justify-content:center; }
+  }
+
+  /* LinkedIn button (leave as-is but unify focus) */
+  .linkedin-button-container{ text-align:center; margin-top: var(--space-5); }
+  .linkedin-button{
+   border:none; background:#0072b1; color:#fff !important;
+   padding:10px 20px; border-radius: var(--radius-full,25px);
+   font-size:16px; font-weight:700; box-shadow:0 4px 15px rgba(0,0,0,0.1);
+   transition: background .25s ease, transform .1s ease;
+  }
+  .linkedin-button:hover{ background:#005bb5; transform: scale(1.03); }
+  .linkedin-button:focus-visible{
+   outline:none; box-shadow: 0 0 0 3px color-mix(in oklab, #0072b1 35%, transparent);
+  }
+
+  /* Respect reduced motion in JS-driven scroll (CSS guard already global) */
+
+  @media (max-width: 767px){
+    .hqs, .hqs__view, .hqs__track{ max-width: 100%; width: 100%; }
+    .hqs{ overflow-x: clip; }
+    .hqs__track{ -ms-overflow-style: none; scrollbar-width: none; }
+    .hqs__track::-webkit-scrollbar{ display:none; }
+  }
+ </style>
+
+ <h2>What People are Saying</h2>
+
+ <div class="hqs" aria-label="Testimonials carousel">
+  <div class="hqs__view">
+   <ul class="hqs__track" role="list" aria-label="Quotes" tabindex="0">
+    <li class="hqs__slide" id="quote-1">
+     <div class="hqs__tile">
+      <p class="hqs__text">“…Nat executed and communicated extremely well, took direction to refine his work, and ultimately presented and trained on what he had accomplished. I would absolutely recommend Nat.”</p>
+      <div>
+       <p class="hqs__name">– A. Weil</p>
+       <a href="https://www.linkedin.com/in/nat-werth/details/recommendations/" class="hqs__more" target="_blank" rel="noopener">See more →</a>
+      </div>
+     </div>
+    </li>
+
+    <li class="hqs__slide" id="quote-2">
+     <div class="hqs__tile">
+      <p class="hqs__text">“I wholeheartedly recommend [Nat] for his skills, focus, fast learning abilities, and because he is a pleasure to work with.”</p>
+      <div>
+       <p class="hqs__name">– S. Dummer</p>
+       <a href="https://www.linkedin.com/in/nat-werth/details/recommendations/" class="hqs__more" target="_blank" rel="noopener">See more →</a>
+      </div>
+     </div>
+    </li>
+
+    <li class="hqs__slide" id="quote-3">
+     <div class="hqs__tile">
+      <p class="hqs__text">“Admirable”</p>
+      <div>
+       <p class="hqs__name">– TIME Magazine</p>
+       <a href="https://time.com/5603056/high-school-graduation-speeches-censored/" class="hqs__more" target="_blank" rel="noopener">See more →</a>
+      </div>
+     </div>
+    </li>
+
+    <li class="hqs__slide" id="quote-4">
+     <div class="hqs__tile">
+      <p class="hqs__text">“Always standing with you.”</p>
+      <div>
+       <p class="hqs__name">– J. Lopez</p>
+       <a href="https://twitter.com/JLo/status/1147265042892709895" class="hqs__more" target="_blank" rel="noopener">See more →</a>
+      </div>
+     </div>
+    </li>
+
+    <li class="hqs__slide" id="quote-5">
+     <div class="hqs__tile">
+      <p class="hqs__text">“Furry freak”</p>
+      <div>
+       <p class="hqs__name">– Sandman308</p>
+       <a href="https://www.reddit.com/r/boston/comments/10vdhm0/which_one_of_you_freaks_hijacked_the_south_boston/" class="hqs__more" target="_blank" rel="noopener">See more →</a>
+      </div>
+     </div>
+    </li>
+
+    <li class="hqs__slide" id="quote-6">
+     <div class="hqs__tile">
+      <p class="hqs__text">“Moving on”</p>
+      <div>
+       <p class="hqs__name">– The Sheboygan Press</p>
+       <a href="https://www.sheboyganpress.com/story/news/2019/05/30/sheboygan-lutheran-valedictorian-says-speech-homosexuality-nixed/1225636001/" class="hqs__more" target="_blank" rel="noopener">See more →</a>
+      </div>
+     </div>
+    </li>
+   </ul>
+  </div>
+
+  <div class="hqs__controls">
+   <div class="hqs__arrows">
+    <button class="hqs__arrow prev" type="button" aria-label="Previous slide">‹</button>
+    <button class="hqs__arrow next" type="button" aria-label="Next slide">›</button>
+   </div>
+  </div>
+
+  <!-- Live region for screen reader announcements -->
+  <p class="sr-only" aria-live="polite" id="quotesAnnouncer"></p>
+ </div>
+
+ <div class="linkedin-button-container">
+  <a href="https://www.linkedin.com/in/nat-werth/" class="linkedin-button" target="_blank" rel="noopener">Connect with Nat</a>
+ </div>
+
+ <script>
+  (function(){
+    const track = document.querySelector('.hqs__track');
+    const slides = Array.from(track.children);
+    const prevButton = document.querySelector('.hqs__arrow.prev');
+    const nextButton = document.querySelector('.hqs__arrow.next');
+    const announcer = document.getElementById('quotesAnnouncer');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Helper: robust left position within scrollport */
+    function scrollLeftOf(el){
+      const trackRect = track.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      return elRect.left - trackRect.left + track.scrollLeft;
+    }
+
+    function scrollToSlide(i){
+      const clamped = Math.max(0, Math.min(i, slides.length - 1));
+      const target = scrollLeftOf(slides[clamped]);
+      track.scrollTo({ left: target, behavior: reduceMotion ? 'auto' : 'smooth' });
+    }
+
+    function currentIndex(){
+      const left = track.scrollLeft;
+      let best = 0, bestDist = Infinity;
+      for(let i=0;i<slides.length;i++){
+        const dist = Math.abs(scrollLeftOf(slides[i]) - left);
+        if(dist < bestDist){ bestDist = dist; best = i; }
+      }
+      return best;
+    }
+
+    function setActive(i){
+      if(announcer){ announcer.textContent = 'Slide ' + (i+1) + ' of ' + slides.length; }
+    }
+
+    prevButton.addEventListener('click', () => {
+      const i = currentIndex();
+      scrollToSlide(i - 1);
+    });
+    nextButton.addEventListener('click', () => {
+      const i = currentIndex();
+      scrollToSlide(i + 1);
+    });
+
+    /* Observe visibility to sync dots when user drags */
+    let io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(e.isIntersecting){
+          const i = slides.indexOf(e.target);
+          setActive(i);
+        }
+      });
+    }, { root: track, threshold: 0.6 });
+    slides.forEach(slide => io.observe(slide));
+
+    /* Recreate observer on resize (layout changes) */
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        io.disconnect();
+        io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if(e.isIntersecting){
+              const i = slides.indexOf(e.target);
+              setActive(i);
+            }
+          });
+        }, { root: track, threshold: 0.6 });
+        slides.forEach(slide => io.observe(slide));
+      }, 100);
+    }, { passive:true });
+
+    /* Keyboard support */
+    track.addEventListener('keydown', (e) => {
+      if(e.key === 'ArrowRight'){ nextButton.click(); e.preventDefault(); }
+      if(e.key === 'ArrowLeft'){  prevButton.click(); e.preventDefault(); }
+      if(e.key === 'Home'){ scrollToSlide(0); e.preventDefault(); }
+      if(e.key === 'End'){  scrollToSlide(slides.length - 1); e.preventDefault(); }
+      if(e.key === 'PageDown' || e.key === ' '){ nextButton.click(); e.preventDefault(); }
+      if(e.key === 'PageUp'){ prevButton.click(); e.preventDefault(); }
+    });
+  })();
+ </script>
+</section>
