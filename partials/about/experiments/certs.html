@@ -1,0 +1,142 @@
+<section class="nt-tiles nt-tiles--bleed bg-footer" aria-label="Showcase Tiles">
+ <style>
+  .nt-tiles{ background: #fff;
+   padding-top: var(--space-6);
+   padding-bottom: var(--space-8);
+  /* defensive: allow children to overflow horizontally if parent clips */
+  overflow-x: visible; /* partials sometimes set overflow hidden upstream */
+  overflow-y: visible;
+  /* grid-safe: let this section shrink inside a grid cell */
+  min-width: 0;
+  box-sizing: border-box;  /* padding won’t exceed container */
+  width: 100%;
+  }
+  .nt-tiles--bleed{
+    /* force edge-to-edge outside centered/narrow parents and ignore parent padding */
+    width: 100vw;                 /* span viewport width */
+    max-width: 100vw;
+    box-sizing: border-box;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);  /* robust centering regardless of parent padding */
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;              /* let inner wrapper manage gutters */
+    padding-right: 0;
+  }
+  /* give soft gutters inside the bleed section */
+  .nt-tiles--bleed .nt-tiles__wrap{ padding-inline: clamp(.75rem, 3vw, 1.25rem); }
+
+  .nt-tiles__wrap{
+   display:flex; flex-wrap:wrap; justify-content:center; gap: var(--space-4);
+  /* grid/container defensive guards */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  min-width: 0;            /* allow overflow in grid parents */
+  max-width: none;         /* avoid unintended clamping */
+  max-width: 100vw;
+  }
+
+  .nt-tile{
+   background: #fff;
+   border-radius:8px;                           /* rounded corners */
+   border:.5px solid var(--footer-text);            /* thin outline */
+   box-shadow: var(--shadow-sm, 0 4px 12px rgba(0,0,0,0.15));
+   width:185px; display:flex; flex-direction:column; overflow:hidden;
+   text-decoration:none; color:inherit; transition:transform .25s, box-shadow .25s;
+  }
+  .nt-tile:hover{ transform:scale(1.05); box-shadow:var(--shadow-sm, 0 6px 20px rgba(0,0,0,0.2)); }
+
+  /* Top/logo area */
+  .nt-tile__top{ background:#d4cdc7; display:flex; justify-content:center; }
+  .nt-tile__imgwrap{ padding: var(--space-3); width:100%; display:flex; justify-content:center; }
+  .nt-tile__img{ width:100%; height:165px; object-fit:contain; display:block; }
+
+  /* Bottom band: full-bleed color; text centered */
+  .nt-tile__bottom{
+   background:#d4cdc7; color:#000;
+   padding-block: var(--space-3);
+   padding-inline: 0;
+   text-align:center;                           /* ensure centered label */
+  }
+  .nt-tile__label{
+   margin:0; font-size:.85rem; font-weight:700;
+   padding-inline: var(--space-3);
+  }
+
+  /* Brand variants */
+  .nt-tile--akamai    .nt-tile__bottom{ background:#207fca; color:#fff; }
+  .nt-tile--salesforce .nt-tile__bottom{ background:#00A1E0; color:#fff; }
+  .nt-tile--gmap      .nt-tile__bottom{ background:#4285F4; color:#fff; }
+
+  /* Horizontal scroll on mobile */
+  @media (max-width:767px){
+    .nt-tiles__wrap{
+      flex-wrap:nowrap; 
+      overflow-x:auto; 
+      overflow-y:hidden; 
+      -webkit-overflow-scrolling:touch; 
+      overscroll-behavior-x: contain; 
+      touch-action: pan-x; 
+      justify-content:flex-start; 
+      padding-inline: 0;  /* avoid pushing width beyond viewport */
+      scroll-padding-left: 0;
+      scroll-padding-right: 1rem;
+    }
+    .nt-tiles__wrap > :first-child{ margin-left: 0; }
+    .nt-tiles__wrap > :last-child{ margin-right: 1rem; }
+    .nt-tiles{ overflow-x: visible; }
+    .nt-tile{ flex:0 0 auto; 
+      /* ensure tiles don't shrink below their intrinsic width */
+      min-width: 185px; 
+      max-width: none;
+    }
+    .nt-tile__img{ max-width: 100%; height: 165px; object-fit: contain; }
+    .nt-tiles--bleed{ left: 50%; transform: translateX(-50%); width: 100vw; }
+  }
+  @media (max-width:767px){
+    .nt-tiles__wrap{ -ms-overflow-style: none; scrollbar-width: none; }
+    .nt-tiles__wrap::-webkit-scrollbar{ display:none; }
+  }
+  @media (min-width:768px){
+    .nt-tiles--bleed{ overflow-x: visible; }
+  }
+ </style>
+
+ <div class="nt-tiles__wrap">
+  <div class="nt-tile">
+   <div class="nt-tile__top"><div class="nt-tile__imgwrap">
+    <img class="nt-tile__img" src="https://www.natwerth.com/wp-content/uploads/2023/11/padi-logo.png" alt="PADI Logo">
+   </div></div>
+   <div class="nt-tile__bottom"><p class="nt-tile__label">Open Water</p></div>
+  </div>
+
+  <a class="nt-tile nt-tile--akamai" href="https://coursera.org/share/a62b93f95c856d3fc20baa29ee79d696" target="_blank" rel="noopener">
+   <div class="nt-tile__top"><div class="nt-tile__imgwrap">
+    <img class="nt-tile__img" src="https://www.natwerth.com/wp-content/uploads/2024/05/akamai-technical-academy-promo-removebg-preview-transformed.png" alt="Akamai Technical Academy">
+   </div></div>
+   <div class="nt-tile__bottom"><p class="nt-tile__label">Network Engineer →</p></div>
+  </a>
+
+  <a class="nt-tile nt-tile--salesforce" href="https://www.salesforce.com/trailblazer/profile/" target="_blank" rel="noopener">
+   <div class="nt-tile__top"><div class="nt-tile__imgwrap">
+    <img class="nt-tile__img" src="https://www.natwerth.com/wp-content/uploads/2025/08/2025-03_Badge_SF-Certified_Platform-Admin_High-Res.png" alt="Salesforce Certified Administrator">
+   </div></div>
+   <div class="nt-tile__bottom"><p class="nt-tile__label">Salesforce Admin →</p></div>
+  </a>
+
+  <a class="nt-tile nt-tile--gmap" href="https://www.google.com/maps/contrib/111567881794706653052/reviews" target="_blank" rel="noopener">
+   <div class="nt-tile__top"><div class="nt-tile__imgwrap">
+    <img class="nt-tile__img" src="https://www.natwerth.com/wp-content/uploads/2024/03/Google-Maps-logo-design-on-transparent-background-PNG.png" alt="Google Maps">
+   </div></div>
+   <div class="nt-tile__bottom"><p class="nt-tile__label">Lvl 7 Guide →</p></div>
+  </a>
+
+  <div class="nt-tile">
+   <div class="nt-tile__top"><div class="nt-tile__imgwrap">
+    <img class="nt-tile__img" src="https://www.natwerth.com/wp-content/uploads/2024/03/linkedin_thumb_DMSB_Ongoing_Badges-21.png" alt="LinkedIn Badge">
+   </div></div>
+   <div class="nt-tile__bottom"><p class="nt-tile__label">BMC</p></div>
+  </div>
+ </div>
+</section>

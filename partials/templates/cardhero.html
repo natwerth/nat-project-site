@@ -30,6 +30,55 @@
 .c-card{ background:#fff; border:1px solid var(--color-border); box-shadow:0 4px 16px rgba(0,0,0,.12); padding:clamp(16px,3vw,24px); border-radius:0; }
 @media (min-width:900px){ .c-card{ border-radius:var(--card-radius); } }
 .c-card{ transition: box-shadow .2s ease; }
+/* ===== Non-visual guardrails: prevent horizontal bleed without changing layout ===== */
+.c-showcase,
+.c-showcase__inner,
+.c-card-grid,
+.c-card{ max-width:100%; overflow-x:clip; }
+
+/* Allow grid/flex children to shrink instead of forcing overflow */
+.c-card-grid > *{ min-width:0; }
+
+/* Defensive box model and positioning inside the card */
+.c-card{ position:relative; }
+.c-card *{ box-sizing:border-box; }
+
+/* Contain any included fragments within the card box */
+.c-card [data-include]{
+  display:block;
+  max-width:100%;
+  overflow-x:hidden;      /* fragments cannot push the card horizontally */
+  overflow-y:visible;
+  min-height:unset;
+  contain:layout paint;   /* sandbox layout/paint to this box */
+  isolation:isolate;      /* stop z-index escape */
+  overflow-wrap:anywhere; /* long unbroken strings won't cause bleed */
+}
+
+/* Media safety inside cards */
+.c-card img,
+.c-card video,
+.c-card canvas{ max-width:100%; height:auto; box-sizing:border-box; }
+.c-card iframe{ width:100% !important; max-width:100% !important; border:0; }
+.c-card svg{ max-width:100%; height:auto; }
+
+/* Neutralize rogue full-viewport or bleed utility classes coming from fragments */
+.c-card [style*="100vw"],
+.c-card [style*="100vh"],
+.c-card .full-bleed,
+.c-card .u-bleed,
+.c-card .u-bleed-mobile,
+.c-card .sticky-bleed{
+  width:auto !important;
+  max-width:100% !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+  left:auto !important;
+  right:auto !important;
+}
+
+/* Final belt-and-suspenders at the section level */
+.c-showcase{ overflow-x:clip; }
 .c-section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:var(--space-3); padding-block:clamp(16px,3vw,28px); margin-bottom:clamp(16px,3vw,24px); border-bottom:1px dashed var(--color-border); }
 .c-section-head h2{ margin:0; font-size:clamp(20px,3.5vw,24px); }
 .c-section-head__sub{ color:var(--brand-muted); font-size:12px; letter-spacing:.2px; }

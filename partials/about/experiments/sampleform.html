@@ -1,13 +1,18 @@
 <section class="section-pad">
   <div class="container">
-    <h2 class="text-footer-text">Feedback Form</h2>
+    <header class="form-title-row">
+      <h2 class="form-title">Feedback Form</h2>
+      <p class="form-subtitle">Tell Nat what you think.</p>
+    </header>
+    <div class="title-divider" role="presentation"></div>
 
-    <div class="c-card c-card--white c-card--elevated gap-md">
-      <form action="#" method="post" class="grid gap-md">
+    <div class="c-card c-card--white sampleform-card gap-md">
+      <div class="form-error" aria-live="polite" role="alert"></div>
+      <form action="#" method="post" class="feedback-form grid gap-md" onsubmit="handleSubmit(event)">
         
         <div class="form-row form-row--2">
-          <input type="text" name="name" placeholder="Your Name" class="input-clean" required>
-          <input type="email" name="email" placeholder="Your Email" class="input-clean" required>
+          <input type="text" name="name" placeholder="Name" class="input-clean" required>
+          <input type="email" name="email" placeholder="Email" class="input-clean" required>
         </div>
 
         <div class="form-row">
@@ -21,14 +26,131 @@
         </div>
 
         <div class="form-row">
-          <textarea name="message" placeholder="Your Feedback" rows="5" class="textarea-clean" required></textarea>
+          <textarea name="message" placeholder="Feedback" rows="5" class="textarea-clean" required></textarea>
         </div>
 
         <div class="form-row">
-          <button type="submit" class="c-btn c-btn--primary">Submit Feedback</button>
+          <button type="submit" class="c-btn c-btn--primary" disabled>Submit</button>
         </div>
 
       </form>
     </div>
   </div>
+  <style>
+    .form-row--2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .feedback-form input,
+    .feedback-form select,
+    .feedback-form textarea {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 0.75rem;
+      font-size: 1rem;
+      width: 100%;
+    }
+    .feedback-form input:focus,
+    .feedback-form select:focus,
+    .feedback-form textarea:focus {
+      border-color: #0077ff;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(0,119,255,0.2);
+    }
+    .feedback-form button {
+      background-color: #0077ff;
+      color: #fff;
+      padding: 0.75rem 1.25rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .feedback-form button:disabled {
+      background-color: #999;
+      cursor: not-allowed;
+    }
+    .feedback-form button:hover:not(:disabled) {
+      background-color: #005ecc;
+    }
+    .sampleform-card {
+      border-radius: 12px;
+      box-shadow: none;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.06);
+      background: #fff;
+    }
+    .form-title-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0 0 0.25rem 0;
+    }
+    .form-title {
+      margin: 0;
+      color: #000;
+      font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+      font-weight: 700;
+    }
+    .form-subtitle {
+      margin: 0;
+      font-size: 0.875rem;
+      font-weight: 300;
+      color: rgba(0,0,0,0.6);
+      white-space: nowrap;
+    }
+    .title-divider {
+      border-bottom: 1px dashed rgba(0,0,0,0.2);
+      margin: 0.25rem 0 0.75rem 0;
+    }
+    .form-error {
+      display: none;
+      padding: 0.75rem 1rem;
+      border: 1px solid #f2b8b5;
+      background: #fdecea;
+      color: #b00020;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+    .form-error.show {
+      display: block;
+    }
+    @media (max-width: 640px) {
+      .form-title-row { align-items: flex-start; }
+      .form-subtitle { font-size: 0.8rem; }
+    }
+  </style>
+  <script>
+    function handleSubmit(event) {
+      event.preventDefault();
+      const form = event.target;
+      const errorBox = form.closest(".sampleform-card").querySelector(".form-error");
+      // If valid, go to thank-you page
+      if (form.checkValidity()) {
+        window.location.href = "https://natwerth.com/thankyou";
+        return;
+      }
+      // Otherwise show an error and focus first invalid field
+      if (errorBox) {
+        errorBox.textContent = "Please complete all required fields before submitting.";
+        errorBox.classList.add("show");
+      }
+      const firstInvalid = form.querySelector(":invalid");
+      if (firstInvalid) firstInvalid.focus();
+    }
+    // Enable/disable submit button based on validity and clear error while typing
+    document.addEventListener("input", () => {
+      const form = document.querySelector(".feedback-form");
+      if (!form) return;
+      const button = form.querySelector("button[type=submit]");
+      if (button) button.disabled = !form.checkValidity();
+      const errorBox = form.closest(".sampleform-card").querySelector(".form-error");
+      if (errorBox && form.checkValidity()) {
+        errorBox.classList.remove("show");
+        errorBox.textContent = "";
+      }
+    });
+  </script>
 </section>

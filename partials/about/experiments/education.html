@@ -1,0 +1,87 @@
+<section class="section-pad" aria-label="Education">
+ <style>
+  /* Local tweaks */
+  .edu-card{ 
+   overflow:hidden; max-width:900px; margin-inline:auto; 
+   --card-border: 1px solid var(--color-border);
+   background: var(--footer-bg);
+   border: var(--card-border);
+   border-radius: var(--card-radius);
+   padding:0 !important;
+  }
+  @media (min-width:1024px){ .edu-card{ transform:scale(.95); transform-origin:center; } }
+
+  .edu-wrap{ align-items:stretch; padding:0; gap:0; }
+  @media (min-width:1024px){
+    .edu-wrap{ column-gap: var(--space-lg); row-gap:0; }
+  }
+  .grid.edu-wrap{ padding:0; }
+  .edu-photo{ margin:0; overflow:hidden; }
+  .edu-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  /* Mobile square image */
+  @media (max-width:767px){
+   .edu-photo{ aspect-ratio:1/1; }
+   .edu-photo img{ aspect-ratio:1/1; object-fit:cover; }
+   .edu-info::before{ background-size:50%; }
+  }
+
+  .edu-info{ position:relative; display:flex; flex-direction:column; justify-content:center; gap: var(--space-3); overflow:hidden; padding:0; color: var(--footer-text); }
+  .edu-info::before{
+   content:""; position:absolute; inset:0; z-index:0; opacity:.08;
+   background-image:url('https://www.natwerth.com/wp-content/uploads/2023/11/Northeastern_seal.svg_.png');
+   background-repeat:no-repeat; background-position:center; background-size:80%;
+   pointer-events:none;
+  }
+  .edu-content{ position:relative; z-index:1; padding: var(--space-4); }
+  .edu-title{ font-weight:800; font-size: clamp(22px, 2.6vw, 28px); margin:0; color: var(--footer-text); }
+  .edu-meta{ color: var(--footer-text); margin: 6px 0; opacity:.9; }
+  .edu-sep{ height:2px; width:min(60%, 280px); background: var(--brand-danger); border:0; margin: 16px 0; }
+
+  /* Red button variant */
+  .c-btn--danger{
+   color: var(--brand-danger);
+   border: 1.5px solid var(--brand-danger);
+   background: transparent;
+   padding: .6rem .9rem;
+   margin-top: 1rem;
+   margin-bottom: 1rem;
+   border-radius: 999px;
+   font-weight: 600;
+   line-height: 1;
+   transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+   box-shadow: 0 0 0 0 rgba(0,0,0,0);
+  }
+  .c-btn--danger:hover{
+   background: var(--brand-danger);
+   color:#fff;
+   box-shadow: 0 4px 10px rgba(0,0,0,.12);
+  }
+
+  /* Heading color override */
+  .edu-heading{ color:#000; margin:0 0 var(--space-4); }
+ </style>
+
+ <div class="container">
+  <h2 class="h-section edu-heading">Education</h2>
+
+  <article class="c-card c-card--elevated edu-card">
+   <div class="grid grid-2 gap-lg edu-wrap">
+    <figure class="edu-photo">
+     <img src="https://www.natwerth.com/wp-content/uploads/2024/06/IMG_0668-2-e1720728736693.jpeg" alt="Nat Werth Graduation Photo">
+    </figure>
+
+    <div class="edu-info">
+     <div class="edu-content">
+      <p class="edu-title">Northeastern University</p>
+      <p class="edu-meta">BSBA · Summa Cum Laude · 2023</p>
+      <p class="edu-meta">Concentration: Entrepreneurship &amp; New Venture Management · Minor: Urban Studies</p>
+      <div class="edu-sep" role="presentation"></div>
+
+      <a href="https://linkedin.com/in/nat-werth/" class="c-btn c-btn--danger" aria-label="Learn more about Northeastern University">Learn more</a>
+     </div>
+    </div>
+   </div>
+  </article>
+ </div>
+</section>

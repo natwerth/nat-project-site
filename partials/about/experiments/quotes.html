@@ -3,7 +3,7 @@
   /* ===== QUOTES CAROUSEL (local, .c- namespace) ===== */
   .card-section{
    padding-block: var(--space-6);
-   background: var(--footer-bg);
+   background: #fff; /* white background behind the container */
   }
   .c-card.sharp{
    background:#fff;
@@ -13,6 +13,39 @@
    padding: var(--space-4);
   }
   .c-card.sharp h2{ color:#000; }
+
+  /* Container around the whole fragment */
+  .q-wrap{
+    background: var(--footer-bg);
+    border: 1px solid #d4cdc7; /* light outline */
+    border-radius: var(--radius-md,12px);
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  /* Make just the tiles row (scroller) go edge-to-edge inside q-wrap */
+  .q-wrap .hqs__view{
+    /* pull the scroller out to the container edges */
+    /* preserve internal gutter equal to the container padding */
+    padding-inline: 0; /* no side gutter */
+    padding-block: 0; /* keep vertical rhythm, no extra inset on sides */
+  }
+
+  /* Remove extra left/right padding on the track so items align to the edge */
+  .q-wrap .hqs__track{
+    padding-inline: 1rem;
+    /* snap offset should match the new gutter */
+    scroll-padding-inline: 1rem; /* snap starts at the very edge */
+  }
+
+  /* Heading tweaks per request */
+  .card-section h2{
+    color: var(--footer-text);
+    padding-inline: 1rem; /* ~1rem side padding */
+    padding-top: 1rem;
+    margin: 0 0 .5rem 0;
+  }
 
   .hqs{
    --hqs-accent: #007E4C;         /* local accent (uses your brand system elsewhere) */
@@ -24,15 +57,15 @@
    /* no negative margins; prevent page overflow */
    overflow: clip; /* allows child scroller while clipping paint */
    box-sizing: border-box; min-width: 0; max-width: 100%; width: 100%;
-   padding-inline: var(--hqs-bleed);
+   padding-inline: 1rem;
   }
   .hqs__track{
    display:flex; gap: var(--space-4);
-   list-style:none; padding:0; margin:0;
+   list-style:none; padding-block:12px; padding-inline:1rem; margin:0;
    overflow-x:auto; -webkit-overflow-scrolling: touch;
    scrollbar-width: none;
    scroll-snap-type: x mandatory;
-   scroll-padding-inline: var(--hqs-bleed);
+   scroll-padding-inline: 1rem;
    box-sizing: border-box; min-width: 0; max-width: 100%; width: 100%;
    touch-action: pan-x;
   }
@@ -41,13 +74,16 @@
   /* Slides: responsive basis + sane minimum to avoid “postage stamps” */
   .hqs__slide{
    flex: 0 0 min(85%, 360px);
-   scroll-snap-align: start;
   }
+  .hqs__slide{ max-width: 420px; }
   @media (min-width:768px){
    .hqs__slide{ flex-basis: min(45%, 340px); }
   }
   @media (min-width:1024px){
    .hqs__slide{ flex-basis: min(30%, 360px); }
+  }
+  @media (min-width:1024px){
+    .hqs__track{ gap: var(--space-5); }
   }
 
   /* Tile for each quote */
@@ -56,17 +92,31 @@
    border-radius: var(--radius-md,12px);
    border:1px solid #d4cdc7;
    padding: var(--space-4);
-   box-shadow: var(--shadow-sm, 0 2px 6px rgba(0,0,0,0.08));
+   box-shadow: var(--shadow-sm, 0 2px 2px rgba(0,0,0,0.08));
    height:100%;
    display:flex; flex-direction:column; justify-content:space-between; gap: var(--space-3);
+   position: relative;
+   transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .hqs__tile::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: .85;
+    pointer-events: none;
+  }
+  .hqs__tile:hover{
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm, 0 6px 6px rgba(0,0,0,0.12));
   }
   /* Make tiles square on tight screens; let them breathe on larger */
   @media (max-width:640px){
    .hqs__tile{ aspect-ratio: 1 / 1; }
   }
 
-  .hqs__text{ font-size:1rem; line-height:1.5; margin:0; }
-  .hqs__name{ font-weight:700; margin:0; }
+  .hqs__text{ font-size: clamp(1rem, 0.96rem + 0.3vw, 1.125rem); line-height:1.6; margin:0; hanging-punctuation:first; text-wrap: pretty; -webkit-font-smoothing: antialiased; }
+  .hqs__name{ font-weight:700; margin:.25rem 0 0 0; color: color-mix(in oklab, CanvasText 82%, #000 18%); padding-bottom: 1rem; }
 
   /* Use your existing button system for the “See more” */
   .hqs__more{
@@ -87,26 +137,32 @@
 
   /* Controls row (arrows left, dots right) */
   .hqs__controls{
-   display:flex; justify-content:center; align-items:center;
+   display:flex; justify-content:right; align-items:right;
    margin-top: var(--space-4);
    padding-inline: var(--space-4);
   }
   .hqs__arrows{ display:flex; gap: var(--space-2); }
   .hqs__arrow{
    width:36px; height:36px; border-radius:50%;
-   background:#fff; border:1px solid #ccc; cursor:pointer;
+   background: var(--footer-bg);
+   color: var(--footer-text);
+   border:1px solid #d4cdc7; cursor:pointer;
    display:grid; place-items:center;
    box-shadow: var(--shadow-sm, 0 2px 6px rgba(0,0,0,0.08));
+   transition: background .18s ease, transform .08s ease, box-shadow .18s ease;
   }
+  .hqs__arrow:hover{ background: color-mix(in oklab, var(--footer-bg) 70%, #fff 30%); box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.12)); }
+  .hqs__arrow:active{ transform: translateY(1px); }
+  .hqs__arrow:focus-visible{ outline: none; box-shadow: 0 0 0 3px color-mix(in oklab, var(--hqs-accent) 35%, transparent); }
 
   /* On mobile, hide arrows and center controls */
   @media (max-width:640px){
    .hqs__arrows{ display:none; }
-   .hqs__controls{ justify-content:center; }
+   .hqs__controls{ justify-content:right; }
   }
 
   /* LinkedIn button (leave as-is but unify focus) */
-  .linkedin-button-container{ text-align:center; margin-top: var(--space-5); }
+  .linkedin-button-container{ text-align:center; margin-top: 0; margin-bottom: 2rem; }
   .linkedin-button{
    border:none; background:#0072b1; color:#fff !important;
    padding:10px 20px; border-radius: var(--radius-full,25px);
@@ -127,6 +183,8 @@
     .hqs__track::-webkit-scrollbar{ display:none; }
   }
  </style>
+
+<div class="q-wrap">
 
  <h2>What People are Saying</h2>
 
@@ -169,16 +227,6 @@
       <div>
        <p class="hqs__name">– J. Lopez</p>
        <a href="https://twitter.com/JLo/status/1147265042892709895" class="hqs__more" target="_blank" rel="noopener">See more →</a>
-      </div>
-     </div>
-    </li>
-
-    <li class="hqs__slide" id="quote-5">
-     <div class="hqs__tile">
-      <p class="hqs__text">“Furry freak”</p>
-      <div>
-       <p class="hqs__name">– Sandman308</p>
-       <a href="https://www.reddit.com/r/boston/comments/10vdhm0/which_one_of_you_freaks_hijacked_the_south_boston/" class="hqs__more" target="_blank" rel="noopener">See more →</a>
       </div>
      </div>
     </li>
@@ -295,4 +343,5 @@
     });
   })();
  </script>
+</div>
 </section>

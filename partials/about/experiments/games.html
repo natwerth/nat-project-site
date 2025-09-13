@@ -1,0 +1,152 @@
+<section class="c-showcase pgames pgames--bleed" aria-label="Command Line Games">
+ <style>
+@media (max-width: 767px){
+  .c-showcase__inner{
+    padding-inline: 0;
+  }
+  .c-card{
+    border-radius: 0; /* if you want the edges flush too */
+  }
+}
+
+  /* Local tweaks for this section (scoped with .pgames) */
+  .pgames--bleed{
+    /* force edge-to-edge outside centered/narrow parents */
+    width: 100vw;
+    max-width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;           /* ignore parent padding/margins */
+    padding-left: 0;
+    padding-right: 0;
+    padding-inline: 1rem;
+    overflow-x: visible; /* don't clip the rail */
+  }
+  .pgames{ background: #fff; }
+  .pgames__title{
+   color: var(--footer-text);
+   font-weight: 600;
+   margin-bottom: var(--space-4);
+  }
+
+  /* Card skin */
+  .pgames .c-card{ --card-bg:#fff; --card-radius:0; --card-shadow: var(--shadow-sm); }
+
+  /* Header row inside the card */
+  .pgames__head{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; border-bottom:1px dashed #e5e7eb; padding-bottom:12px; margin-bottom:20px; }
+
+  /* Rail: full-bleed background but items guttered */
+  .pgames__rail{
+   display:flex; gap: var(--space-4);
+   overflow-x:auto; overscroll-behavior-x:contain; -webkit-overflow-scrolling:touch;
+   margin-inline: -1rem; /* bleed rail to card edges */
+   padding-inline: 1rem;                         /* but keep inner gutters */
+   padding-block: var(--space-4);
+   scrollbar-width: none; /* Firefox: hide scrollbar */
+  }
+  .pgames__rail::-webkit-scrollbar{ display:none; }
+  .pgames__rail:focus-visible{ outline:2px solid var(--brand-accent); outline-offset:-2px; }
+
+  /* Items */
+  .pgames__item{
+   flex: 0 0 clamp(220px, 32vw, 280px);
+   text-decoration:none; color:inherit; outline: none;
+  }
+  .pgames__item:focus-visible .c-tile{
+   box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand-accent) 35%, transparent), var(--shadow-sm);
+   transform: translateY(-1px);
+  }
+  .pgames .c-tile{ /* let height be content-driven */
+   background: #fff;
+   border:1px solid var(--color-border);
+   border-radius: var(--radius-lg);
+   overflow:hidden; transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .pgames .c-tile:hover{ transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+  .pgames .c-tile__image{ aspect-ratio: 16 / 9; object-fit: cover; width:100%; display:block; }
+  .pgames .c-tile__body{ padding: var(--space-4); display:flex; flex-direction:column; gap: var(--space-3); }
+  .pgames .c-tile__title{ font-weight: 700; font-size: var(--fs-3); margin:0; }
+  .pgames .c-tile__meta{ display:flex; align-items:center; justify-content:space-between; gap: var(--space-3); }
+  .pgames .c-tile__text{ color: var(--color-muted); margin:0; }
+
+  /* GET badge */
+  .pgames .badge--get{
+   background: var(--brand-accent);
+   color:#fff; font-size:.8rem; padding:4px 10px; border-radius: var(--radius-full); display:inline-block; width:fit-content;
+  }
+
+  /* Mobile image is square */
+  @media (max-width: 767px){
+   .pgames .c-tile__image{ aspect-ratio: 1 / 1; }
+  }
+
+  /* Respect users who prefer less motion */
+  @media (prefers-reduced-motion: reduce){
+   .pgames *{ transition-duration:.001ms !important; }
+  }
+ </style>
+
+   <header class="pgames__head">
+    <h3 class="h-section" id="pgames-heading">Python Games</h3>
+    <span class="text-muted" aria-hidden="true">Make the most of your command line</span>
+   </header>
+
+   <div class="pgames__rail" role="list" aria-labelledby="pgames-heading">
+    <!-- Item 1 -->
+    <a class="pgames__item" role="listitem" href="https://github.com/natwerth/Nat-Store-/blob/main/lemonadeSideHustle.py" target="_blank" rel="noopener noreferrer">
+     <article class="c-tile">
+      <img class="c-tile__image" loading="lazy" decoding="async" src="https://www.natwerth.com/wp-content/uploads/2024/04/LemonadeSideHustleIcon.png" alt="Lemonade Side Hustle" />
+      <div class="c-tile__body">
+       <h4 class="c-tile__title">Lemonade Side Hustle</h4>
+       <div class="c-tile__meta">
+        <p class="c-tile__text" aria-label="Rated 5 out of 5">★★★★★<br>YOU could make MILLION$!</p>
+        <span class="badge badge--get">GET</span>
+       </div>
+      </div>
+     </article>
+    </a>
+
+    <!-- Item 2 -->
+    <a class="pgames__item" role="listitem" href="https://github.com/natwerth/Nat-Store-/blob/main/hangPerson.py" target="_blank" rel="noopener noreferrer">
+     <article class="c-tile">
+      <img class="c-tile__image" loading="lazy" decoding="async" src="https://www.natwerth.com/wp-content/uploads/2024/04/hangPersonIcon.png" alt="Hang Person" />
+      <div class="c-tile__body">
+       <h4 class="c-tile__title">Hang Person</h4>
+       <div class="c-tile__meta">
+        <p class="c-tile__text" aria-label="Rated 4 out of 5">★★★★☆<br>The gender-inclusive murder game</p>
+        <span class="badge badge--get">GET</span>
+       </div>
+      </div>
+     </article>
+    </a>
+
+    <!-- Item 3 -->
+    <a class="pgames__item" role="listitem" href="https://github.com/natwerth/Nat-Store-/blob/main/textAdventure.py" target="_blank" rel="noopener noreferrer">
+     <article class="c-tile">
+      <img class="c-tile__image" loading="lazy" decoding="async" src="https://www.natwerth.com/wp-content/uploads/2024/04/textAdventure.png" alt="Text Adventure" />
+      <div class="c-tile__body">
+       <h4 class="c-tile__title">Text Adventure</h4>
+       <div class="c-tile__meta">
+        <p class="c-tile__text" aria-label="Rated 5 out of 5">★★★★★<br>Explore a haunted spooky house</p>
+        <span class="badge badge--get">GET</span>
+       </div>
+      </div>
+     </article>
+    </a>
+
+    <!-- Item 4 -->
+    <a class="pgames__item" role="listitem" href="https://github.com/natwerth/Nat-Store-/blob/main/MagicCalculator.py" target="_blank" rel="noopener noreferrer">
+     <article class="c-tile">
+      <img class="c-tile__image" loading="lazy" decoding="async" src="https://www.natwerth.com/wp-content/uploads/2024/04/MagicCalculatorIcon-1.png" alt="Magic Calculator" />
+      <div class="c-tile__body">
+       <h4 class="c-tile__title">Magic Calculator</h4>
+       <div class="c-tile__meta">
+        <p class="c-tile__text" aria-label="Rated 2 out of 5">★★☆☆☆<br>The Oracle predicts your future age</p>
+        <span class="badge badge--get">GET</span>
+       </div>
+      </div>
+     </article>
+    </a>
+   </div>
+</section>
