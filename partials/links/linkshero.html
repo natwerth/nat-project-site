@@ -52,6 +52,8 @@
 .profile-card:hover{ transform: translateY(-4px); box-shadow: 0 4px 16px rgba(0,0,0,.12); }
 .profile-head{ display:flex; align-items:center; gap:8px; padding:12px 12px; color:#fff; min-height:40px; }
 .profile-card .profile-head{ background: var(--header-bg, #222); color:#fff; }
+.profile-card[data-tile="Google Maps"] .profile-head{ color:#000; }
+.profile-card[data-tile="YouTube"] .logo{ width:26px; height:26px; } /* was 22px */
 
 /* Uniform header sizing & typography */
 .profile-head{
@@ -62,6 +64,7 @@
   line-height: 1;
 }
 .profile-head .logo{ width:22px; height:22px; display:block; flex:0 0 auto; margin-left:auto; }
+.profile-head .logo svg{ width:100%; height:100%; display:block; }
 .profile-head .meta {
   line-height: 1.1;
 }
@@ -197,7 +200,7 @@ const CONFIG = {
   github:     { name:'GitHub',     url:'https://github.com/natwerth',          copy:'https://github.com/natwerth', headerBg:'#24292f', footer:'solid',  vars:{ '--footer-bg':'#0d1117','--footer-text':'#c9d1d9','--btn-fg':'#c9d1d9','--btn-brd':'#30363d','--btn-bg':'transparent','--btn-bg-h':'rgba(201,209,217,.08)'} },
   youtube:    { name:'YouTube',    url:'https://www.youtube.com/@natwerth',    copy:'https://www.youtube.com/@natwerth', headerBg:'#ff0000', footer:'solid',  vars:{ '--footer-bg':'#111111','--footer-text':'#e5e7eb','--btn-fg':'#e5e7eb','--btn-brd':'#333','--btn-bg':'transparent','--btn-bg-h':'rgba(229,231,235,.08)'} },
   venmo:      { name:'Venmo',      url:'https://venmo.com/u/natwerth',         copy:'https://venmo.com/u/natwerth', headerBg:'#3d95ce', footer:'solid',  vars:{ '--footer-bg':'#f1f7fc','--footer-text':'#3b82f6','--btn-fg':'#3b82f6','--btn-brd':'#bfdbfe','--btn-bg':'transparent','--btn-bg-h':'rgba(59,130,246,.08)'} },
-  googlemaps: { name:'Google Maps',url:'https://maps.app.goo.gl/your',         copy:'https://maps.app.goo.gl/your', headerBg:'#4285f4', footer:'solid',  vars:{ '--footer-bg':'#f8f9fa','--footer-text':'#374151','--btn-fg':'#374151','--btn-brd':'#d1d5db','--btn-bg':'transparent','--btn-bg-h':'rgba(55,65,81,.06)'} },
+  googlemaps: { name:'Google Maps',url:'https://maps.app.goo.gl/your',         copy:'https://maps.app.goo.gl/your', headerBg:'#f2f2f2', footer:'solid',  vars:{ '--footer-bg':'#e8f0fe','--footer-text':'#374151','--btn-fg':'#374151','--btn-brd':'#aecbfa','--btn-bg':'transparent','--btn-bg-h':'rgba(26,115,232,.12)'} },
   telegram:   { name:'Telegram',   url:'https://t.me/natwerth',                copy:'https://t.me/natwerth', headerBg:'#229ED9', footer:'solid',  vars:{ '--footer-bg':'#ffffff','--footer-text':'#000000','--btn-fg':'#0369a1','--btn-brd':'#d4eaf7','--btn-bg':'transparent','--btn-bg-h':'rgba(3,105,161,.08)'} },
   facebook:   { name:'Facebook',   url:'https://facebook.com/natwerth',        copy:'https://facebook.com/natwerth', headerBg:'#0866ff', footer:'solid',  vars:{ '--footer-bg':'#eef2ff','--footer-text':'#1f2937','--btn-fg':'#1f2937','--btn-brd':'#c7d2fe','--btn-bg':'transparent','--btn-bg-h':'rgba(31,41,55,.06)'} }
 };
@@ -205,7 +208,7 @@ const CONFIG = {
 const ICONS = {
   linkedin: 'linkedin.png',
   instagram: 'instagram.png',
-  letterboxd: 'letterboxd.png',
+  letterboxd: 'letterboxd.svg',
   spotify: 'spotify.png',
   github: 'github.png',
   youtube: 'youtube.png',
@@ -213,6 +216,56 @@ const ICONS = {
   googlemaps: 'maps.svg',
   telegram: 'telegram.png',
   facebook: 'facebook.png'
+};
+
+const INLINE_ICONS = {
+  linkedin: `
+<!-- LinkedIn "in" monogram (dot nudged up, slightly larger) -->
+<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="img">
+  <g fill="currentColor">
+    <!-- i dot (moved up, bigger) -->
+    <circle cx="6" cy="5.0" r="1.8"/>
+    <!-- i stem (sharp corners) -->
+    <rect x="4.4" y="8.6" width="3.2" height="11.4"/>
+    <!-- n -->
+    <path d="M10 8.6h3v1.8c.96-1.21 2.18-2.02 4.02-2.02 2.71 0 4.58 1.73 4.58 4.92V20h-3.2v-5.34c0-1.73-.84-2.72-2.43-2.72-1.59 0-2.57 1.12-2.57 2.72V20H10V8.6Z"/>
+  </g>
+</svg>
+  `,
+  youtube: `
+<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="img">
+  <defs>
+    <mask id="ytCut24" maskUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="24" height="24" fill="#fff"/>
+      <polygon points="10.2,9 15.6,12 10.2,15"
+         transform="translate(12,12) scale(0.9) translate(-12,-12)"
+         fill="#000"/>
+    </mask>
+  </defs>
+
+  <path fill="currentColor" mask="url(#ytCut24)"
+        d="
+          M 5.5,6.4
+          C 10.0,6 14.0,6 18.5,6.4
+          Q 19.9,6.55 20.0,8.6
+          L 20.0,15.4
+          Q 19.9,17.45 18.5,17.6
+          C 14.0,17.9 10.0,17.9 5.5,17.6
+          Q 4.1,17.45 4.0,15.4
+          L 4.0,8.6
+          Q 4.1,6.55 5.5,6.4
+          Z
+        "/>
+</svg>
+  `,
+  letterboxd: `
+    <svg viewBox="0 0 22 22" aria-hidden="true" focusable="false">
+      <!-- Three circles: orange, green, light blue -->
+      <circle cx="6" cy="11" r="3" fill="#FF8000"/>
+      <circle cx="11" cy="11" r="3" fill="#62D84E"/>
+      <circle cx="16" cy="11" r="3" fill="#40BCF4"/>
+    </svg>
+  `
 };
 
 async function loadFragments(){
@@ -228,6 +281,9 @@ function renderTile(key){
     + `;--header-bg:${cfg.headerBg}`
   );
   const footerAttr = cfg.footer === 'frosted' ? ' data-footer="frosted"' : '';
+  const logoHTML = INLINE_ICONS[key]
+    ? `<span class="logo" aria-hidden="true">${INLINE_ICONS[key]}</span>`
+    : `<img class="logo" src="/assets/icons/${ICONS[key] || (key + '.png')}" alt="" aria-hidden="true" loading="lazy" decoding="async">`;
   return `
   <div class="profile-card" data-tile="${serviceName}" data-url="${cfg.url}" data-header-bg="${cfg.headerBg}" style="${varStyle}"${footerAttr}>
     <div class="profile-head">
@@ -235,7 +291,7 @@ function renderTile(key){
         <p class="profile-username" style="font-weight:700;margin:0;">${serviceName}</p>
         <p class="profile-handle" style="opacity:.9;margin:0;">@natwerth</p>
       </div>
-      <img class="logo" src="/assets/icons/${ICONS[key] || (key + '.png')}" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      ${logoHTML}
     </div>
     <div class="profile-body">
       <div class="preview" data-preview-fragment="/partials/links/tilefragments/${key}.html" aria-label="${serviceName} preview">

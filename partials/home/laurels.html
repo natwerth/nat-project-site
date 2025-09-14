@@ -5,22 +5,25 @@
    background: var(--footer-bg);
   }
   .laurel-grid{
-   display:flex;
-   flex-wrap: wrap;
-   justify-content: center;
-   align-items: center;
-   gap: var(--space-1) var(--space-1);
-   margin-inline: auto;
-   max-width: 1000px; /* keep tidy on small screens */
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-1);
+    margin-inline: auto;
+    max-width: none;
   }
   .laurel-item{
-   flex: 0 1 100px;
    display:flex; align-items:center; justify-content:center;
   }
   .laurel-item img{
-   width: 104px;
-   height: auto;
-   display:block;
+    width: clamp(56px, 14vw, 112px);
+    height: auto;
+    display: block;
+  }
+
+  @media (max-width: 380px){
+    .laurel-item img{ width: clamp(48px, 18vw, 100px); }
   }
 
   /* Desktop: full-bleed banner layout */
@@ -30,9 +33,16 @@
       padding-inline: 0;
     }
     .laurel-grid{
+      display:flex;
+      flex-wrap: nowrap;
+      justify-content: space-around;
+      align-items: center;
+      gap: var(--space-2) var(--space-4);
       max-width: none;
-      justify-content: space-around; /* spread across full width */
+      padding-inline: 0;
     }
+    .laurel-item{ flex: 0 0 auto; }
+    .laurel-item img{ width: 120px; }
   }
  </style>
 
