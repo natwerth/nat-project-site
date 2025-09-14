@@ -1,8 +1,10 @@
 <section class="laurel-row bg-footer" aria-label="Awards & Laurels">
  <style>
   .laurel-row{
-   padding-block: var(--space-6);
+   padding-block: var(--space-4);
    background: var(--footer-bg);
+   position: relative;
+   overflow: hidden; /* hide laurels until fully inside the row */
   }
   .laurel-grid{
     display:flex;
@@ -37,10 +39,16 @@
       max-width: none;
       padding-inline: 0;
     }
+    .laurel-row{
+      width: 100vw;                /* span full viewport width */
+      margin-inline: calc(50% - 50vw); /* break out of any parent max-width */
+      padding-inline: clamp(24px, 6vw, 72px); /* keep a tasteful gutter */
+    }
     .laurel-grid{
       display:flex;
       flex-wrap: nowrap;
-      justify-content: space-around;
+      width: 100%;
+      justify-content: space-between;
       align-items: center;
       gap: var(--space-2) var(--space-4);
       max-width: none;
@@ -52,20 +60,82 @@
  </style>
 
  <div class="container laurel-grid">
-  <figure class="laurel-item">
+  <figure class="laurel-item" data-aos="fade-up">
    <img src="https://www.natwerth.com/wp-content/uploads/2024/03/MasterPhotographerLaurel.png" alt="Master Photographer Laurel">
   </figure>
-  <figure class="laurel-item">
+  <figure class="laurel-item" data-aos="fade-up">
    <img src="https://www.natwerth.com/wp-content/uploads/2024/03/WHSFAForensicsStateChampionLaurel.png" alt="WHSFA Forensics State Champion Laurel">
   </figure>
-  <figure class="laurel-item">
+  <figure class="laurel-item" data-aos="fade-up">
    <img src="https://www.natwerth.com/wp-content/uploads/2024/03/MilwaukeePrideValorAwardLaurel.png" alt="Milwaukee Pride Valor Award Laurel">
   </figure>
-  <figure class="laurel-item">
+  <figure class="laurel-item" data-aos="fade-up">
    <img src="https://www.natwerth.com/wp-content/uploads/2024/03/TouchtunesIndieIconLaurel.png" alt="Touchtunes Indie Icon Laurel">
   </figure>
-  <figure class="laurel-item">
+  <figure class="laurel-item" data-aos="fade-up">
    <img src="https://www.natwerth.com/wp-content/uploads/2024/03/SheboyganPersonoftheYearLaurel.png" alt="Sheboygan Person of the Year Laurel">
   </figure>
  </div>
+<script>
+(function(){
+  var ITEMS_SELECTOR = '.laurel-row .laurel-item[data-aos]';
+  var AOS_CSS = 'https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css';
+  var AOS_JS  = 'https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.min.js';
+  var INIT_FLAG = 'AOS_NAT_INITED';
+
+  function setOffsets(){
+    var px = Math.max(0, Math.round(window.innerHeight * 0.20));
+    document.querySelectorAll(ITEMS_SELECTOR).forEach(function(el){
+      el.setAttribute('data-aos-offset', String(px));
+    });
+  }
+
+  function doInit(){
+    if(!window.AOS) return;
+    setOffsets();
+    if(!window[INIT_FLAG]){
+      window.AOS.init({ once: false, mirror: true });
+      window[INIT_FLAG] = true;
+    } else {
+      window.AOS.refreshHard();
+    }
+    setTimeout(function(){ if(window.AOS){ window.AOS.refreshHard(); } }, 50);
+  }
+
+  function ensureAOS(cb){
+    if(window.AOS){ cb(); return; }
+    if(!document.querySelector('link[href*="aos.css"]')){
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = AOS_CSS;
+      document.head.appendChild(link);
+    }
+    if(!document.querySelector('script[src*="aos.min.js"]')){
+      var script = document.createElement('script');
+      script.src = AOS_JS;
+      script.onload = cb;
+      document.head.appendChild(script);
+    } else {
+      var t = setInterval(function(){ if(window.AOS){ clearInterval(t); cb(); } }, 20);
+      setTimeout(function(){ clearInterval(t); }, 1000);
+    }
+  }
+
+  function onReady(fn){
+    if(document.readyState === 'complete' || document.readyState === 'interactive'){ fn(); }
+    else document.addEventListener('DOMContentLoaded', fn, { once: true });
+  }
+
+  onReady(function(){ ensureAOS(doInit); });
+
+  var resizeTO;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTO);
+    resizeTO = setTimeout(function(){
+      setOffsets();
+      if(window.AOS){ window.AOS.refreshHard(); }
+    }, 120);
+  });
+})();
+</script>
 </section>
