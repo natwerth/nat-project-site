@@ -9,21 +9,26 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: var(--space-1);
+    gap: clamp(6px, 2vw, 12px);
     margin-inline: auto;
     max-width: none;
   }
   .laurel-item{
    display:flex; align-items:center; justify-content:center;
+   margin: 0;
+   line-height: 0;
+   flex: 0 0 auto;
   }
   .laurel-item img{
-    width: clamp(56px, 14vw, 112px);
+    width: clamp(64px, 18vw, 120px);
     height: auto;
     display: block;
   }
+  /* Tighten container padding on small screens */
+  .laurel-row .container{ padding-inline: 0; }
 
   @media (max-width: 380px){
-    .laurel-item img{ width: clamp(48px, 18vw, 100px); }
+    .laurel-item img{ width: clamp(56px, 22vw, 112px); }
   }
 
   /* Desktop: full-bleed banner layout */
