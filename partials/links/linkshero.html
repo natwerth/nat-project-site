@@ -25,7 +25,7 @@
 .page-title{ font-size: clamp(48px,8vw,96px); font-weight:700; }
 .c-card-grid{ display:grid; gap:var(--space-4); grid-template-columns:1fr; }
 @media (min-width:900px){ .c-card-grid{ grid-template-columns:1fr } }
-.c-card{ background:#fff; border:1px solid var(--color-border); border-radius:var(--radius-lg); box-shadow:0 4px 16px rgba(0,0,0,.12); padding:clamp(16px,3vw,24px); }
+.c-card{ background:#fff; border:1px solid var(--color-border); border-radius:var(--radius-lg); box-shadow:0 2px 4px rgba(0,0,0,.03); padding:clamp(16px,3vw,24px); }
 .c-section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:var(--space-3); padding-block:clamp(16px,3vw,28px); margin-bottom:clamp(16px,3vw,24px); border-bottom:1px dashed var(--color-border); }
 .c-section-head h2{ margin:0; font-size:clamp(20px,3.5vw,24px); }
 .c-section-head__sub{ color:var(--brand-muted); font-size:12px; }
@@ -35,7 +35,7 @@
   overflow:hidden;
   background:#fff;
   border:1px solid var(--color-border);
-  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  box-shadow: 0 2px 4px rgba(0,0,0,.03);
   display:grid;
   grid-template-rows: var(--tile-header-h) var(--tile-preview-h) var(--tile-footer-h);
   height:100%;
@@ -49,7 +49,7 @@
   --btn-brd: color-mix(in oklab, var(--btn-fg) 30%, transparent);
   --btn-bg-h: color-mix(in oklab, var(--btn-fg) 10%, transparent);
 }
-.profile-card:hover{ transform: translateY(-4px); box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.profile-card:hover{ transform: translateY(-4px); box-shadow: 0 4px 8px rgba(0,0,0,.06); }
 .profile-head{ display:flex; align-items:center; gap:8px; padding:12px 12px; color:#fff; min-height:40px; }
 .profile-card .profile-head{ background: var(--header-bg, #222); color:#fff; }
 .profile-card[data-tile="Google Maps"] .profile-head{ color:#000; }
@@ -143,7 +143,7 @@
   box-sizing: border-box;
 }
 /* Toast */
-.c-toast{ position:fixed; left:50%; bottom:16px; transform:translateX(-50%) translateY(8px); background:#111827; color:#fff; border-radius:10px; padding:10px 12px; font:600 13px/1 ui-sans-serif, system-ui; opacity:0; pointer-events:none; transition:opacity .18s, transform .18s; box-shadow:0 10px 30px rgba(0,0,0,.15); z-index:1000; }
+.c-toast{ position:fixed; left:50%; bottom:16px; transform:translateX(-50%) translateY(8px); background:#111827; color:#fff; border-radius:10px; padding:10px 12px; font:600 13px/1 ui-sans-serif, system-ui; opacity:0; pointer-events:none; transition:opacity .18s, transform .18s; box-shadow:0 5px 15px rgba(0,0,0,.10); z-index:1000; }
 .c-toast.is-visible{ opacity:1; transform: translateX(-50%) translateY(0); }
 @media (max-width:767px){ .u-bleed-mobile{ width:100dvw; margin-left:calc(50% - 50dvw); margin-right:calc(50% - 50dvw); border-radius:0; } }
 @media (prefers-reduced-motion: reduce){
@@ -188,19 +188,20 @@
 
   <script>
 /* Super-lean controller: just load fragments and wire interactions */
-const ORDER = ["linkedin","instagram","letterboxd","spotify","github","youtube","venmo","googlemaps","telegram","facebook"];
+const ORDER = ["linkedin","instagram","letterboxd","spotify","github","youtube","tiktok","venmo","googlemaps","telegram","facebook"];
 const $profiles = document.getElementById('profiles');
 const toastEl = document.getElementById('toast');
 
 const CONFIG = {
-  linkedin:   { name:'LinkedIn',   url:'https://www.linkedin.com/in/nat-werth', copy:'https://www.linkedin.com/in/nat-werth', headerBg:'#0a66c2', footer:'solid',  vars:{ '--footer-bg':'#eef5fb','--footer-text':'#0b5394','--btn-fg':'#0b5394','--btn-brd':'#a3c3e5','--btn-bg':'transparent','--btn-bg-h':'rgba(10,102,194,.08)'} },
+  linkedin:   { name:'LinkedIn',   url:'https://www.linkedin.com/in/nat-werth', copy:'https://www.linkedin.com/in/nat-werth', headerBg:'#0a66c2', footer:'solid', handle:'@nat-werth',  vars:{ '--footer-bg':'#eef5fb','--footer-text':'#0b5394','--btn-fg':'#0b5394','--btn-brd':'#a3c3e5','--btn-bg':'transparent','--btn-bg-h':'rgba(10,102,194,.08)'} },
   instagram:  { name:'Instagram',  url:'https://www.instagram.com/natwerth',    copy:'https://www.instagram.com/natwerth', headerBg:'#e1306c', footer:'frosted', vars:{ '--footer-bg':'#fff','--footer-text':'#6b7280','--btn-fg':'#6b7280','--btn-brd':'#e5e7eb','--btn-bg':'transparent','--btn-bg-h':'rgba(0,0,0,.06)'} },
-  letterboxd: { name:'Letterboxd', url:'https://boxd.it/yourid',               copy:'https://boxd.it/yourid', headerBg:'#181818', footer:'solid',  vars:{ '--footer-bg':'#111827','--footer-text':'#cbd5e1','--btn-fg':'#cbd5e1','--btn-brd':'#374151','--btn-bg':'transparent','--btn-bg-h':'rgba(203,213,225,.08)'} },
-  spotify:    { name:'Spotify',    url:'https://open.spotify.com/user/nat',    copy:'https://open.spotify.com/user/nat', headerBg:'#1db954', footer:'solid',  vars:{ '--footer-bg':'#0a0a0a','--footer-text':'#d1d5db','--btn-fg':'#d1d5db','--btn-brd':'#374151','--btn-bg':'transparent','--btn-bg-h':'rgba(209,213,219,.08)'} },
+  letterboxd: { name:'Letterboxd', url:'https://letterboxd.com/natwerth',               copy:'https://letterboxd.com/natwerth', headerBg:'#181818', footer:'solid',  vars:{ '--footer-bg':'#111827','--footer-text':'#cbd5e1','--btn-fg':'#cbd5e1','--btn-brd':'#374151','--btn-bg':'transparent','--btn-bg-h':'rgba(203,213,225,.08)'} },
+  spotify:    { name:'Spotify',    url:'https://open.spotify.com/user/zedbikc30wyo6bjpgvugo24pp?si=8RK2YWJOTwCy-F28WXOhJQ&nd=1&dlsi=b7b2a6b2e27444dc',    copy:'https://open.spotify.com/user/zedbikc30wyo6bjpgvugo24pp?si=8RK2YWJOTwCy-F28WXOhJQ&nd=1&dlsi=b7b2a6b2e27444dc', headerBg:'#1db954', footer:'solid',  vars:{ '--footer-bg':'#0a0a0a','--footer-text':'#d1d5db','--btn-fg':'#d1d5db','--btn-brd':'#374151','--btn-bg':'transparent','--btn-bg-h':'rgba(209,213,219,.08)'} },
   github:     { name:'GitHub',     url:'https://github.com/natwerth',          copy:'https://github.com/natwerth', headerBg:'#24292f', footer:'solid',  vars:{ '--footer-bg':'#0d1117','--footer-text':'#c9d1d9','--btn-fg':'#c9d1d9','--btn-brd':'#30363d','--btn-bg':'transparent','--btn-bg-h':'rgba(201,209,217,.08)'} },
-  youtube:    { name:'YouTube',    url:'https://www.youtube.com/@natwerth',    copy:'https://www.youtube.com/@natwerth', headerBg:'#ff0000', footer:'solid',  vars:{ '--footer-bg':'#111111','--footer-text':'#e5e7eb','--btn-fg':'#e5e7eb','--btn-brd':'#333','--btn-bg':'transparent','--btn-bg-h':'rgba(229,231,235,.08)'} },
+  youtube:    { name:'YouTube',    url:'https://www.youtube.com/@natwerth5512',    copy:'https://www.youtube.com/@natwerth5512', headerBg:'#ff0000', footer:'solid', handle:'@natwerth5512',  vars:{ '--footer-bg':'#111111','--footer-text':'#e5e7eb','--btn-fg':'#e5e7eb','--btn-brd':'#333','--btn-bg':'transparent','--btn-bg-h':'rgba(229,231,235,.08)'} },
+  tiktok:    { name:'TikTok',    url:'https://www.tiktok.com/@natwerth3',       copy:'https://www.tiktok.com/@natwerth3', headerBg:'#000000', footer:'solid', handle:'@natwerth3', vars:{ '--footer-bg':'#ffffff','--footer-text':'#1f2937','--btn-fg':'#1f2937','--btn-brd':'#e5e7eb','--btn-bg':'transparent','--btn-bg-h':'rgba(0,0,0,.06)'} },
   venmo:      { name:'Venmo',      url:'https://venmo.com/u/natwerth',         copy:'https://venmo.com/u/natwerth', headerBg:'#3d95ce', footer:'solid',  vars:{ '--footer-bg':'#f1f7fc','--footer-text':'#3b82f6','--btn-fg':'#3b82f6','--btn-brd':'#bfdbfe','--btn-bg':'transparent','--btn-bg-h':'rgba(59,130,246,.08)'} },
-  googlemaps: { name:'Google Maps',url:'https://maps.app.goo.gl/your',         copy:'https://maps.app.goo.gl/your', headerBg:'#f2f2f2', footer:'solid',  vars:{ '--footer-bg':'#e8f0fe','--footer-text':'#374151','--btn-fg':'#374151','--btn-brd':'#aecbfa','--btn-bg':'transparent','--btn-bg-h':'rgba(26,115,232,.12)'} },
+  googlemaps: { name:'Google Maps',url:'https://www.google.com/maps/contrib/111567881794706653052/reviews/@29.8835804,-104.4037173,3z/data=!3m1!4b1!4m3!8m2!3m1!1e1?authuser=1&entry=ttu&g_ep=EgoyMDI1MDkxMC4wIKXMDSoASAFQAw%3D%3D',         copy:'https://www.google.com/maps/contrib/111567881794706653052/reviews/@29.8835804,-104.4037173,3z/data=!3m1!4b1!4m3!8m2!3m1!1e1?authuser=1&entry=ttu&g_ep=EgoyMDI1MDkxMC4wIKXMDSoASAFQAw%3D%3D', headerBg:'#f2f2f2', footer:'solid',  vars:{ '--footer-bg':'#e8f0fe','--footer-text':'#374151','--btn-fg':'#374151','--btn-brd':'#aecbfa','--btn-bg':'transparent','--btn-bg-h':'rgba(26,115,232,.12)'} },
   telegram:   { name:'Telegram',   url:'https://t.me/natwerth',                copy:'https://t.me/natwerth', headerBg:'#229ED9', footer:'solid',  vars:{ '--footer-bg':'#ffffff','--footer-text':'#000000','--btn-fg':'#0369a1','--btn-brd':'#d4eaf7','--btn-bg':'transparent','--btn-bg-h':'rgba(3,105,161,.08)'} },
   facebook:   { name:'Facebook',   url:'https://facebook.com/natwerth',        copy:'https://facebook.com/natwerth', headerBg:'#0866ff', footer:'solid',  vars:{ '--footer-bg':'#eef2ff','--footer-text':'#1f2937','--btn-fg':'#1f2937','--btn-brd':'#c7d2fe','--btn-bg':'transparent','--btn-bg-h':'rgba(31,41,55,.06)'} }
 };
@@ -212,6 +213,7 @@ const ICONS = {
   spotify: 'spotify.png',
   github: 'github.png',
   youtube: 'youtube.png',
+  tiktok: 'tiktok.png',
   venmo: 'venmo.png',
   googlemaps: 'maps.svg',
   telegram: 'telegram.png',
@@ -265,7 +267,8 @@ const INLINE_ICONS = {
       <circle cx="11" cy="11" r="3" fill="#62D84E"/>
       <circle cx="16" cy="11" r="3" fill="#40BCF4"/>
     </svg>
-  `
+  `,
+
 };
 
 async function loadFragments(){
@@ -289,7 +292,7 @@ function renderTile(key){
     <div class="profile-head">
       <div class="meta">
         <p class="profile-username" style="font-weight:700;margin:0;">${serviceName}</p>
-        <p class="profile-handle" style="opacity:.9;margin:0;">@natwerth</p>
+        <p class="profile-handle" style="opacity:.9;margin:0;">${cfg.handle || '@natwerth'}</p>
       </div>
       ${logoHTML}
     </div>

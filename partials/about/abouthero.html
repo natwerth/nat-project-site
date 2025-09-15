@@ -23,18 +23,31 @@
 .c-showcase__inner{ max-width:1100px; margin-inline:auto;  }
 .page-title{ font-size: clamp(28px,4.5vw,40px); font-weight:700; padding: 0 1rem; }
 .c-card-grid{ display:grid; gap:var(--space-4); grid-template-columns:1fr; }
-@media (max-width: 899.98px){
+@media (max-width: 767px){
   .c-card-grid{
     margin-left: calc(-1 * var(--space-4));
     margin-right: calc(-1 * var(--space-4));
   }
 }
 .c-card{ background:#fff; border:1px solid var(--color-border); box-shadow:0 2px 4px rgba(0,0,0,.03); padding:clamp(16px,3vw,24px); border-radius:0; }
-@media (min-width:900px){ .c-card{ border-radius:var(--card-radius); } }
+@media (min-width:768px){ .c-card{ border-radius:var(--card-radius); } }
 .c-card{ transition: box-shadow .2s ease; }
 .c-section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:var(--space-3); padding-block:clamp(16px,3vw,28px); margin-bottom:clamp(16px,3vw,24px); border-bottom:1px dashed var(--color-border); }
 .c-section-head h2{ margin:0; font-size:clamp(20px,3.5vw,24px); }
 .c-section-head__sub{ color:var(--brand-muted); font-size:12px; letter-spacing:.2px; }
+
+/* Toast */
+.c-toast{ position:fixed; left:50%; bottom:16px; transform:translateX(-50%) translateY(8px); background:#111827; color:#fff; border-radius:10px; padding:10px 12px; font:600 13px/1 ui-sans-serif, system-ui; opacity:0; pointer-events:none; transition:opacity .18s, transform .18s; box-shadow:0 2px 4px rgba(0,0,0,.03); z-index:1000; }
+.c-toast.is-visible{ opacity:1; transform: translateX(-50%) translateY(0); }
+@media (max-width:767px){ .u-bleed-mobile{ width:100dvw; margin-left:calc(50% - 50dvw); margin-right:calc(50% - 50dvw); border-radius:0; } }
+@media (min-width:768px){
+  .u-bleed-mobile{ width:auto; margin-left:0; margin-right:0; border-radius:var(--card-radius); }
+  .c-card{ margin-inline: var(--space-4); }
+}
+@media (prefers-reduced-motion: reduce){
+  .profile-card{ transition:none; }
+  .profile-btn{ transition:none; }
+}
 
 /* Back to Homepage link as button */
 .about a{ color:var(--footer-text); text-decoration:none; }

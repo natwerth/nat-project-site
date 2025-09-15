@@ -23,14 +23,14 @@
 .c-showcase__inner{ max-width:1100px; margin-inline:auto;  }
 .page-title{ font-size: clamp(28px,4.5vw,40px); font-weight:700; padding: 0 1rem; }
 .c-card-grid{ display:grid; gap:var(--space-4); grid-template-columns:1fr; }
-@media (max-width: 899.98px){
+@media (max-width: 767px){
   .c-card-grid{
     margin-left: calc(-1 * var(--space-4));
     margin-right: calc(-1 * var(--space-4));
   }
 }
 .c-card{ background:#fff; border:1px solid var(--color-border); box-shadow:0 2px 4px rgba(0,0,0,.03); padding:clamp(16px,3vw,24px); border-radius:0; }
-@media (min-width:900px){ .c-card{ border-radius:var(--card-radius); } }
+@media (min-width:768px){ .c-card{ border-radius:var(--card-radius); } }
 .c-card{ transition: box-shadow .2s ease; }
 .c-section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:var(--space-3); padding-block:clamp(16px,3vw,28px); margin-bottom:clamp(16px,3vw,24px); border-bottom:1px dashed var(--color-border); }
 .c-section-head h2{ margin:0; font-size:clamp(20px,3.5vw,24px); }
@@ -44,7 +44,7 @@
 .profile-grid{ display:grid; grid-template-columns:1fr; gap:var(--space-4); }
 @media (min-width:680px){ .profile-grid{ grid-template-columns:1fr 1fr; } }
 @media (min-width:1024px){ .profile-grid{ grid-template-columns:1fr 1fr 1fr; } }
-.profile-card{ border:1px solid var(--color-border); border-radius:12px; overflow:hidden; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.04); }
+.profile-card{ border:1px solid var(--color-border); border-radius:12px; overflow:hidden; background:#fff; box-shadow:0 2px 4px rgba(0,0,0,.03); }
 .profile-head{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:var(--header-bg, #111827); color:#fff; }
 .profile-head .meta{ display:flex; flex-direction:column; gap:2px; }
 .profile-head .logo-badge{ width:36px; height:36px; border-radius:8px; background:#fff; color:#111; display:grid; place-items:center; font-weight:700; font-size:15px; }
@@ -54,6 +54,19 @@
 .profile-btn{ appearance:none; border:1px solid var(--btn-brd, var(--color-border)); background:var(--btn-bg, transparent); padding:8px 10px; border-radius:8px; font-size:.9rem; color:var(--btn-fg, currentColor); cursor:pointer; text-decoration:none; }
 .profile-btn:hover{ background:var(--btn-bg-h, rgba(0,0,0,.05)); }
 [data-footer="frosted"] .profile-actions{ backdrop-filter:saturate(150%) blur(6px); background:rgba(255,255,255,.6); }
+
+@media (max-width:767px){
+  .u-bleed-mobile{ width:100dvw; margin-left:calc(50% - 50dvw); margin-right:calc(50% - 50dvw); border-radius:0; }
+}
+@media (min-width:767px) {
+  .u-bleed-mobile {
+    width: auto;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: var(--card-radius);
+    margin-inline: var(--space-4);
+  }
+}
 
   </style>
 </head>

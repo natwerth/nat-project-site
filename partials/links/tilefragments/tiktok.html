@@ -1,0 +1,79 @@
+<div data-tt="preview">
+  <style>
+    /* Scope everything to this fragment */
+    [data-tt="preview"]{position:relative;width:100%;height:100%;border-radius:0 0 14px 14px;overflow:hidden;background:#000;}
+    [data-tt="preview"] .media{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+    [data-tt="preview"] .wrap{position:relative;display:flex;flex-direction:column;gap:10px;padding:12px;height:100%; border-radius: 0 0 0 0; box-sizing:border-box}
+    /* TikTok turquoise/magenta pattern (static) */
+    [data-tt="preview"] .media::before{content:"";position:absolute;inset:0;background:
+      linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.45)),
+      repeating-linear-gradient(135deg,
+        /* Turquoise main */ #25F4EE 0 16px,
+        /* Magenta main */   #FE2C55 16px 32px,
+        /* Turquoise bright */ #4FFAF3 32px 48px,
+        /* Magenta bright */   #FF3B6A 48px 64px,
+        /* Turquoise alt */    #12D6CF 64px 80px,
+        /* Magenta alt */      #FF6B8B 80px 96px);
+      filter:saturate(1.15);
+    }
+
+    [data-tt="preview"] .fade{position:absolute;left:0;right:0;bottom:0;height:50%;background:linear-gradient(0deg,rgba(0,0,0,.55),rgba(0,0,0,0));}
+
+    /* Right-side vertical rail; clips anything that doesn't fit */
+    [data-tt="preview"] .rail{position:absolute;right:10px;bottom:56px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;color:#000;opacity:.95;overflow:hidden;max-height:calc(100% - 72px);z-index:2} 
+    [data-tt="preview"] .rail .btn{display:grid;place-items:center;width:30px;height:30px}
+    [data-tt="preview"] .rail .btn.profile{border-radius:999px;background:rgba(0,0,0,.35);backdrop-filter:blur(4px) saturate(1.2)}
+    @media (min-width:768px){ [data-tt="preview"] .rail .btn{width:34px;height:34px} }
+    [data-tt="preview"] .rail .btn .badge{position:absolute;transform:translate(8px,8px)}
+
+    /* Caption row */
+    [data-tt="preview"] .caption{position:absolute;left:10px;right:10px;bottom:10px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;color:#fff;}
+    [data-tt="preview"] .caption time{color:rgba(255,255,255,.85);font-size:.85rem;white-space:nowrap;}
+
+    [data-tt="preview"] svg{display:block}
+    @media (prefers-reduced-motion: reduce){ [data-tt="preview"] *{ transition:none; } }
+  </style>
+
+  <div class="wrap">
+    <div class="media" aria-hidden="true"></div>
+    <div class="fade" aria-hidden="true"></div>
+
+    <div class="rail" aria-label="actions">
+      <!-- 1) Empty profile with magenta + badge -->
+      <span class="btn profile" aria-label="Follow" style="position:relative">
+        <svg class="ico" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none">
+          <path d="M12 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0 9c-4.418 0-8 2.686-8 6v1a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1c0-3.314-3.582-6-8-6Z"/>
+        </svg>
+        <svg class="badge" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14">
+          <circle cx="8" cy="8" r="8" fill="#FE2C55"/>
+          <path d="M8 4v8M4 8h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+
+      <!-- 2) Heart icon -->
+      <span class="btn" aria-label="Likes">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none"><path d="M12.001 21s-6.4-4.9-8.9-7.4C1.5 12 1 10.6 1 9.1 1 6.3 3.3 4 6.1 4c1.7 0 3.3.8 4.3 2.1C11.4 4.8 13 4 14.7 4c2.8 0 5.1 2.3 5.1 5.1 0 1.5-.5 2.9-2.1 4.5-2.5 2.5-8.7 7.4-8.7 7.4z"/></svg>
+      </span>
+
+      <!-- 3) Message bubble with three dots -->
+      <span class="btn" aria-label="Comments">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none">
+          <path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-3.5 3.5A1 1 0 0 1 4 20v-3H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
+          <circle cx="9" cy="11" r="1.2" fill="#000"/>
+          <circle cx="12" cy="11" r="1.2" fill="#000"/>
+          <circle cx="15" cy="11" r="1.2" fill="#000"/>
+        </svg>
+      </span>
+
+      <!-- 4) Bookmark icon -->
+      <span class="btn" aria-label="Saves">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>
+      </span>
+    </div>
+
+    <div class="caption">
+      <div style="min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><strong>@natwerth3</strong>Gardening on my roof in Chicago.</div>
+      <time>2h</time>
+    </div>
+  </div>
+</div>
