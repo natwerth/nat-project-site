@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <style>
+/* Minimal local styles kept in controller */
+/* Layout */
+
+:root{ --card-radius:16px; }
+
+/* Utilities */
+.u-italic{ font-style: italic; }
+
+/* Title option: add .is-italic to .page-title when you want italics */
+.page-title.is-italic{ font-style: italic; }
+
+
+
+.u-text-footer{ color: var(--footer-text); }
+.c-showcase{ background: var(--footer-bg); min-height: auto; padding-block: clamp(20px,4vw,48px); }
+/* About section adjustments */
+.about{ text-align:center; background:var(--footer-bg); padding:16px; }
+
+.c-showcase__inner{ max-width:1100px; margin-inline:auto;  }
+.page-title{ font-size: clamp(28px,4.5vw,40px); font-weight:700; padding: 0 1rem; }
+.c-card-grid{ display:grid; gap:var(--space-4); grid-template-columns:1fr; }
+@media (max-width: 899.98px){
+  .c-card-grid{
+    margin-left: calc(-1 * var(--space-4));
+    margin-right: calc(-1 * var(--space-4));
+  }
+}
+.c-card{ background:#fff; border:1px solid var(--color-border); box-shadow:0 2px 4px rgba(0,0,0,.03); padding:clamp(16px,3vw,24px); border-radius:0; }
+@media (min-width:900px){ .c-card{ border-radius:var(--card-radius); } }
+.c-card{ transition: box-shadow .2s ease; }
+.c-section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:var(--space-3); padding-block:clamp(16px,3vw,28px); margin-bottom:clamp(16px,3vw,24px); border-bottom:1px dashed var(--color-border); }
+.c-section-head h2{ margin:0; font-size:clamp(20px,3.5vw,24px); }
+.c-section-head__sub{ color:var(--brand-muted); font-size:12px; letter-spacing:.2px; }
+
+/* Back to Homepage link as button */
+.about a{ color:var(--footer-text); text-decoration:none; }
+.about a:hover{ text-decoration:underline; }
+
+/* Tile grid + card styles (minimal, self-contained) */
+.profile-grid{ display:grid; grid-template-columns:1fr; gap:var(--space-4); }
+@media (min-width:680px){ .profile-grid{ grid-template-columns:1fr 1fr; } }
+@media (min-width:1024px){ .profile-grid{ grid-template-columns:1fr 1fr 1fr; } }
+.profile-card{ border:1px solid var(--color-border); border-radius:12px; overflow:hidden; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.04); }
+.profile-head{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:var(--header-bg, #111827); color:#fff; }
+.profile-head .meta{ display:flex; flex-direction:column; gap:2px; }
+.profile-head .logo-badge{ width:36px; height:36px; border-radius:8px; background:#fff; color:#111; display:grid; place-items:center; font-weight:700; font-size:15px; }
+.profile-body{ padding:12px 14px; }
+.profile-body .preview{ min-height:88px; border:1px dashed var(--color-border); border-radius:8px; display:flex; align-items:center; justify-content:center; padding:10px; background:#fafafa; color:var(--brand-muted); font-size:.9rem; }
+.profile-actions{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:12px 14px; border-top:1px solid var(--color-border); }
+.profile-btn{ appearance:none; border:1px solid var(--btn-brd, var(--color-border)); background:var(--btn-bg, transparent); padding:8px 10px; border-radius:8px; font-size:.9rem; color:var(--btn-fg, currentColor); cursor:pointer; text-decoration:none; }
+.profile-btn:hover{ background:var(--btn-bg-h, rgba(0,0,0,.05)); }
+[data-footer="frosted"] .profile-actions{ backdrop-filter:saturate(150%) blur(6px); background:rgba(255,255,255,.6); }
+
+  </style>
+</head>
+<body>
+  <section class="c-showcase" aria-label="Brand & Components Showcase">
+    <div class="c-showcase__inner">
+      <h1 id="pageTitle" class="page-title u-text-footer" 
+          style="margin:0 0 var(--space-5); font-size:clamp(48px,8vw,96px);">
+        <strong>Nat.</strong> <em style="font-weight:300;">Help.</em>
+      </h1>
+      <div class="c-card-grid">
+        <div class="c-card u-bleed-mobile">
+          <header class="c-section-head">
+            <h2 id="sectionTitle">Services</h2>
+            <div id="sectionSub" class="c-section-head__sub">Make work easier.</div>
+          </header>
+          <div id="tiles" class="profile-grid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="about">
+    <p><a href="/">← Back to home</a></p>
+  </section>
+  <div class="c-toast" id="toast" role="status" aria-live="polite"></div>
+
+
+
+<script>
+// Page-specific runtime context for consulting services
+window.TILE_CONTEXT = {
+  pageTitleHTML: '<strong>Nat.</strong> <em style="font-weight:300;">Help.</em>',
+  sectionTitle: 'Services',
+  sectionSub: 'Make work easier.',
+  fragBase: '/servicetilefragments',
+  order: ['uat','ops','crm-hygiene','data-cleanup','oncall'],
+  config: {
+    uat: { name:'UAT Captain', url:'/consulting/uat', copy:'/consulting/uat', headerBg:'#0f172a', footer:'solid',
+      vars:{'--footer-bg':'#f7f7fb','--footer-text':'#374151','--btn-fg':'#374151','--btn-brd':'#e5e7eb','--btn-bg':'transparent','--btn-bg-h':'rgba(0,0,0,.06)'} },
+    ops: { name:'Ops Sprint', url:'/consulting/ops', copy:'/consulting/ops', headerBg:'#0a66c2', footer:'solid',
+      vars:{'--footer-bg':'#eef5fb','--footer-text':'#0b5394','--btn-fg':'#0b5394','--btn-brd':'#a3c3e5','--btn-bg':'transparent','--btn-bg-h':'rgba(10,102,194,.08)'} },
+    'crm-hygiene': { name:'CRM Hygiene', url:'/consulting/crm-hygiene', copy:'/consulting/crm-hygiene', headerBg:'#229ED9', footer:'solid',
+      vars:{'--footer-bg':'#ffffff','--footer-text':'#111827','--btn-fg':'#0369a1','--btn-brd':'#d4eaf7','--btn-bg':'transparent','--btn-bg-h':'rgba(3,105,161,.08)'} },
+    'data-cleanup': { name:'Data Cleanup', url:'/consulting/data-cleanup', copy:'/consulting/data-cleanup', headerBg:'#181818', footer:'solid',
+      vars:{'--footer-bg':'#111827','--footer-text':'#cbd5e1','--btn-fg':'#cbd5e1','--btn-brd':'#374151','--btn-bg':'transparent','--btn-bg-h':'rgba(203,213,225,.08)'} },
+    oncall: { name:'UAT On-Call (Day Rate)', url:'/consulting/oncall', copy:'/consulting/oncall', headerBg:'#ff0000', footer:'solid',
+      vars:{'--footer-bg':'#111111','--footer-text':'#e5e7eb','--btn-fg':'#e5e7eb','--btn-brd':'#333','--btn-bg':'transparent','--btn-bg-h':'rgba(229,231,235,.08)'} }
+  }
+};
+
+// Reusable controller (self-contained)
+(function(){
+  const CTX = window.TILE_CONTEXT || {};
+  const FRAG_BASE = CTX.fragBase || '/partials/links/tilefragments';
+  const ORDER = (CTX.order && Array.isArray(CTX.order) && CTX.order.length) ? CTX.order : [];
+  const CONFIG = (CTX.config && typeof CTX.config === 'object') ? CTX.config : {};
+  const $tiles = document.getElementById('tiles');
+  const toastEl = document.getElementById('toast');
+
+  function showToast(msg){
+    if(!toastEl) return; toastEl.textContent = msg; toastEl.style.opacity = 1; setTimeout(()=> toastEl.style.opacity = 0, 1200);
+  }
+
+  function badgeFor(name){
+    const initials = (name||'')[0] ? name[0].toUpperCase() : 'N';
+    return `<span class="logo-badge" aria-hidden="true">${initials}</span>`;
+  }
+
+  function renderTile(key){
+    const cfg = CONFIG[key] || { name: key, url:'#', copy:'#', headerBg:'#222', footer:'solid', vars:{} };
+    const varStyle = (
+      Object.entries(cfg.vars || {}).map(([k,v]) => `${k}:${v}`).join(';') + `;--header-bg:${cfg.headerBg}`
+    );
+    const footerAttr = cfg.footer === 'frosted' ? ' data-footer="frosted"' : '';
+    return `
+    <div class="profile-card" data-tile="${cfg.name}" data-url="${cfg.url}" style="${varStyle}"${footerAttr}>
+      <div class="profile-head">
+        <div class="meta">
+          <p class="profile-username" style="font-weight:700;margin:0;">${cfg.name}</p>
+          <p class="profile-handle" style="opacity:.9;margin:0;">Consulting</p>
+        </div>
+        ${badgeFor(cfg.name)}
+      </div>
+      <div class="profile-body">
+        <div class="preview" data-preview-fragment="${FRAG_BASE}/${key}.html" aria-label="${cfg.name} preview">
+          <p>Loading ${cfg.name} preview…</p>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <div class="left">
+          <a class="profile-btn" href="${cfg.url}" target="_blank" rel="noopener" aria-label="Visit ${cfg.name}">Details</a>
+        </div>
+        <div class="right">
+          <button class="profile-btn profile-copy" data-copy="${cfg.copy}" aria-label="Copy ${cfg.name} link">Copy link</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  async function loadFragments(){
+    const htmls = ORDER.map(key => renderTile(key));
+    $tiles.innerHTML = htmls.join('');
+  }
+
+  async function populatePreviewFragments(){
+    const nodes = $tiles.querySelectorAll('.preview[data-preview-fragment]');
+    await Promise.all(Array.from(nodes).map(async el => {
+      const url = el.getAttribute('data-preview-fragment');
+      if(!url) return;
+      try{
+        const res = await fetch(url, {cache:'no-cache'});
+        if(!res.ok) throw new Error('missing');
+        const html = await res.text();
+        el.innerHTML = html;
+      } catch {
+        // Fallback demo content so the tile shows something even without fragments
+        const name = el.closest('.profile-card')?.getAttribute('data-tile') || 'Service';
+        el.innerHTML = `<div style="text-align:center;"><strong>${name}</strong><br><small>Example preview (no fragment yet)</small></div>`;
+      }
+    }));
+  }
+
+  function wireInteractions(){
+    $tiles.addEventListener('click', (e) => {
+      const btn = e.target.closest('a,button'); if(btn) return;
+      const card = e.target.closest('.profile-card'); if(!card) return;
+      const href = card.getAttribute('data-url'); if(href) window.open(href, '_blank');
+    });
+    $tiles.addEventListener('click', (e) => {
+      const btn = e.target.closest('.profile-copy'); if(!btn) return;
+      const value = btn.getAttribute('data-copy') || '';
+      if(!value) return;
+      navigator.clipboard.writeText(value)
+        .then(() => showToast('Link copied'))
+        .catch(() => showToast('Copy failed'));
+    });
+  }
+
+  (function applyTitles(){
+    const h1 = document.getElementById('pageTitle');
+    if (h1 && CTX.pageTitleHTML) h1.innerHTML = CTX.pageTitleHTML;
+    const h2 = document.getElementById('sectionTitle');
+    if (h2 && CTX.sectionTitle) h2.textContent = CTX.sectionTitle;
+    const sub = document.getElementById('sectionSub');
+    if (sub && CTX.sectionSub) sub.textContent = CTX.sectionSub;
+  })();
+
+  (async function init(){
+    try{
+      await loadFragments();
+      wireInteractions();
+      await populatePreviewFragments();
+    } catch(err){
+      console.error(err);
+      $tiles.innerHTML = '<p style="color:#6b7280">Some fragments are missing.</p>';
+    }
+  })();
+})();
+</script>
+
+</body>
+
+</html>

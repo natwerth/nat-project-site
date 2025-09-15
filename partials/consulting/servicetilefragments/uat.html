@@ -1,0 +1,88 @@
+<div class="is-facebook" role="article" aria-label="Facebook profile preview" style="width:100%; height:100%; overflow: hidden; background: #fff; color: #050505; display: flex; flex-direction: column;">
+  <style>
+    /* Scope to Facebook preview only */
+    .is-facebook {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      color: #050505;
+      border-radius: 0 0 0px 0px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      border-top: 0;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+    }
+    .is-facebook .fb-cover {
+      height: 110px;
+      background: #d8dfea;
+      flex-shrink: 0;
+    }
+    .is-facebook .fb-profileinfo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-top: -36px;
+      padding: 0 12px;
+      flex-shrink: 0;
+    }
+    .is-facebook .fb-profilepic {
+      width: 72px;
+      height: 72px;
+      border-radius: 999px;
+      background: #eee;
+      border: 3px solid #fff;
+      flex-shrink: 0;
+    }
+    .is-facebook .fb-namebig {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .is-facebook .fb-friends {
+      font-size: 0.8rem;
+      color: #65676b;
+    }
+    .is-facebook .fb-author {
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0 12px 4px;
+      color: #050505;
+      flex-shrink: 0;
+    }
+    .is-facebook .fb-text {
+      font-size: 0.9rem;
+      color: #4b4f56;
+      padding: 0 12px 8px;
+      flex-shrink: 0;
+    }
+    .is-facebook .fb-media {
+      background: #f7f8fa;
+      height: 120px;
+      margin: 0 12px 12px;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .is-facebook .spacer {
+      margin-top: auto;
+      flex-shrink: 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .is-facebook * {
+        transition: none;
+      }
+    }
+  </style>
+
+  <div class="fb-cover" aria-hidden="true"></div>
+  <div class="fb-profileinfo">
+    <div class="fb-profilepic" aria-hidden="true"></div>
+    <div class="fb-namebig">Nat Werth</div>
+    <div class="fb-friends">956 friends</div>
+  </div>
+  <div class="spacer"></div>
+</div>
