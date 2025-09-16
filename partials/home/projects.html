@@ -144,7 +144,7 @@
     /* CSS verdict bubble above robot */
     .bubble-wrap{ position: relative; width: auto; max-width: 92%; align-self: flex-end; }
     .bubble-lead{ font-size:.9rem; opacity:.85; margin: 0 0 .35rem auto; color: #2fffe1; }
-    .bubble-chat{ position: relative; display:inline-block; --bubble-bg: #ffffff; --bubble-stroke: #b7bec7; background: var(--bubble-bg); border: 1px solid var(--bubble-stroke); border-radius: 16px; padding: .5rem .9rem; color:#061a2b; box-shadow: 0 6px 16px rgba(0,0,0,.25); max-width: min(38ch, 92vw); }
+    .bubble-chat{ position: relative; display:inline-block; --bubble-bg: #ffffff; --bubble-stroke: #b7bec7; background: var(--bubble-bg); border: 1px solid var(--bubble-stroke); border-radius: 16px; padding: .5rem .9rem; color:#061a2b; box-shadow: 0 3px 6px rgba(0,0,0,.05); max-width: min(38ch, 92vw); }
     .bubble-text{ position: relative; font-weight:600; letter-spacing:.2px; }
     /* bottom-centered tail with matching border + fill */
     .bubble-chat::before{ content:""; position:absolute; left: calc(50% - 12px); top: 100%; width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:12px solid var(--bubble-stroke); }
@@ -170,8 +170,8 @@
     .fmb-sticky[hidden]{ display:none; }
 
     /* Floating action button */
-    .fmb-fab{ width:56px; height:56px; border-radius:50%; border:2px solid #061a2b; position: relative; background: rgba(6,26,43,.78); color:#2fffe1; display:grid; place-items:center; cursor:pointer; box-shadow: 0 12px 28px rgba(0,0,0,.35); transition: transform .15s ease, box-shadow .2s ease, background .2s ease, backdrop-filter .2s ease; backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); overflow: visible; }
-    .fmb-fab:hover{ transform: translateY(-1px); box-shadow: 0 16px 36px rgba(0,0,0,.4); }
+    .fmb-fab{ width:56px; height:56px; border-radius:50%; border:2px solid #061a2b; position: relative; background: rgba(6,26,43,.78); color:#2fffe1; display:grid; place-items:center; cursor:pointer; box-shadow: 0 3px 6px rgba(0,0,0,.05); transition: transform .15s ease, box-shadow .2s ease, background .2s ease, backdrop-filter .2s ease; backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); overflow: visible; }
+    .fmb-fab:hover{ transform: translateY(-1px); box-shadow: 0 6px 8px rgba(0,0,0,.05); }
     /* Inner tier-colored ring */
     .fmb-fab::before{ content:""; position:absolute; inset:3px; border:2px solid rgba(47,255,225,.6); border-radius:50%; pointer-events:none; }
     .fmb-fab:focus-visible{ outline:2px solid #2fffe1; outline-offset:2px; }

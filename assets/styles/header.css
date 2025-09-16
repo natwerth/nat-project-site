@@ -165,3 +165,28 @@
     .desktop-nav{ display:flex; }
     .desktop-tools{ display:flex; }
   }
+
+  /* 1) Keep the viewport as the scroll container by default */
+  html, body { overflow: visible !important; }
+
+  /* Lock the page when the mobile menu is open */
+  html.menu-open,
+  body.menu-open{
+    overflow: hidden !important;     /* stop background scroll */
+    height: 100dvh;                  /* eliminate extra scroll area on iOS */
+    overscroll-behavior: none;       /* prevent scroll chaining/bounce */
+    -webkit-overflow-scrolling: auto;/* disable momentum behind the panel */
+  }
+
+  /* Belt-and-suspenders: kill touch scroll on page content while menu is open */
+  html.menu-open body{ touch-action: none; }
+
+  /* 2) Kill legacy/global locks that aren’t the menu */
+  html.no-scroll:not(.menu-open),
+  body.no-scroll:not(.menu-open) { overflow: visible !important; }
+
+  /* 3) Header gets its own layer so iOS can’t cull it while heavy sections animate */
+  .site-header { transform: translateZ(0); backface-visibility: hidden; }
+
+  /* 4) Make sure the FAB from the projects partial can’t photobomb the menu */
+  html.menu-open .fmb-sticky { display: none !important; }

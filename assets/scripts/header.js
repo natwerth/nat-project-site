@@ -25,7 +25,7 @@
     const p = panel(); if (!p) return;
     p.hidden = false;
     requestAnimationFrame(()=> p.classList.add('open'));
-    docEl.classList.add('no-scroll','menu-open');
+    docEl.classList.add('menu-open');
     const b = menuBtn(); if (b){ b.classList.add('is-active'); b.setAttribute('aria-expanded','true'); }
   }
   function closePanel(){
@@ -36,7 +36,7 @@
         p.hidden = true; p.removeEventListener('transitionend', te);
       }
     });
-    docEl.classList.remove('no-scroll','menu-open');
+    docEl.classList.remove('menu-open');
     const b = menuBtn(); if (b){ b.classList.remove('is-active'); b.setAttribute('aria-expanded','false'); }
   }
   function toggleMenu(){ (panel()?.classList.contains('open') ? closePanel : openPanel)(); }
@@ -58,11 +58,6 @@
   }
   function toggleSearch(){ header()?.classList.contains('search-open') ? closeSearch() : openSearch(); }
 
-  function syncPanelTop(){ // insurance against toolbar/URL bar gymnastics
-    const h = header(), p = panel(); if (!h || !p) return;
-    p.style.top = Math.round(h.getBoundingClientRect().height) + 'px';
-  }
-
   function initHeader(){
     if (bound) return;                // idempotent
     if (!header()) return;            // wait until partial exists
@@ -79,14 +74,14 @@
     });
 
     // Initial compute + observers
-    setHeaderVar(); syncPanelTop();
+    setHeaderVar();
 
     if ('ResizeObserver' in window){
-      const ro = new ResizeObserver(()=>{ setHeaderVar(); syncPanelTop(); });
+      const ro = new ResizeObserver(()=>{ setHeaderVar(); });
       ro.observe(header());
     }
-    window.addEventListener('resize', ()=>{ setHeaderVar(); syncPanelTop(); }, {passive:true});
-    window.visualViewport && window.visualViewport.addEventListener('resize', ()=>{ setHeaderVar(); syncPanelTop(); }, {passive:true});
+    window.addEventListener('resize', ()=>{ setHeaderVar(); }, {passive:true});
+    window.visualViewport && window.visualViewport.addEventListener('resize', ()=>{ setHeaderVar(); }, {passive:true});
 
     // Recompute after fonts and full load
     window.addEventListener('load', setHeaderVar, { once:true });
