@@ -1,88 +1,193 @@
-<div class="is-facebook" role="article" aria-label="Facebook profile preview" style="width:100%; height:100%; overflow: hidden; background: #fff; color: #050505; display: flex; flex-direction: column;">
+<div class="is-restaurant-loading" role="img" aria-label="Restaurant site loading preview" style="width:100%;height:100%;overflow:hidden;display:flex;flex-direction:column;background:var(--rl-bg);color:#1b1b1b;">
   <style>
-    /* Scope to Facebook preview only */
-    .is-facebook {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      background: #fff;
-      color: #050505;
-      border-radius: 0 0 0px 0px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-sizing: border-box;
-      border-top: 0;
-      border-bottom-left-radius: 14px;
-      border-bottom-right-radius: 14px;
+    /* ================================
+       Restaurant Loading Preview (scoped)
+       ================================ */
+    .is-restaurant-loading{
+      /* Palette */
+      --rl-bg:#fffaf5;          /* paper/linen */
+      --rl-soft:#f2e7dc;        /* light placeholder */
+      --rl-strong:#e6dbcf;      /* darker placeholder */
+      --rl-accent:#E4572E;      /* terracotta */
+      --rl-herb:#76B041;        /* herb green */
+      --rl-sea:#2E86AB;         /* sea blue */
+      --rl-gold:#F1C453;        /* saffron */
+      box-sizing:border-box;
+      border-radius:0 0 14px 14px;
+      position:relative;
+      isolation:isolate;
     }
-    .is-facebook .fb-cover {
-      height: 110px;
-      background: #d8dfea;
-      flex-shrink: 0;
+    .is-restaurant-loading *{ box-sizing:border-box; }
+
+    /* Skeleton base */
+    .is-restaurant-loading .skel{
+      position:relative; background:var(--rl-soft);
+      border-radius:12px; overflow:hidden;
     }
-    .is-facebook .fb-profileinfo {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      margin-top: -36px;
-      padding: 0 12px;
-      flex-shrink: 0;
+    .is-restaurant-loading .skel.thick{ background:var(--rl-strong); }
+
+    /* Shimmer */
+    .is-restaurant-loading .skel::after{
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(100deg, transparent 30%, rgba(255,255,255,.55) 50%, transparent 70%);
+      transform:translateX(-100%);
+      animation:rl-shimmer 1.6s ease-in-out infinite;
+      mix-blend-mode:screen;
     }
-    .is-facebook .fb-profilepic {
-      width: 72px;
-      height: 72px;
-      border-radius: 999px;
-      background: #eee;
-      border: 3px solid #fff;
-      flex-shrink: 0;
-    }
-    .is-facebook .fb-namebig {
-      font-weight: 700;
-      font-size: 1rem;
-    }
-    .is-facebook .fb-friends {
-      font-size: 0.8rem;
-      color: #65676b;
-    }
-    .is-facebook .fb-author {
-      font-weight: 600;
-      font-size: 0.85rem;
-      padding: 0 12px 4px;
-      color: #050505;
-      flex-shrink: 0;
-    }
-    .is-facebook .fb-text {
-      font-size: 0.9rem;
-      color: #4b4f56;
-      padding: 0 12px 8px;
-      flex-shrink: 0;
-    }
-    .is-facebook .fb-media {
-      background: #f7f8fa;
-      height: 120px;
-      margin: 0 12px 12px;
-      border-radius: 10px;
-      flex-shrink: 0;
+    @keyframes rl-shimmer{
+      to{ transform:translateX(100%); }
     }
 
-    .is-facebook .spacer {
-      margin-top: auto;
-      flex-shrink: 0;
+    /* Top bar */
+    .is-restaurant-loading .topbar{
+      flex:0 0 56px; display:flex; align-items:center; gap:10px;
+      padding:10px 12px; border-bottom:1px dashed rgba(0,0,0,.06);
     }
-    @media (prefers-reduced-motion: reduce) {
-      .is-facebook * {
-        transition: none;
-      }
+    .is-restaurant-loading .brand{
+      width:32px; height:32px; border-radius:999px; position:relative; overflow:hidden;
+      background:
+        radial-gradient(60% 60% at 35% 35%, var(--rl-gold) 0 60%, transparent 61%),
+        radial-gradient(70% 70% at 70% 70%, var(--rl-accent) 0 55%, transparent 56%),
+        radial-gradient(80% 80% at 35% 75%, var(--rl-herb) 0 45%, transparent 46%),
+        radial-gradient(90% 90% at 75% 30%, var(--rl-sea) 0 40%, transparent 41%),
+        var(--rl-soft);
+      box-shadow:0 0 0 2px #fff inset;
+    }
+    .is-restaurant-loading .pill{ height:14px; border-radius:999px; }
+    .is-restaurant-loading .pill.w1{ width:64px; }
+    .is-restaurant-loading .pill.w2{ width:48px; }
+    .is-restaurant-loading .pill.w3{ width:36px; }
+
+    /* Hero plate */
+    .is-restaurant-loading .hero{
+      flex:1 1 42%;
+      min-height:130px; margin:12px; border-radius:14px; position:relative; overflow:hidden;
+      background:
+        radial-gradient(180px 180px at 25% 40%, #fff 0 60%, transparent 61%),
+        radial-gradient(125px 125px at 70% 55%, #fff 0 60%, transparent 61%),
+        conic-gradient(from 220deg at 30% 40%, var(--rl-accent), var(--rl-gold), var(--rl-herb), var(--rl-sea), var(--rl-accent));
+      box-shadow: 0 1px 0 rgba(0,0,0,.06) inset, 0 6px 18px rgba(0,0,0,.06);
+    }
+    /* Plate rim */
+    .is-restaurant-loading .hero::before{
+      content:""; position:absolute; left:8%; top:16%;
+      width:56%; aspect-ratio:1/1; border-radius:999px;
+      background:
+        radial-gradient(closest-side, transparent 86%, rgba(0,0,0,.06) 87% 100%),
+        linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,.1));
+      filter:blur(.2px);
+    }
+    /* Garnish blobs */
+    .is-restaurant-loading .blob{ position:absolute; border-radius:18px; opacity:.9; }
+    .is-restaurant-loading .b1{ width:56px; height:24px; background:var(--rl-herb); right:10%; top:18%; transform:rotate(-6deg); }
+    .is-restaurant-loading .b2{ width:40px; height:18px; background:var(--rl-accent); right:16%; top:30%; transform:rotate(12deg); }
+    .is-restaurant-loading .b3{ width:18px; height:18px; background:var(--rl-sea); right:22%; top:22%; border-radius:999px; }
+    .is-restaurant-loading .b4{ width:12px; height:12px; background:var(--rl-gold); left:18%; bottom:14%; border-radius:999px; }
+
+    /* Menu grid */
+    .is-restaurant-loading .grid{
+      flex:1 1 58%; display:grid; gap:12px; padding:0 12px 12px;
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 1fr;
+      min-height:120px;
+    }
+    @media (max-width: 560px){
+      .is-restaurant-loading .grid{ grid-template-columns: 1fr; }
+    }
+    .is-restaurant-loading .card{
+      display:grid; grid-template-columns: 72px 1fr; gap:10px; align-items:center;
+      background:transparent;
+    }
+    .is-restaurant-loading .thumb{
+      width:100%; aspect-ratio:1/1; border-radius:10px;
+      background:
+        radial-gradient(70% 70% at 35% 35%, rgba(255,255,255,.65) 0 55%, transparent 56%),
+        var(--rl-strong);
+      position:relative; overflow:hidden;
+    }
+    .is-restaurant-loading .thumb::after{
+      content:""; position:absolute; inset:0;
+      background:repeating-linear-gradient(135deg, rgba(255,255,255,.25) 0 10px, transparent 10px 20px);
+      mix-blend-mode:soft-light; opacity:.5;
+    }
+    .is-restaurant-loading .lines{ display:grid; gap:8px; }
+    .is-restaurant-loading .line{ height:12px; }
+    .is-restaurant-loading .line.sm{ width:55%; }
+
+    /* CTA strip */
+    .is-restaurant-loading .cta{
+      flex:0 0 54px; margin:0 12px 12px; border-radius:12px; position:relative; overflow:hidden;
+      background:
+        linear-gradient(90deg, var(--rl-accent), var(--rl-gold), var(--rl-herb), var(--rl-sea));
+      background-size:300% 100%;
+      animation:rl-glide 6s linear infinite;
+    }
+    @keyframes rl-glide{
+      0%{ background-position:0% 50%; }
+      100%{ background-position:300% 50%; }
+    }
+    .is-restaurant-loading .cta .button{
+      position:absolute; right:10px; top:50%; transform:translateY(-50%);
+      width:110px; height:34px; border-radius:999px; background:#fff; box-shadow:0 3px 12px rgba(0,0,0,.12);
+    }
+
+    /* Accessibility fallback when motion reduced */
+    @media (prefers-reduced-motion: reduce){
+      .is-restaurant-loading .skel::after{ display:none; }
+      .is-restaurant-loading .cta{ animation:none; }
     }
   </style>
 
-  <div class="fb-cover" aria-hidden="true"></div>
-  <div class="fb-profileinfo">
-    <div class="fb-profilepic" aria-hidden="true"></div>
-    <div class="fb-namebig">Nat Werth</div>
-    <div class="fb-friends">956 friends</div>
+  <!-- Top navigation skeleton -->
+  <div class="topbar">
+    <div class="brand" aria-hidden="true"></div>
+    <div class="skel pill w1" aria-hidden="true"></div>
+    <div class="skel pill w2" aria-hidden="true"></div>
+    <div class="skel pill w3" aria-hidden="true"></div>
   </div>
-  <div class="spacer"></div>
+
+  <!-- Hero "plate" with garnish blobs -->
+  <div class="hero">
+    <div class="blob b1" aria-hidden="true"></div>
+    <div class="blob b2" aria-hidden="true"></div>
+    <div class="blob b3" aria-hidden="true"></div>
+    <div class="blob b4" aria-hidden="true"></div>
+  </div>
+
+  <!-- Menu item placeholders -->
+  <div class="grid" aria-hidden="true">
+    <div class="card">
+      <div class="thumb"></div>
+      <div class="lines">
+        <div class="skel line"></div>
+        <div class="skel line sm"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="thumb"></div>
+      <div class="lines">
+        <div class="skel line"></div>
+        <div class="skel line sm"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="thumb"></div>
+      <div class="lines">
+        <div class="skel line"></div>
+        <div class="skel line sm"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="thumb"></div>
+      <div class="lines">
+        <div class="skel line"></div>
+        <div class="skel line sm"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA strip -->
+  <div class="cta" aria-hidden="true">
+    <div class="button"></div>
+  </div>
 </div>

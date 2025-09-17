@@ -49,7 +49,7 @@
 .profile-head .meta{ display:flex; flex-direction:column; gap:2px; }
 .profile-head .logo-badge{ width:36px; height:36px; border-radius:8px; background:#fff; color:#111; display:grid; place-items:center; font-weight:700; font-size:15px; }
 .profile-body{ padding:12px 14px; }
-.profile-body .preview{ min-height:88px; border:1px dashed var(--color-border); border-radius:8px; display:flex; align-items:center; justify-content:center; padding:10px; background:#fafafa; color:var(--brand-muted); font-size:.9rem; }
+.profile-body .preview{ width: 100%; height: auto; display:flex; align-items:center; justify-content:center; background:#fafafa; color:var(--brand-muted); font-size:.9rem; }
 .profile-actions{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:12px 14px; border-top:1px solid var(--color-border); }
 .profile-btn{ appearance:none; border:1px solid var(--btn-brd, var(--color-border)); background:var(--btn-bg, transparent); padding:8px 10px; border-radius:8px; font-size:.9rem; color:var(--btn-fg, currentColor); cursor:pointer; text-decoration:none; }
 .profile-btn:hover{ background:var(--btn-bg-h, rgba(0,0,0,.05)); }
@@ -68,6 +68,11 @@
   }
 }
 
+  /* Fill the body space for the Static Site Building (uat) tile only */
+  .profile-card[data-key="uat"] { display: grid; grid-template-rows: auto 1fr auto; }
+  .profile-card[data-key="uat"] .profile-body { padding: 0; }
+  .profile-card[data-key="uat"] .preview { background: transparent; display: block; width: 100%; height: 100%; }
+  .profile-card[data-key="uat"] .preview > * { width: 100%; height: 100%; margin: 0; }
   </style>
 </head>
 <body>
@@ -104,7 +109,7 @@ window.TILE_CONTEXT = {
   fragBase: '/servicetilefragments',
   order: ['uat','ops','crm-hygiene','data-cleanup','oncall'],
   config: {
-    uat: { name:'UAT Captain', url:'/consulting/uat', copy:'/consulting/uat', headerBg:'#0f172a', footer:'solid',
+    uat: { name:'Static Site Buildiing', url:'/consulting/uat', copy:'/consulting/uat', preview:'/partials/consulting/servicetilefragments/uat.html', headerBg:'#0f172a', footer:'solid',
       vars:{'--footer-bg':'#f7f7fb','--footer-text':'#374151','--btn-fg':'#374151','--btn-brd':'#e5e7eb','--btn-bg':'transparent','--btn-bg-h':'rgba(0,0,0,.06)'} },
     ops: { name:'Ops Sprint', url:'/consulting/ops', copy:'/consulting/ops', headerBg:'#0a66c2', footer:'solid',
       vars:{'--footer-bg':'#eef5fb','--footer-text':'#0b5394','--btn-fg':'#0b5394','--btn-brd':'#a3c3e5','--btn-bg':'transparent','--btn-bg-h':'rgba(10,102,194,.08)'} },
@@ -140,18 +145,19 @@ window.TILE_CONTEXT = {
     const varStyle = (
       Object.entries(cfg.vars || {}).map(([k,v]) => `${k}:${v}`).join(';') + `;--header-bg:${cfg.headerBg}`
     );
+    const previewUrl = cfg.preview || `${FRAG_BASE}/${key}.html`;
     const footerAttr = cfg.footer === 'frosted' ? ' data-footer="frosted"' : '';
     return `
-    <div class="profile-card" data-tile="${cfg.name}" data-url="${cfg.url}" style="${varStyle}"${footerAttr}>
+    <div class="profile-card" data-key="${key}" data-tile="${cfg.name}" data-url="${cfg.url}" style="${varStyle}"${footerAttr}>
       <div class="profile-head">
         <div class="meta">
           <p class="profile-username" style="font-weight:700;margin:0;">${cfg.name}</p>
-          <p class="profile-handle" style="opacity:.9;margin:0;">Consulting</p>
+          <p class="profile-handle" style="opacity:.9;margin:0;">Consulting Service</p>
         </div>
         ${badgeFor(cfg.name)}
       </div>
       <div class="profile-body">
-        <div class="preview" data-preview-fragment="${FRAG_BASE}/${key}.html" aria-label="${cfg.name} preview">
+        <div class="preview" data-preview-fragment="${previewUrl}" aria-label="${cfg.name} preview">
           <p>Loading ${cfg.name} preview…</p>
         </div>
       </div>
@@ -184,7 +190,7 @@ window.TILE_CONTEXT = {
       } catch {
         // Fallback demo content so the tile shows something even without fragments
         const name = el.closest('.profile-card')?.getAttribute('data-tile') || 'Service';
-        el.innerHTML = `<div style="text-align:center;"><strong>${name}</strong><br><small>Example preview (no fragment yet)</small></div>`;
+        el.innerHTML = `<div style="text-align:center;"><strong>${name}</strong><br><small>Example preview</small></div>`;
       }
     }));
   }
