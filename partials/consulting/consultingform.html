@@ -236,7 +236,7 @@
             <div class="row two">
               <div>
                 <label for="name">Name<small> *</small></label>
-                <input id="name" name="name" type="text" inputmode="text" autocomplete="name" required aria-required="true" placeholder="">
+                <input id="name" name="name" type="text" autocomplete="name" required aria-required="true" placeholder="">
                 <div class="err" id="nameErr">Name is required.</div>
               </div>
               <div>
@@ -339,29 +339,14 @@
         url.searchParams.set('service', svc);
         history.replaceState({}, '', url);
       }catch(e){}
-      // Focus first, then scroll.
-      // iOS Safari only shows the keyboard if focus() happens during the same user gesture.
+      // Nudge into view
+      const card = document.getElementById('contact');
+      if (card) card.scrollIntoView({behavior:'smooth', block:'start'});
+      // Put the caret where people actually type
       const firstField = document.getElementById('name');
       if (firstField){
-        try {
-          // Ensure element is focusable and visible
-          firstField.removeAttribute('disabled');
-          firstField.focus({ preventScroll: true });
-          // Nudge iOS to open the keyboard by placing the caret
-          if (/iPad|iPhone|iPod/.test(navigator.userAgent)){
-            // setSelectionRange triggers the keyboard more reliably on iOS
-            const len = firstField.value.length;
-            firstField.setSelectionRange(len, len);
-            // Some iOS versions like a synthetic click too
-            firstField.click();
-          }
-        } catch(e){}
-      }
-      // Then scroll into view without stealing focus
-      const card = document.getElementById('contact');
-      if (card){
-        // Use rAF to let the browser commit focus first
-        requestAnimationFrame(()=> card.scrollIntoView({ behavior:'smooth', block:'start' }));
+        // Delay a touch so smooth scroll doesn't fight the focus, and avoid extra jump
+        setTimeout(()=> { firstField.focus({ preventScroll: true }); }, 300);
       }
     }, true);
 
