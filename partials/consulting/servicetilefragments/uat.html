@@ -115,26 +115,97 @@
     .is-restaurant-loading .line.sm{ width:55%; }
 
     /* CTA strip */
-    .is-restaurant-loading .cta{
-      flex:0 0 54px; margin:0 12px 12px; border-radius:12px; position:relative; overflow:hidden;
-      background:
-        linear-gradient(90deg, var(--rl-accent), var(--rl-gold), var(--rl-herb), var(--rl-sea));
-      background-size:300% 100%;
-      animation:rl-glide 6s linear infinite;
+    .is-restaurant-loading .cta {
+      flex: 0 0 54px;
+      margin: 0 12px 12px;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+
+      background: linear-gradient(
+        90deg,
+        var(--rl-accent) 0%,
+        #9c9286 25%,
+        var(--rl-herb) 50%,
+        var(--rl-sea) 75%,
+        var(--rl-accent) 100% /* repeat start color for seamless loop */
+      );
+      background-size: 400% 100%;
+      animation: rl-glide 12s linear infinite;
     }
-    @keyframes rl-glide{
-      0%{ background-position:0% 50%; }
-      100%{ background-position:300% 50%; }
+
+    @keyframes rl-glide {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 400% 50%; }
     }
+
+
     .is-restaurant-loading .cta .button{
       position:absolute; right:10px; top:50%; transform:translateY(-50%);
       width:110px; height:34px; border-radius:999px; background:#fff; box-shadow:0 3px 12px rgba(0,0,0,.12);
+      z-index:2;
+    }
+
+    /* Value-prop cycler centered over the hero "plate" */
+    .is-restaurant-loading .value-cycler{
+      position:absolute; inset:0; display:grid; place-items:center; pointer-events:none;
+      font-weight:600; letter-spacing:.2px; text-transform:uppercase;
+    }
+    .is-restaurant-loading .value-cycler span{
+      position:absolute; opacity:0; transform:translateY(6px) scale(.985);
+      padding:6px 10px; border-radius:999px;
+      background: rgba(6, 55, 120, 0.7);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow:0 2px 8px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.06) inset;
+      font-size:clamp(12px,2.2vw,14px); color: #fff;
+      animation:vp-cycle 10s ease-in-out infinite;
+    }
+    .is-restaurant-loading .value-cycler span:nth-child(1){ animation-delay:0s; }
+    .is-restaurant-loading .value-cycler span:nth-child(2){ animation-delay:2s; }
+    .is-restaurant-loading .value-cycler span:nth-child(3){ animation-delay:4s; }
+    .is-restaurant-loading .value-cycler span:nth-child(4){ animation-delay:6s; }
+    .is-restaurant-loading .value-cycler span:nth-child(5){ animation-delay:8s; }
+    @keyframes vp-cycle{
+      0%{ opacity:0; transform:translateY(6px) scale(.985); }
+      6%{ opacity:1; transform:translateY(0) scale(1); }
+      18%{ opacity:1; transform:translateY(0) scale(1); }
+      25%{ opacity:0; transform:translateY(-6px) scale(1.005); }
+      100%{ opacity:0; transform:translateY(-6px) scale(1.005); }
+    }
+
+    /* CTA marquee that rides on top of the existing gradient glide */
+    .is-restaurant-loading .cta{ position:relative; }
+    .is-restaurant-loading .cta .button{ z-index:2; }
+    .is-restaurant-loading .vp-marquee{
+      position:absolute; inset:0; display:flex; align-items:center; overflow:hidden; z-index:1;
+      padding:0 132px 0 10px; /* leave room for the white button on the right */
+    }
+    .is-restaurant-loading .vp-track{
+      display:flex; gap:12px; min-width:max-content;
+      animation:vp-scroll 18s linear infinite;
+    }
+    .is-restaurant-loading .vp-track + .vp-track{ animation-delay:-9s; }
+    @keyframes vp-scroll{
+      from{ transform:translateX(0); }
+      to{ transform:translateX(-100%); }
+    }
+    .is-restaurant-loading .vp-badge{
+      padding:6px 10px; border-radius:999px; white-space:nowrap;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(6px);
+      color:#1b1b1b; font-weight:700; font-size:13px;
+      box-shadow:0 4px 12px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.06) inset;
     }
 
     /* Accessibility fallback when motion reduced */
     @media (prefers-reduced-motion: reduce){
       .is-restaurant-loading .skel::after{ display:none; }
       .is-restaurant-loading .cta{ animation:none; }
+      /* Motion preferences: keep one static item visible and stop marquee */
+      .is-restaurant-loading .value-cycler span{ animation:none; opacity:0; }
+      .is-restaurant-loading .value-cycler span:first-child{ opacity:1; }
+      .is-restaurant-loading .vp-track{ animation:none; }
     }
   </style>
 
@@ -152,6 +223,15 @@
     <div class="blob b2" aria-hidden="true"></div>
     <div class="blob b3" aria-hidden="true"></div>
     <div class="blob b4" aria-hidden="true"></div>
+
+    <!-- Value propositions cycling over the hero -->
+    <div class="value-cycler" aria-hidden="true">
+      <span>100% your code</span>
+      <span>24/7 support</span>
+      <span>Free branding</span>
+      <span>Discounts available</span>
+      <span>Flat, one-time fee</span>
+    </div>
   </div>
 
   <!-- Menu item placeholders -->

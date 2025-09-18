@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
 /* Minimal local styles kept in controller */
 /* Layout */
@@ -47,7 +48,26 @@
 .profile-card{ border:1px solid var(--color-border); border-radius:12px; overflow:hidden; background:#fff; box-shadow:0 2px 4px rgba(0,0,0,.03); }
 .profile-head{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:var(--header-bg, #111827); color:#fff; }
 .profile-head .meta{ display:flex; flex-direction:column; gap:2px; }
-.profile-head .logo-badge{ width:36px; height:36px; border-radius:8px; background:#fff; color:#111; display:grid; place-items:center; font-weight:700; font-size:15px; }
+.profile-head .logo-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-head .logo-badge i {
+  font-size: 1.6em;
+  line-height: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
 .profile-body{ padding:12px 14px; }
 .profile-body .preview{ width: 100%; height: auto; display:flex; align-items:center; justify-content:center; background:#fafafa; color:var(--brand-muted); font-size:.9rem; }
 .profile-actions{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:12px 14px; border-top:1px solid var(--color-border); }
@@ -86,16 +106,14 @@
         <div class="c-card u-bleed-mobile">
           <header class="c-section-head">
             <h2 id="sectionTitle">Services</h2>
-            <div id="sectionSub" class="c-section-head__sub">Make work easier.</div>
+            <div id="sectionSub" class="c-section-head__sub">Get it done.</div>
           </header>
           <div id="tiles" class="profile-grid"></div>
         </div>
       </div>
     </div>
   </section>
-  <section class="about">
-    <p><a href="/">← Back to home</a></p>
-  </section>
+
   <div class="c-toast" id="toast" role="status" aria-live="polite"></div>
 
 
@@ -107,18 +125,14 @@ window.TILE_CONTEXT = {
   sectionTitle: 'Services',
   sectionSub: 'Make work easier.',
   fragBase: '/servicetilefragments',
-  order: ['uat','ops','crm-hygiene','data-cleanup','oncall'],
+  order: ['uat','ops'],
   config: {
-    uat: { name:'Static Site Buildiing', url:'/consulting/uat', copy:'/consulting/uat', preview:'/partials/consulting/servicetilefragments/uat.html', headerBg:'#0f172a', footer:'solid',
-      vars:{'--footer-bg':'#f7f7fb','--footer-text':'#374151','--btn-fg':'#374151','--btn-brd':'#e5e7eb','--btn-bg':'transparent','--btn-bg-h':'rgba(0,0,0,.06)'} },
-    ops: { name:'Ops Sprint', url:'/consulting/ops', copy:'/consulting/ops', headerBg:'#0a66c2', footer:'solid',
-      vars:{'--footer-bg':'#eef5fb','--footer-text':'#0b5394','--btn-fg':'#0b5394','--btn-brd':'#a3c3e5','--btn-bg':'transparent','--btn-bg-h':'rgba(10,102,194,.08)'} },
-    'crm-hygiene': { name:'CRM Hygiene', url:'/consulting/crm-hygiene', copy:'/consulting/crm-hygiene', headerBg:'#229ED9', footer:'solid',
-      vars:{'--footer-bg':'#ffffff','--footer-text':'#111827','--btn-fg':'#0369a1','--btn-brd':'#d4eaf7','--btn-bg':'transparent','--btn-bg-h':'rgba(3,105,161,.08)'} },
-    'data-cleanup': { name:'Data Cleanup', url:'/consulting/data-cleanup', copy:'/consulting/data-cleanup', headerBg:'#181818', footer:'solid',
-      vars:{'--footer-bg':'#111827','--footer-text':'#cbd5e1','--btn-fg':'#cbd5e1','--btn-brd':'#374151','--btn-bg':'transparent','--btn-bg-h':'rgba(203,213,225,.08)'} },
-    oncall: { name:'UAT On-Call (Day Rate)', url:'/consulting/oncall', copy:'/consulting/oncall', headerBg:'#ff0000', footer:'solid',
-      vars:{'--footer-bg':'#111111','--footer-text':'#e5e7eb','--btn-fg':'#e5e7eb','--btn-brd':'#333','--btn-bg':'transparent','--btn-bg-h':'rgba(229,231,235,.08)'} }
+    uat: { name:'Static Site Building', url:'/consulting/uat', copy:'/consulting/uat', preview:'/partials/consulting/servicetilefragments/uat.html', headerBg:'#0f172a', footer:'solid',
+      vars:{'--footer-bg':'#f7f7fb','--footer-text':'#374151','--btn-fg':'#374151','--btn-brd':'#e5e7eb','--btn-bg':'transparent','--btn-bg-h':'rgba(0,0,0,.06)'},
+      handle:'$200-$500/page', btnLeftText:'Get Details', btnLeftHref:'#contact', btnLeftService:'static-sites', btnRightText:'Book a Free Consultation', btnRightHref:'https://calendly.com/nat-werth/consultation-w-nat/' },
+    ops: { name:'CRM Hygiene Sprint', url:'/consulting/ops', copy:'/consulting/ops', headerBg:'#0a66c2', footer:'solid',
+      vars:{'--footer-bg':'#eef5fb','--footer-text':'#0b5394','--btn-fg':'#0b5394','--btn-brd':'#a3c3e5','--btn-bg':'transparent','--btn-bg-h':'rgba(10,102,194,.08)'},
+      handle:'$300-$1k', btnLeftText:'Get Details', btnLeftHref:'#contact', btnLeftService:'crm-hygiene', btnRightText:'Book', btnRightHref:'https://calendly.com/nat-werth/consultation-w-nat/' }
   }
 };
 
@@ -135,13 +149,26 @@ window.TILE_CONTEXT = {
     if(!toastEl) return; toastEl.textContent = msg; toastEl.style.opacity = 1; setTimeout(()=> toastEl.style.opacity = 0, 1200);
   }
 
-  function badgeFor(name){
+  function badgeFor(name, key){
+    if(key === 'uat'){
+      return `<span class="logo-badge" aria-hidden="true"><i class="fas fa-globe"></i></span>`;
+    }
+    if(key === 'ops'){
+      return `<span class="logo-badge" aria-hidden="true"><i class="fab fa-salesforce"></i></span>`;
+    }
     const initials = (name||'')[0] ? name[0].toUpperCase() : 'N';
     return `<span class="logo-badge" aria-hidden="true">${initials}</span>`;
   }
 
   function renderTile(key){
     const cfg = CONFIG[key] || { name: key, url:'#', copy:'#', headerBg:'#222', footer:'solid', vars:{} };
+    const handle = cfg.handle || 'Consulting Service';
+    const btnLeftText = cfg.btnLeftText || 'Get Details';
+    const btnRightText = cfg.btnRightText || 'Book a Free Consultation';
+    const btnLeftHref = cfg.btnLeftHref || '#contact';
+    const btnRightHref = cfg.btnRightHref || cfg.url || '#';
+    const btnLeftService = cfg.btnLeftService || '';
+    const btnRightService = cfg.btnRightService || '';
     const varStyle = (
       Object.entries(cfg.vars || {}).map(([k,v]) => `${k}:${v}`).join(';') + `;--header-bg:${cfg.headerBg}`
     );
@@ -152,9 +179,9 @@ window.TILE_CONTEXT = {
       <div class="profile-head">
         <div class="meta">
           <p class="profile-username" style="font-weight:700;margin:0;">${cfg.name}</p>
-          <p class="profile-handle" style="opacity:.9;margin:0;">Consulting Service</p>
+          <p class="profile-handle" style="opacity:.9;margin:0;">${handle}</p>
         </div>
-        ${badgeFor(cfg.name)}
+        ${badgeFor(cfg.name, key)}
       </div>
       <div class="profile-body">
         <div class="preview" data-preview-fragment="${previewUrl}" aria-label="${cfg.name} preview">
@@ -162,12 +189,8 @@ window.TILE_CONTEXT = {
         </div>
       </div>
       <div class="profile-actions">
-        <div class="left">
-          <a class="profile-btn" href="${cfg.url}" target="_blank" rel="noopener" aria-label="Visit ${cfg.name}">Details</a>
-        </div>
-        <div class="right">
-          <button class="profile-btn profile-copy" data-copy="${cfg.copy}" aria-label="Copy ${cfg.name} link">Copy link</button>
-        </div>
+        <a class="profile-btn" href="${btnLeftHref}"${btnLeftService ? ` data-service="${btnLeftService}"` : ''}>${btnLeftText}</a>
+        <a class="profile-btn" href="${btnRightHref}"${btnRightService ? ` data-service="${btnRightService}"` : ''} target="_blank" rel="noopener">${btnRightText}</a>
       </div>
     </div>`;
   }
@@ -197,9 +220,12 @@ window.TILE_CONTEXT = {
 
   function wireInteractions(){
     $tiles.addEventListener('click', (e) => {
-      const btn = e.target.closest('a,button'); if(btn) return;
-      const card = e.target.closest('.profile-card'); if(!card) return;
-      const href = card.getAttribute('data-url'); if(href) window.open(href, '_blank');
+      const btn = e.target.closest('a,button');
+      if (btn) return; // let buttons act normally
+      const card = e.target.closest('.profile-card');
+      if (!card) return;
+      const detailsBtn = card.querySelector('.profile-actions a:first-child');
+      if (detailsBtn) detailsBtn.click();
     });
     $tiles.addEventListener('click', (e) => {
       const btn = e.target.closest('.profile-copy'); if(!btn) return;

@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+/* Minimal local styles kept in controller */
+/* Layout */
+
+:root{ --card-radius:16px; --ui-blue:#0a84ff; }
+
+/* Utilities */
+.u-italic{ font-style: italic; }
+
+/* Title option: add .is-italic to .page-title when you want italics */
+.page-title.is-italic{ font-style: italic; }
+
+
+.u-text-footer{ color: var(--footer-text); }
+.c-showcase{ background: var(--footer-bg); min-height: auto; padding-block: clamp(20px,4vw,48px); }
+/* About section adjustments */
+.about{ text-align:center; background:var(--footer-bg); padding:16px; }
+
+.c-showcase__inner{ max-width:1100px; margin-inline:auto;  }
+.page-title{ font-size: clamp(28px,4.5vw,40px); font-weight:700; padding: 0 1rem; }
+.c-card-grid{ display:grid; gap:var(--space-4); grid-template-columns:1fr; }
+@media (max-width: 767px){
+  .c-card-grid{
+    margin-left: calc(-1 * var(--space-4));
+    margin-right: calc(-1 * var(--space-4));
+  }
+}
+.c-card{ background:#fff; border:1px solid var(--color-border); box-shadow:0 2px 4px rgba(0,0,0,.03); padding:clamp(16px,3vw,24px); border-radius:0; }
+@media (min-width:768px){ .c-card{ border-radius:var(--card-radius); } }
+.c-card{ transition: box-shadow .2s ease; }
+.c-section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:var(--space-3); padding-block:clamp(16px,3vw,28px); margin-bottom:clamp(16px,3vw,24px); border-bottom:1px dashed var(--color-border); }
+.c-section-head h2{ margin:0; font-size:clamp(20px,3.5vw,24px); }
+.c-section-head__sub{ color:var(--brand-muted); font-size:12px; letter-spacing:.2px; }
+
+/* Back to Homepage link as button */
+.about a{ color:var(--footer-text); text-decoration:none; }
+.about a:hover{ text-decoration:underline; }
+
+@media (max-width:767px){
+  .u-bleed-mobile{ width:100dvw; margin-left:calc(50% - 50dvw); margin-right:calc(50% - 50dvw); border-radius:0; }
+}
+@media (min-width:767px) {
+  .u-bleed-mobile {
+    width: auto;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: var(--card-radius);
+    margin-inline: var(--space-4);
+  }
+}
+
+
+  /* ===============================
+     Contact form styles (scoped)
+     =============================== */
+  .c-card .c-form{ display:grid; gap:var(--space-4); }
+  .c-form .row{ display:grid; gap:8px; }
+  .c-form .two{ display:grid; gap:var(--space-4); grid-template-columns:1fr; }
+  @media (min-width:768px){ .c-form .two{ grid-template-columns:1fr 1fr; } }
+
+  .c-form label{ font-size:.95rem; font-weight:600; color:#111; }
+  .c-form small{ color:var(--brand-muted); font-size:.85rem; }
+
+  .c-form input[type="text"],
+  .c-form input[type="email"],
+  .c-form textarea{
+    appearance:none;
+    width:100%;
+    border:1px solid var(--color-border);
+    border-radius:10px;
+    padding:12px 12px;
+    font:inherit;
+    background:#fff;
+    transition:border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+  }
+  .c-form textarea{ min-height:110px; resize:vertical; }
+
+  .c-form input:hover,
+  .c-form textarea:hover{ background:#fcfcfc; }
+
+  .c-form input:focus-visible,
+  .c-form textarea:focus-visible{
+    outline:none;
+    border-color: var(--ui-blue);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-blue) 35%, transparent);
+  }
+
+  /* Error state */
+  .c-form .err{ color:#b00020; font-size:.85rem; display:none; }
+  .c-form .is-invalid{ border-color:#b00020; box-shadow:0 0 0 3px color-mix(in srgb, #b00020 18%, transparent); }
+  .c-form .show-err{ display:block; }
+
+  /* Service "creative radios" as pills */
+  .svc-pills{ display:grid; gap:10px; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); }
+  /* Remove UA fieldset border and focus ring around the whole group */
+  #svc-group{
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-inline-size: 0;
+  }
+  #svc-group:focus,
+  #svc-group:focus-visible,
+  #svc-group:focus-within{
+    outline: none;
+    box-shadow: none;
+  }
+  .svc-pills input[type="radio"]{ position:absolute; inset:auto; width:1px; height:1px; opacity:0; pointer-events:none; }
+  .svc-pills label{
+    display:flex; align-items:center; gap:10px;
+    border:1px solid var(--color-border);
+    border-radius:12px;
+    padding:12px 12px;
+    cursor:pointer;
+    background:#fff;
+    box-shadow:0 1px 2px rgba(0,0,0,.03);
+    transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease, transform .16s cubic-bezier(.2,.8,.2,1);
+    user-select:none;
+    will-change: transform;
+    transform-origin: center center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .svc-pills label .ico{ font-size:1.1rem; line-height:1; }
+  .svc-pills label .ico i{ display:inline-block; line-height:1; }
+  .svc-pills label .txt{ font-weight:600; color:#111827; }
+  .svc-pills label:hover{ background:#fbfbfb; }
+  .svc-pills label:active{ transform: scale(.98); }
+  /* Keyboard-only focus ring drawn on label when RADIO has focus */
+  .svc-pills input[type="radio"]:focus-visible + label{
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-blue) 35%, transparent);
+  }
+  /* Suppress stray outlines on label or hidden radio */
+  .svc-pills label:focus,
+  .svc-pills label:focus-visible{ outline: none; box-shadow: none; }
+  .svc-pills input[type="radio"]:focus{ outline: none; }
+  .svc-pills input[type="radio"]:checked + label{
+    border-color: var(--ui-blue);
+    background: color-mix(in srgb, var(--ui-blue) 10%, #fff);
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    transform: scale(1.05);
+    z-index: 1;
+  }
+  .svc-pills label.is-selected{ /* JS fallback for older browsers */ 
+    border-color: var(--ui-blue);
+    background: color-mix(in srgb, var(--ui-blue) 10%, #fff);
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    transform: scale(1.05);
+    z-index: 1;
+  }
+  /* Dim unselected services once a choice is made */
+  .svc-pills.has-choice label{
+    transition: opacity .18s ease, filter .18s ease, transform .16s cubic-bezier(.2,.8,.2,1), box-shadow .15s ease;
+  }
+  .svc-pills.has-choice label:not(.is-selected){
+    opacity:.5;
+    filter:grayscale(1) brightness(.98);
+  }
+  /* Keep keyboard focus readable even when dimmed */
+  .svc-pills.has-choice input[type="radio"]:focus-visible + label{
+    opacity:1;
+    filter:none;
+  }
+
+  /* Primary button + alt action */
+  .btn-primary{
+    appearance:none;
+    border:1px solid var(--btn-brd, var(--color-border));
+    background: var(--btn-bg, #111827);
+    color:#fff;
+    padding:12px 14px;
+    margin-top: 24px ;
+    margin-bottom: 0 ;
+    border-radius:10px;
+    font-size: 18px;
+    font-weight:600;
+    cursor:pointer;
+    transition: transform .05s ease, filter .15s ease, background-color .15s ease;
+  }
+  .btn-primary:hover{ background: #1c2842; filter:brightness(1.1); }
+  .btn-primary:active{ transform: translateY(1px); }
+  /* Disabled submit state */
+  .btn-primary[disabled]{
+    background:#d1d5db;
+    color:#6b7280;
+    border-color:#d1d5db;
+    cursor:not-allowed;
+    filter:none;
+    opacity:.9;
+  }
+  .btn-primary[disabled]:hover,
+  .btn-primary[disabled]:active{
+    transform:none;
+    filter:none;
+  }
+  .alt-action{ margin-top:2px; text-align: right; font-size:.85rem; color:var(--brand-muted); }
+  .alt-action a{ font-weight:700; }
+
+  /* Tiny helper row under the header, optional */
+  .c-section-head__sub b{ color:#111; }
+  </style>
+</head>
+<body>
+  <section class="c-showcase" aria-label="Brand & Components Showcase">
+    <div class="c-showcase__inner">
+      <h1 id="pageTitle" class="page-title u-text-footer" 
+          style="margin:0 0 var(--space-5);">
+        <strong>Contact</strong>
+      </h1>
+      <div class="c-card-grid">
+        <div class="c-card u-bleed-mobile" id="contact">
+          <header class="c-section-head">
+            <h2 id="sectionTitle"></h2>
+            <div id="sectionSub" class="c-section-head__sub">Powered by Salesforce.</div>
+          </header>
+          <!-- Contact form -->
+          <form id="consultForm" class="c-form" novalidate>
+            <div class="row">
+              <label for="svc-group">I’m interested in</label>
+              <fieldset id="svc-group" class="svc-pills" role="radiogroup" aria-label="Service">
+
+                <input id="svc-static" name="service" type="radio" value="static-sites">
+                <label for="svc-static"><span class="ico" aria-hidden="true"><i class="fas fa-globe"></i></span><span class="txt">Static Sites</span></label>
+
+                <input id="svc-hyg" name="service" type="radio" value="crm-hygiene">
+                <label for="svc-hyg"><span class="ico" aria-hidden="true"><i class="fab fa-salesforce"></i></span><span class="txt">CRM Hygiene</span></label>
+
+              </fieldset>
+              <div class="err" id="svcErr">Select a service to keep things moving.</div>
+            </div>
+
+            <div class="row two">
+              <div>
+                <label for="name">Name<small> *</small></label>
+                <input id="name" name="name" type="text" autocomplete="name" required aria-required="true" placeholder="">
+                <div class="err" id="nameErr">Name is required.</div>
+              </div>
+              <div>
+                <label for="email">Email<small> *</small></label>
+                <input id="email" name="email" type="email" autocomplete="email" required aria-required="true" placeholder="">
+                <div class="err" id="emailErr">Enter a valid email.</div>
+              </div>
+            </div>
+
+            <div class="row">
+              <label for="company">Company</label>
+              <input id="company" name="company" type="text" autocomplete="organization" placeholder="">
+            </div>
+
+            <div class="row">
+              <label for="message">Details</label>
+              <textarea id="message" name="message" placeholder="Wish list, must-haves, goals..."></textarea>
+            </div>
+
+            <input type="hidden" name="source" value="consulting">
+
+            <div class="row">
+              <button type="submit" class="btn-primary" id="submitBtn" disabled aria-disabled="true">Submit</button>
+              <p class="alt-action">Prefer to talk? <a id="scheduleLink" href="https://calendly.com/natwerth/consult" target="_blank" rel="noopener">Book a free consultation</a>.</p>
+              <small>By submitting, you consent to being contacted about this request.</small>
+              <div class="err" id="submitErr" role="alert" aria-live="polite">Sorry, something went wrong sending your request. Please try again.</div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="about">
+    <p><a href="/">← Back to home</a></p>
+  </section>
+<script>
+  (function(){
+    // Title hydration (keeps your markup minimal)
+    const h = document.getElementById('sectionTitle');
+    if (h) h.textContent = '';
+
+    const form = document.getElementById('consultForm');
+    const svcGroup = document.getElementById('svc-group');
+    const EMAIL_ENDPOINT = window.CONSULT_EMAIL_ENDPOINT || ''; // set window.CONSULT_EMAIL_ENDPOINT globally to enable server send
+
+    // Map friendly slugs/synonyms to the actual radio values/ids
+    const SVC_MAP = {
+      'uat':'svc-uat',
+      'u-a-t':'svc-uat',
+      'static':'svc-static',
+      'static-sites':'svc-static',
+      'ops':'svc-ops',
+      'ops-sprint':'svc-ops',
+      'hygiene':'svc-hyg',
+      'crm-hygiene':'svc-hyg',
+      'cleanup':'svc-clean',
+      'data-cleanup':'svc-clean'
+    };
+
+    function selectService(slug){
+      if (!slug) return;
+      const key = (slug + '').toLowerCase();
+      const id = SVC_MAP[key] || SVC_MAP[key.replace(/\s+/g,'-')];
+      if (!id) return;
+      const radio = document.getElementById(id);
+      if (radio){
+        radio.checked = true;
+        // Sync visual state for older browsers without :has support
+        svcGroup.querySelectorAll('label').forEach(l => l.classList.toggle('is-selected', l.htmlFor === id));
+        svcGroup.classList.add('has-choice');
+        updateSubmitState();
+      }
+    }
+
+    // From URL: ?service=uat and/or #contact?service=uat
+    function preselectFromURL(){
+      try{
+        let svc = null;
+        const qs = new URLSearchParams(window.location.search);
+        svc = qs.get('service');
+        if (!svc && window.location.hash.includes('service=')){
+          const hashQ = window.location.hash.split('service=')[1];
+          svc = hashQ ? hashQ.split('&')[0] : null;
+        }
+        if (svc) selectService(svc);
+      }catch(e){}
+    }
+    preselectFromURL();
+    updateSubmitState();
+
+    // Delegated listener: any element on the page can set [data-service="uat"]
+    document.addEventListener('click', function(e){
+      const el = e.target.closest('[data-service]');
+      if (!el) return;
+      const svc = el.getAttribute('data-service');
+      selectService(svc);
+      // Keep the URL coherent without reload
+      try{
+        const url = new URL(window.location.href);
+        url.searchParams.set('service', svc);
+        history.replaceState({}, '', url);
+      }catch(e){}
+      // Nudge into view
+      const card = document.getElementById('contact');
+      if (card) card.scrollIntoView({behavior:'smooth', block:'start'});
+      // Put the caret where people actually type
+      const firstField = document.getElementById('name');
+      if (firstField){
+        // Delay a touch so smooth scroll doesn't fight the focus, and avoid extra jump
+        setTimeout(()=> { firstField.focus({ preventScroll: true }); }, 300);
+      }
+    }, true);
+
+    svcGroup.addEventListener('change', function(e){
+      if (e.target && e.target.matches('input[type="radio"]')){
+        const id = e.target.id;
+        svcGroup.querySelectorAll('label').forEach(l => l.classList.toggle('is-selected', l.htmlFor === id));
+        svcGroup.classList.toggle('has-choice', true);
+        updateSubmitState();
+      }
+    });
+
+    function showError(inputEl, errEl){
+      inputEl.classList.add('is-invalid');
+      if (errEl) errEl.classList.add('show-err');
+    }
+    function clearError(inputEl, errEl){
+      inputEl.classList.remove('is-invalid');
+      if (errEl) errEl.classList.remove('show-err');
+    }
+
+    function updateSubmitState(){
+      const btn = document.getElementById('submitBtn');
+      if (!btn) return;
+
+      const svcChecked = form.querySelector('input[name="service"]:checked');
+      const nameEl = document.getElementById('name');
+      const emailEl = document.getElementById('email');
+
+      const nameOk = !!(nameEl && nameEl.value.trim().length);
+      const emailOk = !!(emailEl && emailEl.validity.valid);
+      const allOk = !!(svcChecked && nameOk && emailOk);
+
+      btn.disabled = !allOk;
+      btn.setAttribute('aria-disabled', String(btn.disabled));
+
+      // Grey out non-selected services only when something is chosen
+      if (svcGroup){
+        svcGroup.classList.toggle('has-choice', !!svcChecked);
+      }
+    }
+
+    // Live-clear on input
+    ['name','email'].forEach(id=>{
+      const el = document.getElementById(id);
+      const err = document.getElementById(id+'Err');
+      if (el){
+        el.addEventListener('input', ()=> { clearError(el, err); updateSubmitState(); });
+      }
+    });
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const svcChecked = form.querySelector('input[name="service"]:checked');
+      const name = document.getElementById('name');
+      const email = document.getElementById('email');
+      const svcErr = document.getElementById('svcErr');
+      const nameErr = document.getElementById('nameErr');
+      const emailErr = document.getElementById('emailErr');
+
+      let ok = true;
+
+      // Service required
+      if (!svcChecked){ ok = false; svcErr.classList.add('show-err'); svcGroup.scrollIntoView({behavior:'smooth', block:'center'}); }
+      else { svcErr.classList.remove('show-err'); }
+
+      // Native validity for name/email
+      if (!name.value.trim()){ ok = false; showError(name, nameErr); }
+      if (!email.validity.valid){ ok = false; showError(email, emailErr); }
+
+      if (!ok){
+        const first = form.querySelector('.is-invalid') || svcGroup.querySelector('label');
+        if (first) first.focus ? first.focus() : null;
+        return;
+      }
+
+      const chosen = svcChecked ? svcChecked.value : '';
+      const payload = {
+        service: chosen,
+        name: name.value.trim(),
+        email: email.value.trim(),
+        company: (document.getElementById('company')?.value || '').trim(),
+        message: (document.getElementById('message')?.value || '').trim(),
+        source: 'consulting'
+      };
+
+      const btn = document.getElementById('submitBtn'); 
+      const submitErr = document.getElementById('submitErr');
+      if (btn){ btn.disabled = true; btn.textContent = 'Submitting...'; }
+      if (submitErr) submitErr.classList.remove('show-err');
+
+      // If an email endpoint is configured, POST the form; otherwise, fall back to the existing redirect
+      if (EMAIL_ENDPOINT){
+        fetch(EMAIL_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        })
+        .then(res => {
+          if (!res.ok) throw new Error('Bad response');
+          return res.json().catch(()=> ({}));
+        })
+        .then(() => {
+          window.location.href = '/thankyou?source=consulting&amp;service=' + encodeURIComponent(chosen);
+        })
+        .catch(() => {
+          if (submitErr) submitErr.classList.add('show-err');
+          if (btn){ btn.disabled = false; btn.textContent = 'Submit'; }
+        });
+      } else {
+        window.location.href = '/thankyou?source=consulting&amp;service=' + encodeURIComponent(chosen);
+      }
+    });
+  })();
+  </script>
+</body>
+</html>
