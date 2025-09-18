@@ -1,0 +1,209 @@
+<div data-frag="crm-ops">
+  <style>
+    [data-frag="crm-ops"]{position:relative; width:100%; height:100%; color:#fff; font:500 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; 
+    /* design tokens */
+    --accent1:#5bb4ff; /* sky */
+    --accent2:#8b7cf6; /* violet */
+    --accent3:#24d6a9; /* mint */
+    --glass:rgba(255,255,255,.06);
+    --glass-strong:rgba(255,255,255,.10);
+    --hairline:rgba(188,220,255,.14);
+  }
+
+    [data-frag="crm-ops"] .plate{position:relative; height:100%; width:100%; margin:0; border-radius:0; overflow:hidden; background:radial-gradient(120% 120% at 10% 0%, #0b1b3b 0%, #0a1224 35%, #0a0a12 100%);}    
+
+    /* Ambient blobs (keep) */
+    [data-frag="crm-ops"] .blob{position:absolute; filter:blur(30px); opacity:.3; mix-blend:screen}
+    [data-frag="crm-ops"] .b1{top:-20%; left:-10%; width:240px; height:240px; background:conic-gradient(from 0deg, #5bb4ff, #7cf1e6, #8b7cf6, #5bb4ff); animation:spin 16s linear infinite}
+    [data-frag="crm-ops"] .b2{bottom:-15%; right:-10%; width:260px; height:260px; background:conic-gradient(from 0deg, #c9f, #5bb4ff, #24d6a9, #c9f); animation:spin 22s linear reverse infinite}
+    @keyframes spin{to{transform:rotate(1turn)}}
+
+    /* Header gets its own surface and hairline */
+    [data-frag="crm-ops"] .head{
+      position:relative; z-index:2; display:flex; align-items:center; gap:10px;
+      padding:14px 16px 12px;
+      background:linear-gradient(180deg, rgba(12,24,48,.55), rgba(12,24,48,0));
+      border-bottom:1px solid var(--hairline);
+      box-shadow:0 6px 20px rgba(0,0,0,.25) inset;
+    }
+    [data-frag="crm-ops"] .head::after{
+      content:""; position:absolute; left:16px; right:16px; bottom:-1px; height:1px;
+      background:linear-gradient(90deg, rgba(91,180,255,.6), rgba(140,124,246,.3), rgba(36,214,169,.6));
+      opacity:.6;
+    }
+    [data-frag="crm-ops"] .head .badge{
+      display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:18px;
+      backdrop-filter:blur(8px);
+      background:var(--glass-strong);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 1px 0 rgba(255,255,255,.06) inset, 0 6px 18px rgba(0,0,0,.25);
+    }
+    /* remove sparkle dot to avoid pre-icon blemish */
+    [data-frag="crm-ops"] .head .badge::before{ content:none; }
+    [data-frag="crm-ops"] .head .badge i{font-size:10px}
+    [data-frag="crm-ops"] .head .title{margin-left:auto; font-weight:500; letter-spacing:.3px; font-size:10px; color:#e0efff}
+
+    /* Simple 2x2 grid of large pills */
+    [data-frag="crm-ops"] .grid{position:relative; z-index:2; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px; padding:8px 12px 12px}
+    @media (max-width:640px){[data-frag="crm-ops"] .grid{grid-template-columns:repeat(2, minmax(0,1fr))}}
+    @media (max-width:360px){[data-frag="crm-ops"] .grid{grid-template-columns:1fr}}
+
+    /* Desktop refinements for grid spacing */
+    @media (min-width:920px){
+      [data-frag="crm-ops"] .grid{gap:10px; padding:10px 12px 12px}
+    }
+
+    /* KPI meter under pills (mobile + desktop) */
+    [data-frag="crm-ops"] .kpi-bar{
+      display:block;
+      position:relative; z-index:2; padding:10px 12px 54px; /* leave room for marquee */
+      /* defaults; can be overridden inline */
+      --acc:0.34; --dup:0.23; --comp:0.27; --time:0.16;
+    }
+    [data-frag="crm-ops"] .kpi-bar .meter{
+      position:relative; height:10px; border-radius:999px; overflow:hidden;
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 2px 10px rgba(0,0,0,.22) inset, 0 1px 0 rgba(255,255,255,.06) inset;
+    }
+    [data-frag="crm-ops"] .kpi-bar .meter .seg{position:absolute; top:0; bottom:0}
+    [data-frag="crm-ops"] .kpi-bar .meter .acc{left:0; width:calc(var(--acc) * 100%); background:#24d6a9}
+    [data-frag="crm-ops"] .kpi-bar .meter .dup{left:calc(var(--acc) * 100%); width:calc(var(--dup) * 100%); background:#5bb4ff}
+    [data-frag="crm-ops"] .kpi-bar .meter .comp{left:calc((var(--acc) + var(--dup)) * 100%); width:calc(var(--comp) * 100%); background:#8b7cf6}
+    [data-frag="crm-ops"] .kpi-bar .meter .time{left:calc((var(--acc) + var(--dup) + var(--comp)) * 100%); width:calc(var(--time) * 100%); background:#f6b37c}
+
+    [data-frag="crm-ops"] .kpi-bar .legend{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px}
+    [data-frag="crm-ops"] .kpi-bar .leg{display:flex; align-items:center; gap:6px; font-size:11px; color:#cfe7ff}
+    [data-frag="crm-ops"] .kpi-bar .sw{width:10px; height:10px; border-radius:3px; display:inline-block}
+
+    @media (max-width:420px){
+      [data-frag="crm-ops"] .kpi-bar .legend{display:none}
+    }
+    @media (min-width:920px){
+      [data-frag="crm-ops"] .kpi-bar{padding:12px 12px 58px}
+      [data-frag="crm-ops"] .kpi-bar .meter{height:12px}
+      [data-frag="crm-ops"] .kpi-bar .leg{font-size:12px}
+    }
+
+    /* Elevated glass pills with gradient border and sheen */
+    [data-frag="crm-ops"] .pill{
+      position:relative; display:flex; align-items:center; gap:12px; min-height:64px; border-radius:14px; padding:12px 14px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)) padding-box,
+        radial-gradient(120% 180% at 0% 0%, rgba(91,180,255,.35), rgba(140,124,246,.22), rgba(36,214,169,.18)) border-box;
+      border:1px solid transparent;
+      box-shadow:0 10px 28px rgba(0,0,0,.28), 0 1px 0 rgba(255,255,255,.06) inset;
+      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+      overflow:hidden;
+    }
+    [data-frag="crm-ops"] .pill::after{
+      content:""; position:absolute; inset:-1px; border-radius:inherit;
+      background:linear-gradient(120deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.18) 50%, rgba(255,255,255,0) 70%);
+      transform:translateX(-130%);
+      transition:transform .6s ease;
+      pointer-events:none; mix-blend:screen; opacity:.9;
+    }
+    [data-frag="crm-ops"] .pill:hover{transform:translateY(-2px); box-shadow:0 14px 34px rgba(0,0,0,.34)}
+    [data-frag="crm-ops"] .pill:hover::after{transform:translateX(130%)}
+    [data-frag="crm-ops"] .pill:active{transform:translateY(0); box-shadow:0 6px 16px rgba(0,0,0,.3)}
+    [data-frag="crm-ops"] .pill:focus-visible{outline:2px solid #2f80ff; outline-offset:2px}
+
+    [data-frag="crm-ops"] .pill i{
+      flex:0 0 36px; height:36px; display:grid; place-items:center; border-radius:11px; font-size:17px;
+      background:
+        radial-gradient(120% 120% at 20% 0%, rgba(91,180,255,.28), rgba(140,124,246,.14)) padding-box,
+        linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.06)) border-box;
+      border:1px solid rgba(255,255,255,.22);
+      box-shadow:0 1px 0 rgba(255,255,255,.08) inset, 0 10px 22px rgba(0,0,0,.35);
+    }
+    [data-frag="crm-ops"] .pill h4{margin:0; font-size:13.5px; font-weight: 400; color:#e8f4ff; letter-spacing:.1px}
+
+    /* Keep marquee ribbon exactly flush */
+    [data-frag="crm-ops"] .ribbon{position:absolute; left:0; right:0; bottom:0; height:44px; display:flex; align-items:center; gap:16px; padding-left:16px; opacity:.9; z-index:1}
+    [data-frag="crm-ops"] .chip{flex:0 0 auto; display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:8px 12px; background:#0e1a2e; color:#bcdcff; border:1px solid rgba(255,255,255,.12); white-space:nowrap}
+    [data-frag="crm-ops"] .ribbon .track{display:flex; gap:12px; animation:marq 36s linear infinite; margin-bottom: 1rem;}
+    @keyframes marq{to{transform:translateX(-50%)}}
+
+    /* Focus styles */
+    [data-frag="crm-ops"] :focus-visible{outline:2px solid #2f80ff; outline-offset:2px}
+
+    @media (prefers-reduced-motion: reduce){
+      [data-frag="crm-ops"] .b1,
+      [data-frag="crm-ops"] .b2{animation:none}
+      [data-frag="crm-ops"] .ribbon .track{animation:none}
+      [data-frag="crm-ops"] .pill{transition:none}
+      [data-frag="crm-ops"] .pill::after{display:none}
+    }
+  </style>
+
+  <div class="plate">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+
+    <header class="head">
+      <span class="badge" aria-label="CRM Hygiene Sprint">
+        <i class="fa-solid fa-soap" aria-hidden="true"></i>
+        <strong>Messy org?</strong>
+      </span>
+      <div class="title">Clean data, instant impact.</div>
+    </header>
+
+    <section class="grid" aria-label="Deliverables">
+      <div class="pill" aria-label="Baseline">
+        <i class="fa-solid fa-clipboard-check" aria-hidden="true"></i>
+        <h4>Baseline Report</h4>
+      </div>
+      <div class="pill" aria-label="Standards">
+        <i class="fa-solid fa-clone" aria-hidden="true"></i>
+        <h4>Quick Fix List</h4>
+      </div>
+      <div class="pill" aria-label="Guardrails">
+        <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+        <h4>Guardrails & Rules</h4>
+      </div>
+      <div class="pill" aria-label="Handoff">
+        <i class="fa-solid fa-file-export" aria-hidden="true"></i>
+        <h4>Handoff Kit</h4>
+      </div>
+    </section>
+
+  <div class="kpi-bar" aria-label="Key outcomes (sample)" style="--acc:0.34; --dup:0.23; --comp:0.27; --time:0.16">
+    <div class="meter">
+      <i class="seg acc"></i>
+      <i class="seg dup"></i>
+      <i class="seg comp"></i>
+      <i class="seg time"></i>
+    </div>
+    <div class="legend">
+      <span class="leg"><b class="sw" style="background:#24d6a9"></b> Data accuracy +82%</span>
+      <span class="leg"><b class="sw" style="background:#5bb4ff"></b> Duplicate reduction −68%</span>
+      <span class="leg"><b class="sw" style="background:#8b7cf6"></b> Compliance coverage +75%</span>
+      <span class="leg"><b class="sw" style="background:#f6b37c"></b> Time to qualify −56%</span>
+    </div>
+  </div>
+
+    <div class="ribbon" aria-hidden="true">
+      <div class="track">
+        <span class="chip"><i class="fa-solid fa-clone"></i> Fewer duplicates</span>
+        <span class="chip"><i class="fa-solid fa-square-check"></i> Higher field completion</span>
+        <span class="chip"><i class="fa-solid fa-gauge-high"></i> Faster lead qualification</span>
+        <span class="chip"><i class="fa-solid fa-circle-check"></i> Fewer validation errors</span>
+        <span class="chip"><i class="fa-solid fa-chart-column"></i> Cleaner dashboards</span>
+        <span class="chip"><i class="fa-solid fa-file-shield"></i> Audit‑ready data</span>
+        <span class="chip"><i class="fa-solid fa-chart-line"></i> More accurate forecasting</span>
+        <span class="chip"><i class="fa-solid fa-plug-circle-check"></i> Fewer integration sync errors</span>
+        <span class="chip"><i class="fa-solid fa-layer-group"></i> Better segmentation</span>
+        <span class="chip"><i class="fa-solid fa-user-check"></i> Higher user adoption</span>
+        <span class="chip"><i class="fa-solid fa-clone"></i> Fewer duplicates</span>
+        <span class="chip"><i class="fa-solid fa-square-check"></i> Higher field completion</span>
+        <span class="chip"><i class="fa-solid fa-gauge-high"></i> Faster lead qualification</span>
+        <span class="chip"><i class="fa-solid fa-circle-check"></i> Fewer validation errors</span>
+        <span class="chip"><i class="fa-solid fa-chart-column"></i> Cleaner dashboards</span>
+        <span class="chip"><i class="fa-solid fa-file-shield"></i> Audit‑ready data</span>
+        <span class="chip"><i class="fa-solid fa-chart-line"></i> More accurate forecasting</span>
+        <span class="chip"><i class="fa-solid fa-plug-circle-check"></i> Fewer integration sync errors</span>
+        <span class="chip"><i class="fa-solid fa-layer-group"></i> Better segmentation</span>
+        <span class="chip"><i class="fa-solid fa-user-check"></i> Higher user adoption</span>
+      </div>
+    </div>
+  </div>
+</div>
