@@ -257,6 +257,7 @@
             </div>
 
             <input type="hidden" name="source" value="consulting">
+            <input type="text" name="hp" autocomplete="off" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;height:1px;width:1px;opacity:0;">
 
             <div class="row">
               <button type="submit" class="btn-primary" id="submitBtn" disabled aria-disabled="true">Submit</button>
@@ -273,6 +274,7 @@
     <p><a href="/">← Back to home</a></p>
   </section>
 <script>
+  window.CONSULT_EMAIL_ENDPOINT = 'https://contact-smtp-79b4duidb-nats-projects-0f7444b9.vercel.app/api/contact';
   (function(){
     // Title hydration (keeps your markup minimal)
     const h = document.getElementById('sectionTitle');
@@ -450,14 +452,14 @@
           return res.json().catch(()=> ({}));
         })
         .then(() => {
-          window.location.href = '/thankyou?source=consulting&amp;service=' + encodeURIComponent(chosen);
+          window.location.href = '/thankyou?source=consulting&service=' + encodeURIComponent(chosen);
         })
         .catch(() => {
           if (submitErr) submitErr.classList.add('show-err');
           if (btn){ btn.disabled = false; btn.textContent = 'Submit'; }
         });
       } else {
-        window.location.href = '/thankyou?source=consulting&amp;service=' + encodeURIComponent(chosen);
+        window.location.href = '/thankyou?source=consulting&service=' + encodeURIComponent(chosen);
       }
     });
   })();
