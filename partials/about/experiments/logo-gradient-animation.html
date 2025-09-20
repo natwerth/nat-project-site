@@ -1,0 +1,299 @@
+<div class="expt-logo-gradient" tabindex="0" aria-label="Logo gradient experiment">
+  <style>
+    /* ===== Fragment-scoped variables (no :root / no body overrides) ===== */
+    :where(.expt-logo-gradient){
+      --bg:#0a0a0b;     /* canvas */
+      --ink:#fff;       /* icon + text */
+      --line:#33363b;   /* thin outline */
+
+      /* Neon glow tuned for background contrast */
+      --glowA-dark: rgba(255,120,220,.42);  /* magenta */
+      --glowB-dark: rgba(120,205,255,.30);  /* cyan */
+      --glowA-light: rgba(255,120,220,.34);
+      --glowB-light: rgba(120,140,255,.28);
+      --edge-light: rgba(0,0,0,.24);
+
+      /* Gradient theme variables */
+      --vs-amber:#f59e0b;  /* amber-500 */
+      --vs-pink:#ec4899;   /* pink-500 */
+      --vs-violet:#8b5cf6; /* violet-500 */
+      --vs-neon:#22d3ee;   /* cyan-400 */
+      --vs-green:#39ff14;  /* neon-green */
+    }
+
+    /* Reset only inside fragment */
+    .expt-logo-gradient *{ box-sizing:border-box }
+
+    /* Local layout wrapper so this thing behaves like a normal block */
+    .expt-logo-gradient{ display:grid; justify-items:center; gap:16px; color:var(--ink); background:var(--bg); inline-size:100vw; margin-inline:calc(50% - 50vw); padding:64px 0; max-width:none; }
+
+    /* Stage: big empty box with the logo inside */
+    .expt-stage{
+      width:min(920px, 92vw);
+      height:clamp(320px, 56svh, 560px);
+      border:1px solid var(--line);
+      border-radius:10px;
+      display:grid; place-items:center;
+      background:var(--bg);
+      padding-bottom: 2rem;
+      overflow:hidden; /* keep logo contained on all screens */
+    }
+    .expt-logo{ height:clamp(320px, 56svh, 560px); width:100%; padding:36px; aspect-ratio:152.5/96.57 }
+    .expt-logo svg{ display:block; height:100%; width:100% }
+
+    /* Icon-only control bar */
+    .expt-bar{
+      width:min(420px, 92vw);
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:8px 10px;
+      display:flex; align-items:center; justify-content:center; gap:18px;
+      background:transparent;
+    }
+    .expt-bar{ transition: opacity .2s ease, transform .2s ease }
+    .expt-ico{ appearance:none; border:0; background:none; padding:6px; margin:0; line-height:0; -webkit-tap-highlight-color:transparent; color:var(--ink); cursor:pointer; opacity:.38; transition:opacity .12s ease, transform .16s cubic-bezier(.2,.7,.3,1); transform:translateZ(0); will-change:transform }
+    .expt-ico i{ font-size:18px }
+
+    /* Press shrink */
+    .expt-ico:active{ transform:scale(.95) }
+
+    /* Selected state pop + settle */
+    .expt-ico[aria-pressed="true"]{ transform:scale(1.05); animation:expt-ico-pop .22s cubic-bezier(.2,.7,.3,1) }
+    @keyframes expt-ico-pop{ 0%{transform:scale(.95)} 60%{transform:scale(1.08)} 100%{transform:scale(1.05)} }
+    .expt-ico:hover, .expt-ico:focus-visible{ opacity:1 }
+    .expt-ico:focus-visible{ outline:1px dotted var(--line); outline-offset:4px; border-radius:6px }
+    .expt-ico[aria-pressed="true"]{ opacity:1 }
+    .expt-divider{ width:1px; height:18px; background:var(--line) }
+
+    /* White stage mode */
+    .expt-stage.is-white{ background:#fff }
+
+    /* Neon glow tuned for background contrast */
+    .expt-logo.is-animating{ /* Default for dark canvas */
+      filter:
+        drop-shadow(0 0 10px var(--glowA-dark))
+        drop-shadow(0 0 26px var(--glowB-dark));
+      transition:filter .26s ease
+    }
+    .expt-stage.is-white .expt-logo.is-animating{
+      filter:
+        drop-shadow(0 1px 0 var(--edge-light))
+        drop-shadow(0 0 10px var(--glowA-light))
+        drop-shadow(0 0 28px var(--glowB-light))
+        drop-shadow(0 0 48px var(--glowA-light))
+    }
+
+    /* ===== Fullscreen minimal layering + idle hide ===== */
+    :where(.expt-logo-gradient:fullscreen){ position:relative }
+    :where(.expt-logo-gradient:fullscreen) .expt-stage{
+      position:absolute; inset:0; inline-size:100svw; block-size:100svh; border:0; border-radius:0;
+    }
+    :where(.expt-logo-gradient:fullscreen) .expt-bar{
+      position:absolute; left:50%; transform:translateX(-50%); inset-block-end:16px; z-index:10;
+      background:color-mix(in oklab, var(--bg) 70%, transparent);
+      -webkit-backdrop-filter:saturate(120%) blur(8px); backdrop-filter:saturate(120%) blur(8px);
+    }
+    :where(.expt-logo-gradient.is-idle:fullscreen) .expt-bar{ opacity:0; transform:translate(-50%, 8px); pointer-events:none }
+    :where(.expt-logo-gradient.is-idle:fullscreen) .expt-stage{ cursor:none }
+  </style>
+
+  <div class="expt-stage" data-stage>
+    <div class="expt-logo" data-logo>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -1 152.5 96.57" role="img" aria-label="Nat Werth Logo">
+        <title>Nat Werth Logo</title>
+        <defs>
+          <linearGradient id="rainbow-gradient-expt" x1="0" y1="0" x2="320" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="translate(0,0)" spreadMethod="repeat">
+            <stop offset="0%"  stop-color="var(--vs-amber)"/>
+            <stop offset="20%" stop-color="var(--vs-pink)"/>
+            <stop offset="40%" stop-color="var(--vs-violet)"/>
+            <stop offset="60%" stop-color="var(--vs-neon)"/>
+            <stop offset="80%" stop-color="var(--vs-green)"/>
+            <stop offset="100%" stop-color="var(--vs-amber)"/>
+            <animateTransform id="rg-move-expt" attributeName="gradientTransform" attributeType="XML" type="translate" from="0 0" to="-320 0" dur="1.2s" fill="freeze" begin="indefinite" />
+          </linearGradient>
+        </defs>
+        <path fill="url(#rainbow-gradient-expt)" d="M13.5,30.56c18,0,27,18,27,18,0,0-9-18,9-18s18,63,0,63-27-27-27-27c0,0,9,27-9,27s-18-63,0-63h0Z"/>
+        <path fill="url(#rainbow-gradient-expt)" d="M148.5,30.56c0,18-18,18-18,18,0,0,9,54-18,45,0,0,18-63-18-72h0c9-9,54-9,54,9Z"/>
+        <path fill="url(#rainbow-gradient-expt)" d="M68.79,0s2.6,20.33,21.59,21.55c0,0-18.87,2.24-21.59,21.55,0,0-2.68-19.69-21.59-21.55,0,0,17.69-2.01,21.59-21.55Z"/>
+        <path fill="url(#rainbow-gradient-expt)" d="M91.22,38.8s1.11,8.2,9.22,8.7c0,0-8.06.91-9.22,8.7,0,0-1.15-7.95-9.22-8.7,0,0,7.56-.81,9.22-8.7Z"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="expt-bar" role="toolbar" aria-label="Animation controls">
+    <button class="expt-ico" data-btn="play" aria-label="Play" title="Play (space)"><i class="fa-solid fa-play" aria-hidden="true"></i></button>
+    <span class="expt-divider" aria-hidden="true"></span>
+    <button class="expt-ico" data-btn="loop" aria-pressed="false" aria-label="Loop" title="Loop (L)"><i class="fa-solid fa-rotate-right" aria-hidden="true"></i></button>
+    <span class="expt-divider" aria-hidden="true"></span>
+    <button class="expt-ico" data-btn="canvas" aria-pressed="false" aria-label="White canvas" title="Toggle white canvas (W)"><i class="fa-solid fa-toggle-off" aria-hidden="true"></i></button>
+    <span class="expt-divider" aria-hidden="true"></span>
+    <button class="expt-ico" data-btn="fullscreen" aria-pressed="false" aria-label="Enter full screen" title="Full screen (F)"><i class="fa-solid fa-up-right-and-down-left-from-center" aria-hidden="true"></i></button>
+  </div>
+
+  <script>
+  (function(root){
+    if(!root) return;
+    const playBtn = root.querySelector('[data-btn="play"]');
+    const loopBtn = root.querySelector('[data-btn="loop"]');
+    const canvasBtn = root.querySelector('[data-btn="canvas"]');
+    const fsBtn = root.querySelector('[data-btn="fullscreen"]');
+    const stage = root.querySelector('[data-stage]');
+    const logo = root.querySelector('[data-logo]');
+
+    const svg = root.querySelector('svg');
+    const gradient = root.querySelector('#rainbow-gradient-expt');
+    const mover = root.querySelector('#rg-move-expt');
+
+    const DURATION_MS = 1200;     // keep in sync with SMIL dur
+    const SHIFT_PX = -320;        // animateTransform to value
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let isPlaying = false;
+    let isLooping = false;
+    let isAnimating = false;
+    let timeoutId = null;
+    let isWhite = false;
+
+    let idleId = null;
+    const IDLE_MS = 3000;
+
+    // Fallback state for JS tween (no SMIL)
+    let rafId = null;
+    let startStamp = 0;
+    let elapsed = 0; // persists across pause/resume
+
+    const hasSMIL = !!(mover && typeof mover.beginElement === 'function' && svg && typeof svg.pauseAnimations === 'function' && typeof svg.unpauseAnimations === 'function');
+
+    function iconSwap(on){
+      const i = playBtn.querySelector('i');
+      i.classList.toggle('fa-play', !on);
+      i.classList.toggle('fa-pause', on);
+      playBtn.setAttribute('aria-label', on ? 'Pause' : 'Play');
+      playBtn.title = on ? 'Pause (space)' : 'Play (space)';
+      playBtn.setAttribute('aria-pressed', String(on));
+    }
+
+    function canvasIcon(on){
+      const i = canvasBtn.querySelector('i');
+      i.classList.toggle('fa-toggle-off', !on);
+      i.classList.toggle('fa-toggle-on', on);
+      canvasBtn.setAttribute('aria-pressed', String(on));
+      canvasBtn.setAttribute('aria-label', on ? 'Dark canvas' : 'White canvas');
+      canvasBtn.title = on ? 'Toggle dark canvas (W)' : 'Toggle white canvas (W)';
+    }
+
+    function fullscreenIcon(on){
+      const i = fsBtn && fsBtn.querySelector('i');
+      if(!i) return;
+      i.classList.toggle('fa-up-right-and-down-left-from-center', !on);
+      i.classList.toggle('fa-down-left-and-up-right-to-center', on);
+      fsBtn.setAttribute('aria-pressed', String(on));
+      fsBtn.setAttribute('aria-label', on ? 'Exit full screen' : 'Enter full screen');
+      fsBtn.title = on ? 'Exit full screen (F)' : 'Full screen (F)';
+    }
+
+    function setCanvasWhite(on){
+      isWhite = on; stage.classList.toggle('is-white', on); canvasIcon(on);
+    }
+
+    function isFull(){
+      return document.fullscreenElement === root;
+    }
+    async function enterFull(){
+      try{ await root.requestFullscreen(); }catch(_){}
+      fullscreenIcon(true);
+    }
+    async function exitFull(){
+      try{ await document.exitFullscreen(); }catch(_){}
+      fullscreenIcon(false);
+    }
+    function toggleFull(){
+      if(!document.fullscreenEnabled || !fsBtn) return; 
+      if(isFull()) exitFull(); else enterFull();
+    }
+
+    function setIdle(on){ root.classList.toggle('is-idle', !!on); }
+    function armIdle(){
+      clearTimeout(idleId);
+      if (!isFull()) return;
+      idleId = setTimeout(() => setIdle(true), IDLE_MS);
+    }
+    function wake(){
+      if (!isFull()) return;
+      setIdle(false);
+      armIdle();
+    }
+
+    function jsTick(now){
+      if (!startStamp) startStamp = now - elapsed; // support resume
+      elapsed = now - startStamp;
+      const t = Math.min(1, elapsed / DURATION_MS);
+      const x = SHIFT_PX * t;
+      gradient.setAttribute('gradientTransform', `translate(${x},0)`);
+      if (isAnimating && isPlaying && t < 1){ rafId = requestAnimationFrame(jsTick); } else { finishCycle(); }
+    }
+
+    function startCycle(){
+      isAnimating = true; isPlaying = true; iconSwap(true); logo.classList.add('is-animating');
+      if (prefersReduced){ setTimeout(() => { finishCycle(); }, Math.min(200, DURATION_MS/6)); return; }
+      if (hasSMIL){
+        try { svg.unpauseAnimations(); svg.setCurrentTime(0); mover.beginElement(); } catch(_){}
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => { if (isAnimating) finishCycle(); }, DURATION_MS + 60);
+      } else {
+        rafId && cancelAnimationFrame(rafId); rafId = requestAnimationFrame(jsTick);
+      }
+    }
+
+    function pauseCycle(){
+      isPlaying = false; iconSwap(false); logo.classList.remove('is-animating');
+      if (hasSMIL){ try { svg.pauseAnimations(); } catch(_){} clearTimeout(timeoutId); }
+      else { if (rafId) cancelAnimationFrame(rafId); rafId = null; }
+    }
+
+    function finishCycle(){
+      isAnimating = false; if (hasSMIL){ clearTimeout(timeoutId); }
+      if (isLooping && !prefersReduced){
+        logo.classList.add('is-animating');
+        if (hasSMIL){
+          try { svg.setCurrentTime(0); svg.unpauseAnimations(); mover.beginElement(); } catch(_){}
+          timeoutId = setTimeout(() => { if (!isPlaying) return; finishCycle(); }, DURATION_MS + 60);
+          isPlaying = true; iconSwap(true);
+        } else {
+          elapsed = 0; startStamp = 0; isPlaying = true; iconSwap(true); rafId = requestAnimationFrame(jsTick);
+        }
+      } else {
+        logo.classList.remove('is-animating'); isPlaying = false; iconSwap(false); if (!hasSMIL){ elapsed = 0; startStamp = 0; }
+      }
+    }
+
+    function togglePlay(){ if (isPlaying){ pauseCycle(); } else { startCycle(); } }
+
+    // Button handlers scoped to this fragment only
+    playBtn.addEventListener('click', togglePlay);
+    loopBtn.addEventListener('click', () => { isLooping = !isLooping; loopBtn.setAttribute('aria-pressed', String(isLooping)); });
+    canvasBtn.addEventListener('click', () => setCanvasWhite(!isWhite));
+    fsBtn && fsBtn.addEventListener('click', toggleFull);
+    ['mousemove','mousedown','keydown','pointermove','touchstart'].forEach(ev => root.addEventListener(ev, wake, {passive:true}));
+
+    // Optional keyboard: focus the fragment then use Space/L/W/F
+    root.addEventListener('keydown', (e) => {
+      if (e.code === 'Space'){ e.preventDefault(); togglePlay(); }
+      const k = (e.key||'').toLowerCase();
+      if (k === 'l'){ isLooping = !isLooping; loopBtn.setAttribute('aria-pressed', String(isLooping)); }
+      if (k === 'w'){ setCanvasWhite(!isWhite); }
+      if (k === 'f'){ e.preventDefault(); toggleFull(); }
+    });
+
+    canvasIcon(false);
+    fullscreenIcon(false);
+    document.addEventListener('fullscreenchange', () => {
+      const on = isFull();
+      fullscreenIcon(on);
+      clearTimeout(idleId);
+      setIdle(false);
+      if (on) armIdle();
+    });
+  })(document.currentScript && document.currentScript.closest('.expt-logo-gradient'));
+  </script>
+</div>
