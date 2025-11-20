@@ -20,7 +20,7 @@
 
   /* Desktop nav */
   .desktop-nav{ display:none; }
-  .desktop-nav a{
+  .desktop-nav > a{
     margin-left:32px; text-decoration:none; color:#111;
     font-weight:400; font-size:.95rem; letter-spacing:.01em;
     position:relative; transition: color .2s ease, transform .2s ease;

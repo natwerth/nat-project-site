@@ -1,3 +1,247 @@
+<style>
+  /* Local styles for mobile "Work" dropdown */
+  .mobile-work-group{
+    margin-top:8px;
+    margin-bottom:8px;
+  }
+
+  .mobile-link--toggle{
+    cursor:pointer;
+  }
+
+  .mobile-submenu{
+    margin-left:12px;
+    padding-top:4px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    pointer-events:none;
+  }
+
+  .mobile-submenu[hidden]{
+    display:none;
+  }
+
+  /* Per-link slide / fade animation */
+  .mobile-submenu .mobile-link{
+    transform: translateY(-12px);
+    opacity:0;
+    transition: opacity .25s ease, transform .25s ease;
+  }
+
+  .mobile-work-group.is-open .mobile-submenu{
+    pointer-events:auto;
+  }
+  .mobile-work-group.is-open .mobile-submenu .mobile-link{
+    transform: translateY(0);
+    opacity:1;
+  }
+  /* Staggered entrance: each link slightly later */
+  .mobile-work-group.is-open .mobile-submenu .mobile-link:nth-child(1){
+    transition-delay: 0s;
+  }
+  .mobile-work-group.is-open .mobile-submenu .mobile-link:nth-child(2){
+    transition-delay: .06s;
+  }
+  .mobile-work-group.is-open .mobile-submenu .mobile-link:nth-child(3){
+    transition-delay: .12s;
+  }
+
+  /* Desktop "Work" dropdown */
+  .desktop-work-group{
+    position:relative;
+    display:inline-block;
+    margin-left:32px;
+  }
+
+  .desktop-link{
+    background:none;
+    border:0;
+    padding:0;
+    cursor:pointer;
+
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+
+    font:inherit;
+    color:#111;
+  }
+
+  .desktop-link--toggle{
+    transition: transform .2s ease;
+  }
+
+  .desktop-link .caret{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    transition: transform .2s ease, color .2s ease;
+  }
+
+  .desktop-link--toggle .label{
+    position:relative;
+    font-weight:400;
+    font-size:.95rem;
+    letter-spacing:.01em;
+  }
+
+  /* Underline for desktop Work button (match other nav links) */
+  .desktop-link--toggle .label::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:-6px;
+    width:100%;
+    height:2px;
+    background:var(--brand-primary);
+    transform:translateX(-50%) scaleX(0);
+    transform-origin:center;
+    transition:transform .25s ease;
+  }
+  /* Underline for entire Work button row (label + caret) */
+  .desktop-link--toggle::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:-6px;
+    height:2px;
+    background:var(--brand-primary);
+    transform: scaleX(0);
+    transform-origin:center;
+    transition: transform .25s ease;
+  }
+
+  .desktop-link--toggle:hover::after{
+    transform: scaleX(1);
+  }
+
+  .desktop-link--toggle:hover .label{
+    color:var(--brand-primary);
+  }
+
+  .desktop-link--toggle:hover{
+    transform: scale(1.04);
+  }
+
+  .desktop-link--toggle:hover .caret{
+    transform: translateY(1px);
+    color: var(--brand-primary);
+  }
+
+  .desktop-dropdown{
+    /* anchored just under the Work button, aligned to its left edge */
+    position:absolute;
+    top:calc(100% + 18px);
+    left:0;
+    min-width:220px;
+
+    padding:8px 0;
+    background:#fff;
+    border-radius:12px;
+    border:1px solid #ebebeb;
+    box-shadow:0 8px 10px rgba(0,0,0,.05);
+
+    opacity:0;
+    transform: translateY(-6px);
+    pointer-events:none;
+    transition: opacity .2s ease, transform .2s ease;
+    z-index:80;
+  }
+
+  .desktop-dropdown[hidden]{
+    display:none;
+  }
+
+  .desktop-dropdown a{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:8px 22px;
+    white-space:nowrap;
+    text-decoration:none;
+    color:#111;
+    font-size:.9rem;
+    line-height:1.4;
+    transform:none;
+  }
+
+  .desktop-dropdown a::after{
+    content:none;
+  }
+
+  .desktop-dropdown .dropdown-label::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:-4px;
+    width:100%;
+    height:2px;
+    background: var(--brand-primary);
+    transform: translateX(-50%) scaleX(0);
+    transform-origin:center;
+    transition: transform .25s ease;
+  }
+
+  .desktop-dropdown a + a{
+    margin-top:2px;
+  }
+
+  .desktop-dropdown .dropdown-label{
+    position:relative;
+    display:inline-block;
+  }
+
+  .desktop-dropdown .dropdown-arrow{
+    opacity:0;
+    transform: translateX(6px);
+    transition: opacity .2s ease, transform .2s ease;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    margin-left:8px;
+  }
+
+    .desktop-dropdown .dropdown-arrow svg{
+    width: 12px;
+    height: 12px;
+  }
+
+  .desktop-dropdown a:hover .dropdown-arrow{
+    opacity:1;
+    transform: translateX(0);
+    color: var(--brand-primary);
+  }
+
+  .desktop-dropdown a:hover{
+    color: var(--brand-primary);
+    background:transparent;
+    transform:none;
+  }
+
+  .desktop-dropdown a:hover .dropdown-label::after{
+    transform: translateX(-50%) scaleX(1);
+  }
+
+
+  .desktop-work-group.is-open-desktop .desktop-dropdown{
+    opacity:1;
+    transform: translateY(0);
+    pointer-events:auto;
+  }
+
+  .desktop-work-group.is-open-desktop .desktop-link .caret{
+    transform: rotate(180deg);
+  }
+  /* Rotate the arrow when expanded */
+  .mobile-link[aria-expanded="true"] .arrow{
+    opacity:1;
+    transform: translateX(0) rotate(90deg);
+  }
+</style>
 <header class="site-header" id="siteHeader">
   <div class="container header-inner">
     <div class="brand">
@@ -16,7 +260,51 @@
     <nav class="desktop-nav" aria-label="Primary">
       <a href="/about/">About</a>
       <a href="/links/">Links</a>
-      <a href="/consulting/">Consulting</a>
+      <div class="desktop-work-group">
+        <button
+          class="desktop-link desktop-link--toggle"
+          type="button"
+          data-desktop-work-toggle
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
+          <span class="label">Work</span>
+          <span class="caret" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
+              <path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </button>
+        
+        <div class="desktop-dropdown" hidden>
+          <!--
+          <a href="/akamai/">
+            <span class="dropdown-label">Akamai</span>
+            <span class="dropdown-arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7 5l6 5-6 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+          -->
+          <a href="https://firemebot.com" target="_blank" rel="noopener">
+            <span class="dropdown-label">FireMeBot</span>
+            <span class="dropdown-arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7 5l6 5-6 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+          <a href="/consulting/">
+            <span class="dropdown-label">Consulting</span>
+            <span class="dropdown-arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7 5l6 5-6 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
     </nav>
 
     <div class="desktop-tools">
@@ -73,14 +361,141 @@
       </span>
     </a>
 
-    <a class="mobile-link" href="/consulting/">
-      <span class="label">Consulting</span>
-      <span class="arrow" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M7 5l6 5-6 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </span>
-    </a>
+    <div class="mobile-work-group">
+      <div
+        class="mobile-link mobile-link--toggle"
+        type="button"
+        data-mobile-work-toggle
+        aria-expanded="false"
+      >
+        <span class="label">Work</span>
+        <span class="arrow" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M7 5l6 5-6 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="mobile-submenu" hidden>
+        <!--
+        <a class="mobile-link" href="/akamai/">
+          <span class="label" style="padding-top:1.5rem;">Akamai</span>
+          <span class="arrow" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7 5l6 5-6 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      -->
+
+        <a class="mobile-link" href="https://firemebot.com" target="_blank" rel="noopener">
+          <span class="label" style="padding-top:1.5rem;">FireMeBot</span>
+          <span class="arrow" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7 5l6 5-6 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+
+        <a class="mobile-link" href="/consulting/">
+          <span class="label" style="padding-top:1.5rem;">Consulting</span>
+          <span class="arrow" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7 5l6 5-6 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
 
   </nav>
 </section>
+<script>
+  // Local script to handle desktop and mobile "Work" dropdowns
+    function closeDesktopGroup(desktopGroup) {
+      if (!desktopGroup) return;
+
+      var desktopToggle = desktopGroup.querySelector('[data-desktop-work-toggle]');
+      var desktopMenu   = desktopGroup.querySelector('.desktop-dropdown');
+      if (!desktopMenu) return;
+
+      desktopGroup.classList.remove('is-open-desktop');
+      if (desktopToggle) {
+        desktopToggle.setAttribute('aria-expanded', 'false');
+      }
+
+      // allow close animation before hiding from layout / a11y tree
+      setTimeout(function () {
+        desktopMenu.setAttribute('hidden', '');
+      }, 220);
+    }
+  document.addEventListener('click', function (e) {
+    var desktopToggle = e.target.closest('[data-desktop-work-toggle]');
+    var mobileToggle  = e.target.closest('[data-mobile-work-toggle]');
+
+    // Desktop dropdown
+    if (desktopToggle) {
+      e.preventDefault();
+
+      var desktopGroup = desktopToggle.closest('.desktop-work-group');
+      if (!desktopGroup) return;
+
+      var desktopMenu = desktopGroup.querySelector('.desktop-dropdown');
+      if (!desktopMenu) return;
+
+      var isDesktopOpen = desktopGroup.classList.contains('is-open-desktop');
+
+      if (!isDesktopOpen) {
+        // open: reveal then animate in
+        desktopMenu.removeAttribute('hidden');
+        requestAnimationFrame(function () {
+          desktopGroup.classList.add('is-open-desktop');
+        });
+        desktopToggle.setAttribute('aria-expanded', 'true');
+      } else {
+        // close: animate out then hide
+        closeDesktopGroup(desktopGroup);
+      }
+
+      return;
+    }
+
+    // Mobile dropdown
+    if (mobileToggle) {
+      e.preventDefault();
+
+      var mobileGroup = mobileToggle.closest('.mobile-work-group');
+      if (!mobileGroup) return;
+
+      var mobileMenu = mobileGroup.querySelector('.mobile-submenu');
+      if (!mobileMenu) return;
+
+      var isMobileOpen = mobileGroup.classList.contains('is-open');
+
+      if (!isMobileOpen) {
+        // Open: reveal submenu, then kick off slide animation on next frame
+        mobileMenu.removeAttribute('hidden');
+        requestAnimationFrame(function () {
+          mobileGroup.classList.add('is-open');
+        });
+        mobileToggle.setAttribute('aria-expanded', 'true');
+      } else {
+        // Close: slide up, then hide after the transition
+        mobileGroup.classList.remove('is-open');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+
+        setTimeout(function () {
+          mobileMenu.setAttribute('hidden', '');
+        }, 260); // slightly longer than the .25s CSS transition
+      }
+
+      return;
+    }
+
+    // Click outside desktop dropdown: close if open
+    var openDesktop = document.querySelector('.desktop-work-group.is-open-desktop');
+    if (openDesktop && !e.target.closest('.desktop-work-group')) {
+      closeDesktopGroup(openDesktop);
+    }
+  });
+</script>
