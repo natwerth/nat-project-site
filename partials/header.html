@@ -47,6 +47,26 @@
     transition-delay: .12s;
   }
 
+  /* Ensure mobile Work arrow is always visible */
+  .mobile-link--toggle .arrow{
+    opacity: 1;
+    transform: translateX(0);
+  }
+  /* Mobile Work arrow: black by default */
+  .mobile-link--toggle .arrow svg path{
+    stroke:#000;
+    transition: stroke .2s ease;
+  }
+
+  /* Turn brand-primary on hover */
+  .mobile-link--toggle:hover .arrow svg path{
+    stroke: var(--brand-primary);
+  }
+
+  /* Turn brand-primary when expanded */
+  .mobile-link--toggle[aria-expanded="true"] .arrow svg path{
+    stroke: var(--brand-primary);
+  }
   /* Desktop "Work" dropdown */
   .desktop-work-group{
     position:relative;
