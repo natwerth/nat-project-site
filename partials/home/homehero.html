@@ -3,7 +3,7 @@
 
  <div class="container hero-inner">
   <div class="col-text">
-   <h1 class="h-display">Nat. <em class="light-italic">Reimagined.</em></h1>
+   <h1 style="color:#000;"class="h-display">Nat. <em class="light-italic">Reimagined.</em></h1>
    <p>The world awaits. Discover more Nat right here, right now.</p>
 
    <div class="hero-cta">
@@ -37,8 +37,8 @@
   }
 
   .home-hero .hero-inner h1,
-  .home-hero .hero-inner p,
   .home-hero .hero-subtext{ color: var(--footer-text); }
+  .home-hero .hero-inner p:not(.hero-subtext){ color:#000; }
 
   @media (min-width:768px){
     .home-hero .hero-inner h1{ font-size: clamp(3rem, 5vw, 5rem); }

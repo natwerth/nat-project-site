@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nat · Akamai.</title>
+  <style>
+/* Layout */
+:root{
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --radius-lg: 14px;
+  --color-border: #e5e7eb;
+  --footer-bg: #fdf8f4;
+  --footer-text: #a09484;
+  --brand-muted: #6b7280;
+}
+@keyframes akamaiPulse{
+  0%{ transform:scale(1); box-shadow:0 0 0 0 rgba(56,189,248,0.45); }
+  70%{ transform:scale(1.04); box-shadow:0 0 0 12px rgba(56,189,248,0); }
+  100%{ transform:scale(1); box-shadow:0 0 0 0 rgba(56,189,248,0); }
+}
+@keyframes akamaiShimmer{
+  0%{ background-position:0% 50%; }
+  100%{ background-position:100% 50%; }
+}
+.c-showcase{ background: var(--footer-bg); min-height: 100vh; padding-block: clamp(20px,4vw,48px); }
+.c-showcase__inner{ max-width:1100px; margin-inline:auto; padding-inline:var(--space-4); }
+.page-title{ font-size: clamp(48px,8vw,96px); font-weight:700; }
+.c-card-grid{ display:grid; gap:var(--space-4); grid-template-columns:1fr; }
+@media (min-width:900px){ .c-card-grid{ grid-template-columns:1fr 1fr } }
+.c-card{
+  background:radial-gradient(circle at top left, #fef9c3 0, #fff 40%, #fdf2f8 100%);
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-lg);
+  box-shadow:0 14px 40px rgba(15,23,42,.12);
+  padding:clamp(16px,3vw,24px);
+  position:relative;
+  overflow:hidden;
+  transition:transform 160ms ease-out, box-shadow 160ms ease-out;
+}
+.c-card::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:radial-gradient(circle at top, rgba(59,130,246,0.12), transparent 60%);
+  opacity:0.8;
+  pointer-events:none;
+}
+
+/* Top‑right load time badges */
+.akamai-loadtime{
+  position:absolute;
+  top:12px;
+  right:16px;
+  font-size:18px;
+  font-weight:700;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(6px);
+  padding:6px 10px;
+  border-radius:999px;
+  box-shadow:0 4px 14px rgba(15,23,42,0.15);
+}
+
+/* Colors */
+.akamai-loadtime--akamai{
+  color:#22c55e;   /* green */
+}
+.akamai-loadtime--today{
+  color:#ef4444;   /* red */
+}
+
+.akamai-card{
+  background:#fff !important;
+  border-color:#cbd5e1 !important;
+}
+
+.akamai-diagram{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:var(--space-3);
+  padding:var(--space-5) var(--space-4) var(--space-4);
+  position:relative;
+}
+.akamai-diagram--compact{ padding-top:var(--space-5); }
+.akamai-node{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  font-size:13px;
+  color:#0f172a;
+}
+.akamai-node__icon{
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ffffff;
+  box-shadow:0 8px 24px rgba(15,23,42,0.18);
+}
+.akamai-node--origin .akamai-node__icon{
+  background:#020617;
+  color:#e5e7eb;
+  font-size:14px;
+}
+.akamai-node--hop .akamai-node__icon{
+  width:26px;
+  height:26px;
+  font-size:0;
+  background:#ffffff;
+  box-shadow:0 4px 14px rgba(15,23,42,0.15);
+}
+.akamai-node__label{
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+}
+.akamai-diagram__arrow{
+  font-size:18px;
+  color:#4b5563;
+}
+.akamai-gate{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+.akamai-gate__ring{
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  background:conic-gradient(from 220deg, #22d3ee, #4f46e5, #f97316, #22d3ee);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  animation:akamaiShimmer 6000ms linear infinite, akamaiPulse 2600ms ease-out infinite;
+}
+.akamai-gate__ring::before{
+  content:"";
+  width:68%;
+  height:68%;
+  border-radius:inherit;
+  background:radial-gradient(circle at top, rgba(15,23,42,0.94), #020617);
+  box-shadow:0 18px 40px rgba(15,23,42,0.72);
+}
+.akamai-gate__label{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:0.16em;
+  color:#020617;
+  margin-top:4px;
+}
+
+.akamai-metrics{
+  margin-top:var(--space-4);
+  display:flex;
+  justify-content:center;
+  gap:var(--space-4);
+  font-size:13px;
+  align-items:center;
+}
+.akamai-metric{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+}
+.akamai-metric__value{
+  font-weight:700;
+  font-size:28px;
+  line-height:1;
+}
+/* Akamai tile: first metric red, second metric green */
+.akamai-metrics .akamai-metric--akamai:nth-of-type(1) .akamai-metric__value {
+  color:#ef4444;
+}
+.akamai-metrics .akamai-metric--akamai:nth-of-type(2) .akamai-metric__value {
+  color:#22c55e;
+}
+
+/* Today tile: first metric green, second metric red */
+.akamai-metrics .akamai-metric--today:nth-of-type(1) .akamai-metric__value {
+  color:#22c55e;
+}
+.akamai-metrics .akamai-metric--today:nth-of-type(2) .akamai-metric__value {
+  color:#ef4444;
+}
+
+.nat-logo{
+  height:32px;
+  width:auto;
+  display:block;
+  color:#111;
+}
+
+/* Akamai side: logo orbits the edge and stays there */
+.akamai-gate__orbit-logo{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  animation:natOrbitAkamai 14s linear infinite;
+}
+
+@keyframes natOrbitAkamai{
+  0%{ transform:rotate(0deg); }
+  100%{ transform:rotate(360deg); }
+}
+
+/* Today side: logo travels between nodes */
+.nat-logo--today{
+  position:absolute;
+  left:calc(50% + 70px);
+  transform:translate(-50%,0px);
+  animation:natTravelToday 10s linear infinite;
+}
+
+@keyframes natTravelToday{
+  0%,10%{ transform:translate(-50%,192px); }
+  25%,35%{ transform:translate(-50%,144px); }
+  50%,60%{ transform:translate(-50%,96px); }
+  75%,85%{ transform:translate(-50%,48px); }
+  100%{ transform:translate(-50%,0px); }
+}
+  </style>
+</head>
+<body>
+  <section class="c-showcase" aria-label="Brand & Components Showcase">
+    <div class="c-showcase__inner">
+      <h1 class="page-title u-text-footer" style="margin:0 0 var(--space-5);">
+        <strong>Nat</strong> <em style="font-weight:300;">+ Akamai</em>
+      </h1>
+      <section class="akamai-fmb-hero" aria-labelledby="akamai-fmb-heading">
+  <div class="akamai-fmb-heading-wrap">
+    <h2 id="akamai-fmb-heading-top" class="akamai-fmb-copy__heading-top">
+      Why is <span class="akamai-fmb-copy__brand">FireMeBot</span>
+      so <span class="akamai-fmb-copy__slow">SLOW?</span>
+    </h2>
+  </div>
+  <div class="akamai-fmb-inner">
+    <!-- Left: FireMeBot mock UI -->
+    <div class="akamai-fmb-card">
+      <header class="akamai-fmb-card__header">
+        <div class="akamai-fmb-card__title">
+          <span class="akamai-fmb-card__product">FireMeBot</span>
+          <span class="akamai-fmb-card__tagline">Will AI replace you?</span>
+        </div>
+        <div class="akamai-fmb-card__status">Working…</div>
+      </header>
+
+      <div class="akamai-fmb-card__input-row">
+        <div class="akamai-fmb-card__input">
+          <span class="akamai-fmb-card__job">Barista</span>
+          <span class="akamai-fmb-card__score">99%</span>
+        </div>
+        <button class="akamai-fmb-card__btn" type="button">
+          Analyze
+        </button>
+      </div>
+
+      <p class="akamai-fmb-card__result">You're safe!</p>
+
+      <div class="akamai-fmb-card__logo">
+        <!-- Drop your actual SVG/logo here if you want -->
+        <span class="akamai-fmb-card__logo-mark">N✶T</span>
+        <span class="akamai-fmb-card__logo-text">natwerth.com</span>
+      </div>
+    </div>
+
+    <!-- Right: question copy (now overlaid) -->
+    <div class="akamai-fmb-copy">
+      <h2 id="akamai-fmb-heading" class="akamai-fmb-copy__heading">
+        <span class="akamai-fmb-copy__brand"></span>
+        <span class="akamai-fmb-copy__slow">!!!</span>
+      </h2>
+    </div>
+  </div>
+</section>
+
+<style>
+/* --- Layout wrapper ------------------------------------------------------ */
+
+.akamai-fmb-hero {
+  padding: clamp(2.5rem, 5vw, 4rem);
+}
+
+.akamai-fmb-inner {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  /* left/right split background */
+  background: linear-gradient(
+    to right,
+    #021b27 0 50%,
+    #020f19 50% 100%
+  );
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  min-height: clamp(14rem, 40vw, 20rem);
+}
+
+@media (max-width: 768px) {
+  .akamai-fmb-inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- FireMeBot mock card ------------------------------------------------- */
+
+.akamai-fmb-card {
+  padding: 1.75rem 2rem 1.5rem;
+  color: #e5f7f5;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .akamai-fmb-card {
+    padding: 1.5rem;
+  }
+}
+
+.akamai-fmb-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(229, 247, 245, 0.12);
+  padding-bottom: 0.5rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    sans-serif;
+}
+
+.akamai-fmb-card__product {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.akamai-fmb-card__tagline {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.65rem;
+  opacity: 0.7;
+}
+
+.akamai-fmb-card__status {
+  font-size: 0.7rem;
+  opacity: 0.75;
+}
+
+.akamai-fmb-card__input-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.akamai-fmb-card__input {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  background-color: #a9ffe8;
+  color: #042025;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  overflow: hidden;
+}
+
+.akamai-fmb-card__job {
+  padding: 0.6rem 0.75rem;
+}
+
+.akamai-fmb-card__score {
+  position: relative;
+  padding: 0.6rem 0.75rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  text-align: right;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.akamai-fmb-card__score::after {
+  /* arrow shaft */
+  content: "";
+  position: absolute;
+  left: -4.4rem;
+  top: 50%;
+  width: 4.2rem;
+  height: 0.4rem;
+  background-color: #ff4b3c;
+  border-radius: 999px;
+  transform: translateY(-50%);
+}
+
+.akamai-fmb-card__score::before {
+  /* arrow head pointing into the 99% box */
+  content: "";
+  position: absolute;
+  left: -0.2rem;
+  top: 50%;
+  transform: translate(-100%, -50%);
+  border-width: 0.7rem 0.85rem 0.7rem 0;
+  border-style: solid;
+  border-color: transparent #ff4b3c transparent transparent;
+}
+
+.akamai-fmb-card__btn {
+  padding: 0.55rem 0.9rem;
+  border-radius: 6px;
+  border: 1px solid rgba(229, 247, 245, 0.35);
+  background: transparent;
+  color: #e5f7f5;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: default; /* purely visual */
+}
+
+.akamai-fmb-card__btn:hover {
+  border-color: rgba(229, 247, 245, 0.7);
+}
+
+.akamai-fmb-card__result {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #a9ffe8;
+}
+
+.akamai-fmb-card__logo {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  opacity: 0.55;
+  font-size: 0.7rem;
+}
+
+.akamai-fmb-card__logo-mark {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.akamai-fmb-card__logo-text {
+  text-transform: lowercase;
+}
+
+/* --- Right side copy (now overlaid) ------------------------------------- */
+
+.akamai-fmb-copy {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Removed the old media query for .akamai-fmb-copy */
+
+/* --- Updated heading for dramatic overlay -------------------------------- */
+
+.akamai-fmb-copy__heading {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    sans-serif;
+  font-weight: 800;
+  line-height: 1;
+  font-size: clamp(4rem, 10vw, 6.5rem);
+  letter-spacing: 0.08em;
+  color: rgba(255, 75, 60, 0.22);
+  text-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  transform: translateY(-4%);
+}
+
+.akamai-fmb-copy__brand {
+  /* empty span, no changes */
+}
+
+.akamai-fmb-copy__slow {
+  color: #ff4b3c;
+  text-decoration: none;
+}
+
+/* --- Removed global arrow styles since .akamai-fmb-arrow element is gone --- */
+
+</style>
+        <div class="c-card-grid">
+        <div class="c-card u-bleed-mobile">
+          <div class="akamai-loadtime akamai-loadtime--today">~16,000ms</div>
+          <header class="c-section-head">
+            <h2>Today</h2>
+          </header>
+
+          <div class="akamai-diagram akamai-diagram--compact" aria-hidden="true">
+            <div class="nat-logo nat-logo--today">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -1 152.5 96.57" role="img" aria-label="Nat Werth Logo">
+                <title>Nat Werth Logo</title>
+                <path fill="currentColor" d="M13.5,30.56c18,0,27,18,27,18,0,0-9-18,9-18s18,63,0,63-27-27-27-27c0,0,9,27-9,27s-18-63,0-63h0Z"/>
+                <path fill="currentColor" d="M148.5,30.56c0,18-18,18-18,18,0,0,9,54-18,45,0,0,18-63-18-72h0c9-9,54-9,54,9Z"/>
+                <path fill="currentColor" d="M68.79,0s2.6,20.33,21.59,21.55c0,0-18.87,2.24-21.59,21.55,0,0-2.68-19.69-21.59-21.55,0,0,17.69-2.01,21.59-21.55Z"/>
+                <path fill="currentColor" d="M91.22,38.8s1.11,8.2,9.22,8.7c0,0-8.06.91-9.22,8.7,0,0-1.15-7.95-9.22-8.7,0,0,7.56-.81,9.22-8.7Z"/>
+              </svg>
+            </div>
+
+            <div class="akamai-node akamai-node--user">
+              <div class="akamai-node__icon">🌐</div>
+              <div class="akamai-node__label">You</div>
+            </div>
+
+            <div class="akamai-diagram__arrow">↑</div>
+
+            <div class="akamai-node akamai-node--hop">
+              <div class="akamai-node__icon">●</div>
+            </div>
+
+            <div class="akamai-diagram__arrow">↑</div>
+
+            <div class="akamai-node akamai-node--hop">
+              <div class="akamai-node__icon">●</div>
+            </div>
+
+            <div class="akamai-diagram__arrow">↑</div>
+
+            <div class="akamai-node akamai-node--hop">
+              <div class="akamai-node__icon">us-east-1</div>
+            </div>
+
+            <div class="akamai-diagram__arrow">↑</div>
+
+            <div class="akamai-node akamai-node--origin">
+              <div class="akamai-node__icon">◆</div>
+              <div class="akamai-node__label">Nat Werth (TM) Servers</div>
+            </div>
+          </div>
+
+          <div class="akamai-metrics">
+            <div class="akamai-metric akamai-metric--today">
+              <div class="akamai-metric__value">$</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="c-card u-bleed-mobile akamai-card">
+          <div class="akamai-loadtime akamai-loadtime--akamai">&lt;500ms</div>
+          <header class="c-section-head">
+            <h2>On Akamai</h2>
+          </header>
+
+          <div class="akamai-diagram" aria-hidden="true">
+            <div class="akamai-node akamai-node--user">
+              <div class="akamai-node__icon">🌐</div>
+              <div class="akamai-node__label">You</div>
+            </div>
+
+            <div class="akamai-diagram__arrow">↑</div>
+
+            <div class="akamai-gate">
+              <div class="akamai-gate__ring">
+                <div class="akamai-gate__orbit-logo">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -1 152.5 96.57" role="img" aria-label="Nat Werth Logo" class="nat-logo">
+                    <title>Nat Werth Logo</title>
+                    <path fill="currentColor" d="M13.5,30.56c18,0,27,18,27,18,0,0-9-18,9-18s18,63,0,63-27-27-27-27c0,0,9,27-9,27s-18-63,0-63h0Z"/>
+                    <path fill="currentColor" d="M148.5,30.56c0,18-18,18-18,18,0,0,9,54-18,45,0,0,18-63-18-72h0c9-9,54-9,54,9Z"/>
+                    <path fill="currentColor" d="M68.79,0s2.6,20.33,21.59,21.55c0,0-18.87,2.24-21.59,21.55,0,0-2.68-19.69-21.59-21.55,0,0,17.69-2.01,21.59-21.55Z"/>
+                    <path fill="currentColor" d="M91.22,38.8s1.11,8.2,9.22,8.7c0,0-8.06.91-9.22,8.7,0,0-1.15-7.95-9.22-8.7,0,0,7.56-.81,9.22-8.7Z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="akamai-gate__label">Akamai edge</div>
+            </div>
+
+            <div class="akamai-diagram__arrow">↑</div>
+
+            <div class="akamai-node akamai-node--origin">
+              <div class="akamai-node__icon">◆</div>
+              <div class="akamai-node__label">Nat Werth (TM) Servers</div>
+            </div>
+          </div>
+
+          <div class="akamai-metrics">
+            <div class="akamai-metric akamai-metric--akamai">
+              <div class="akamai-metric__value">$$$</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

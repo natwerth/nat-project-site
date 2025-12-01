@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>natwerth.com</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#a09484" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- Hamburgers animation lib (you can self-host later if you want) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hamburgers/1.2.1/hamburgers.min.css" />
+
+  <!-- Global styles first -->
+  <link rel="stylesheet" href="/assets/styles/styles.css" />
+  <link rel="stylesheet" href="/assets/styles/header.css" />
+  <link rel="stylesheet" href="/assets/styles/footer.css" />
+
+</head>
+<body>
+  <!-- Include the header partial -->
+  <div data-include="/partials/header.html"></div>
+  <!-- Header behavior -->
+  <script src="/assets/scripts/header.js" defer></script>
+  <!-- The tiny include loader -->
+  <script type="module" src="/assets/includes.js" defer></script>
+
+
+<section data-include="/partials/akamai/akamaiintro.html"></section>
+<section data-include="/partials/akamai/akamaihero.html"></section>
+
+
+
+<section data-include="/partials/footer.html"></section>
+
+</body>
+</html>
