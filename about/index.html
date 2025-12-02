@@ -15,34 +15,6 @@
   <link rel="stylesheet" href="/assets/styles/header.css" />
   <link rel="stylesheet" href="/assets/styles/footer.css" />
 
-<style id="page-chrome-clamp">
-  /* Scoped clamps: only affect About page shell */
-  .page--about {
-    box-sizing: border-box;
-    min-width: 0;
-    max-width: 100%;
-    overflow-x: hidden; /* stop page-level wobble without touching other pages */
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .page--about .content, .page--about .container, .page--about .wrap,
-  .page--about .c-card, .page--about .c-card__content, .page--about .pc-body,
-  .page--about .profile-card, .page--about .partial {
-    box-sizing: border-box;
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  /* Full-bleed guards, scoped */
-  .page--about [data-fullbleed], .page--about .fullbleed, .page--about .full-bleed {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  /* Do not block inner horizontal scrollers (your fragments) */
-  .page--about .nt-tiles__wrap { overflow-x: auto; }
-</style>
 </head>
 <body>
   <!-- Include the header partial -->

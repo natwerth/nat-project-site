@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+<style>
+:root{
+  --card-radius:16px;
+  --tile-header-h: 56px;
+  --tile-preview-h: 220px;
+  --tile-footer-h: 56px;
+}
+
+.u-text-footer{ color: var(--footer-text); }
+.c-showcase{ background: var(--footer-bg); min-height: auto; padding-block: clamp(20px,4vw,48px); }
+/* About section adjustments */
+.about{ text-align:center; background:var(--footer-bg); padding:16px; }
+
+.c-showcase__inner{ max-width:1100px; margin-inline:auto; }
+.page-title{ font-size: clamp(48px,8vw,96px); font-weight:700; padding: 0 1rem; }
+
+.c-card-grid{ display:grid; gap:var(--space-4); grid-template-columns:1fr; }
+
+.c-card{
+  background:#fff;
+  border:1px solid var(--color-border);
+  box-shadow:0 2px 4px rgba(0,0,0,.03);
+  padding:clamp(16px,3vw,24px);
+  border-radius:0;
+}
+
+@media (min-width:768px){
+  .u-bleed-mobile{
+    width:auto;
+    margin-left:0;
+    margin-right:0;
+    border-radius:var(--card-radius);
+  }
+  .c-card{
+    border-radius:var(--card-radius);
+    margin-inline: var(--space-4);
+  }
+}
+
+.c-card{ transition: box-shadow .2s ease; }
+
+.c-section-head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:var(--space-3);
+  padding-block:clamp(16px,3vw,28px);
+  margin-bottom:clamp(8px,2vw,12px);
+  border-bottom:1px dashed var(--color-border);
+}
+.c-section-head h2{
+  margin:0;
+  font-size:clamp(20px,3.5vw,24px);
+}
+.c-section-head__sub{
+  color:var(--brand-muted);
+  font-size:12px;
+  letter-spacing:.2px;
+}
+
+/* About/footer strip */
+.about{
+  background: var(--footer-bg);
+  text-align: center;
+  padding: 16px;
+}
+.about a{
+  color: var(--footer-text);
+  text-decoration: none;
+}
+.about a:hover{ text-decoration: underline; }
+
+/* Quick links horizontal carousel */
+.ql-strip{
+  margin-top: var(--space-2);
+}
+
+/* Edge-to-edge scroller with a "peek" of the next chip */
+.ql-track{
+  display:flex;
+  gap: var(--space-3);
+  overflow-x:auto;
+  padding: 4px calc(var(--space-3));
+  margin-inline: calc(-1 * var(--space-3));
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbars where possible but keep scrolling */
+.ql-track::-webkit-scrollbar{
+  height: 0;
+}
+.ql-track{
+  scrollbar-width: none;
+}
+
+/* Each chip is a large tappable pill */
+.ql-chip{
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  background: transparent;
+  text-decoration:none;
+  scroll-snap-align: center;
+  transition: transform .22s ease, box-shadow .18s ease, background .18s ease;
+  will-change: transform;
+}
+
+.ql-chip:focus-visible,
+.ql-chip:hover{
+  outline: none;
+  background: color-mix(in srgb, #ffffff 80%, transparent);
+  box-shadow:0 10px 22px rgba(0,0,0,.18);
+}
+
+.ql-chip:active{
+  box-shadow:0 4px 10px rgba(0,0,0,.12);
+}
+
+.ql-icon-wrap{
+  flex-shrink:0;
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.ql-icon-wrap i{
+  font-size:18px;
+}
+
+.ql-chip--work .ql-icon-wrap{
+  background:#111;
+  color:#fff;
+}
+.ql-chip--akamai .ql-icon-wrap{
+  background:#0a7cff;
+  color:#fff;
+}
+.ql-chip--linkedin .ql-icon-wrap{
+  background:#0A66C2;
+  color:#fff;
+}
+.ql-chip--github .ql-icon-wrap{
+  background:#181717;
+  color:#fff;
+}
+.ql-chip--x .ql-icon-wrap{
+  background:#000000;
+  color:#ffffff;
+}
+.ql-chip--instagram .ql-icon-wrap{
+  background:#C13584;
+  color:#ffffff;
+}
+.ql-chip--threads .ql-icon-wrap{
+  background:#111111;
+  color:#ffffff;
+}
+.ql-chip--tiktok .ql-icon-wrap{
+  background:#000000;
+  color:#ffffff;
+}
+.ql-chip--youtube .ql-icon-wrap{
+  background:#FF0000;
+  color:#ffffff;
+}
+.ql-chip--spotify .ql-icon-wrap{
+  background:#1DB954;
+  color:#000000;
+}
+.ql-chip--site .ql-icon-wrap{
+  background: var(--brand-primary, #111);
+  color:#ffffff;
+}
+.ql-chip--film .ql-icon-wrap{
+  background:#222222;
+  color:#ffffff;
+}
+
+@media (min-width: 768px){
+  .ql-track{
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+  .ql-chip{
+    flex: 0 0 auto;
+    min-width: 260px;
+    max-width: 280px;
+    border-radius: 18px;
+  }
+}
+</style>
+
+</head>
+
+<body>
+  <section class="c-showcase" aria-label="Brand & Components Showcase">
+    <div class="c-showcase__inner">
+      <h1 class="page-title u-text-footer" style="margin:0 0 var(--space-5);">
+        <strong>Nat.</strong> <em style="font-weight:300;">Everywhere.</em>
+      </h1>
+      <div class="c-card-grid">
+        <div class="c-card u-bleed-mobile">
+          <header class="c-section-head">
+            <h2>Quick Links</h2>
+          </header>
+
+          <div class="ql-strip">
+            <div class="ql-track" role="list">
+              <a class="ql-chip ql-chip--site" href="/" role="listitem">
+                <span class="ql-icon-wrap" aria-hidden="true">
+                  <i class="fa-solid fa-house"></i>
+                </span>
+              </a>
+
+              <a class="ql-chip ql-chip--work" href="/#work" role="listitem">
+                <span class="ql-icon-wrap" aria-hidden="true">
+                  <i class="fa-solid fa-briefcase"></i>
+                </span>
+              </a>
+
+              <a class="ql-chip ql-chip--akamai" href="/akamai" role="listitem">
+                <span class="ql-icon-wrap" aria-hidden="true">
+                  <i class="fa-solid fa-cloud-arrow-up"></i>
+                </span>
+              </a>
+
+              <a class="ql-chip ql-chip--linkedin" href="https://www.linkedin.com/in/natwerth" role="listitem">
+                <span class="ql-icon-wrap" aria-hidden="true">
+                  <i class="fa-brands fa-linkedin-in"></i>
+                </span>
+              </a>
+
+              <a class="ql-chip ql-chip--github" href="#" role="listitem">
+                <span class="ql-icon-wrap" aria-hidden="true">
+                  <i class="fa-brands fa-github"></i>
+                </span>
+              </a>
+
+              <a class="ql-chip ql-chip--x" href="#" role="listitem">
+                <span class="ql-icon-wrap" aria-hidden="true">
+                  <i class="fa-brands fa-x-twitter"></i>
+                </span>
+              </a>
+
+              <a class="ql-chip ql-chip--instagram" href="#" role="listitem">
+                <span class="ql-icon-wrap" aria-hidden="true">
+                  <i class="fa-brands fa-instagram"></i>
+                </span>
+              </a>
+
+              <a class="ql-chip ql-chip--threads" href="#" role="listitem">
+                <span class="ql-icon-wrap" aria-hidden="true">
+                  <i class="fa-brands fa-threads"></i>
+                </span>
+              </a>
+
+              <a class="ql-chip ql-chip--tiktok" href="#" role="listitem">
+                <span class="ql-icon-wrap" aria-hidden="true">
+                  <i class="fa-brands fa-tiktok"></i>
+                </span>
+              </a>
+
+              <a class="ql-chip ql-chip--youtube" href="#" role="listitem">
+                <span class="ql-icon-wrap" aria-hidden="true">
+                  <i class="fa-brands fa-youtube"></i>
+                </span>
+              </a>
+
+              <a class="ql-chip ql-chip--spotify" href="#" role="listitem">
+                <span class="ql-icon-wrap" aria-hidden="true">
+                  <i class="fa-brands fa-spotify"></i>
+                </span>
+              </a>
+
+              <a class="ql-chip ql-chip--film" href="#" role="listitem">
+                <span class="ql-icon-wrap" aria-hidden="true">
+                  <i class="fa-solid fa-film"></i>
+                </span>
+              </a>
+
+              <a class="ql-chip" href="mailto:hello@natwerth.com" role="listitem">
+                <span class="ql-icon-wrap" aria-hidden="true">
+                  <i class="fa-solid fa-envelope"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="about">
+    <p><a href="/">← Back to Homepage</a></p>
+  </section>
+  <div class="c-toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+<script>
+  (function () {
+    const track = document.querySelector('.ql-track');
+    if (!track) return;
+    const chips = Array.from(track.querySelectorAll('.ql-chip'));
+    if (!chips.length) return;
+
+    function updateParallax() {
+      const trackRect = track.getBoundingClientRect();
+      const centerX = trackRect.left + trackRect.width / 2;
+
+      chips.forEach((chip) => {
+        const rect = chip.getBoundingClientRect();
+        const chipCenter = rect.left + rect.width / 2;
+        const offset = (chipCenter - centerX) / trackRect.width; // roughly -0.5 .. 0.5
+        const distance = Math.max(-1, Math.min(1, offset * 2)); // clamp
+
+        // Dramatic parallax:
+        const scale = 1.4 - Math.min(Math.abs(distance) * 0.9, 0.9);   // center ~1.4, edges ~0.5
+        const translateY = Math.abs(distance) * 16;                     // edges sit lower
+        const depthShift = -40 * distance;                              // strong horizontal skew
+        const tilt = distance * 26;                                     // big rotateY
+
+        chip.style.transform =
+          'translateZ(0) translateX(' + depthShift.toFixed(1) + 'px) translateY(' + translateY.toFixed(1) + 'px) scale(' +
+          scale.toFixed(3) + ') rotateY(' + tilt.toFixed(1) + 'deg)';
+        chip.style.zIndex = String(1000 - Math.round(Math.abs(distance) * 600));
+      });
+    }
+
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(function () {
+          updateParallax();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    track.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', updateParallax);
+    window.addEventListener('orientationchange', updateParallax);
+
+    // initial paint
+    updateParallax();
+  })();
+</script>
+</html>
