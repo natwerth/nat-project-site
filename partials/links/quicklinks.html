@@ -192,9 +192,9 @@
       ];
 
       const baseSize   = 48;           // icon container size (matches CSS)
-      const colSpacing = baseSize * 1.6;
-      const rowSpacing = baseSize * 1.25;
-      const maxScale   = 1.45;
+      const colSpacing = baseSize * 2.6;
+      const rowSpacing = baseSize * 2.25;
+      const maxScale   = 2.45;
       const innerRadius = 60;
       const outerRadius = 260;
       const colCount    = 4;
@@ -259,7 +259,6 @@
       }
 
       viewport.addEventListener('pointerdown', (e) => {
-        // viewport.setPointerCapture(e.pointerId);
         isDragging = true;
         viewport.classList.add('is-dragging');
         lastPointerX = e.clientX;
@@ -298,11 +297,6 @@
         if (!isDragging) return;
         isDragging = false;
         viewport.classList.remove('is-dragging');
-        /*
-        if (e && e.pointerId != null){
-          viewport.releasePointerCapture(e.pointerId);
-        }
-        */
       }
 
       viewport.addEventListener('pointerup', endDrag);
