@@ -254,7 +254,7 @@
 
       let springTargetX = null;
       let springTargetY = null;
-      const EDGE_PULL = 32;           // how far back from the hard edge to snap
+      const EDGE_PULL = 52;           // how far back from the hard edge to snap
       const SPRING_TIGHTNESS = 0.18;  // how quickly it eases into place
 
       function updatePointerLocal(e){
@@ -322,7 +322,7 @@
         requestAnimationFrame(animate);
 
         if (!isDragging){
-          const friction = 0.9; // slightly snappier than 0.92
+          const friction = 0.3; // slightly snappier than 0.92
           velocityX *= friction;
           velocityY *= friction;
           if (Math.abs(velocityX) < 0.01) velocityX = 0;
