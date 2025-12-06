@@ -75,132 +75,61 @@
 }
 .about a:hover{ text-decoration: underline; }
 
-/* Quick links horizontal carousel */
-.ql-strip{
-  margin-top: var(--space-2);
+.ql-viewport{
+  position:relative;
+  overflow:hidden;
+  margin-top:var(--space-4);
+  block-size:260px;
+  border-radius:var(--card-radius);
+  border:1px dashed var(--color-border);
+  background:#fff;
+  touch-action:none;
+  cursor:grab;
 }
-
-/* Edge-to-edge scroller with a "peek" of the next chip */
-.ql-track{
-  display:flex;
-  gap: var(--space-3);
-  overflow-x:auto;
-  padding: 4px calc(var(--space-3));
-  margin-inline: calc(-1 * var(--space-3));
-  scroll-snap-type:x mandatory;
-  -webkit-overflow-scrolling: touch;
+.ql-viewport.is-dragging{
+  cursor:grabbing;
 }
-
-/* Hide scrollbars where possible but keep scrolling */
-.ql-track::-webkit-scrollbar{
-  height: 0;
+.ql-canvas{
+  position:absolute;
+  inset:0;
 }
-.ql-track{
-  scrollbar-width: none;
-}
-
-/* Each chip is a large tappable pill */
-.ql-chip{
-  flex: 0 0 auto;
-  width: 52px;
-  height: 52px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:999px;
-  background: transparent;
-  text-decoration:none;
-  scroll-snap-align: center;
-  transition: transform .22s ease, box-shadow .18s ease, background .18s ease;
-  will-change: transform;
-}
-
-.ql-chip:focus-visible,
-.ql-chip:hover{
-  outline: none;
-  background: color-mix(in srgb, #ffffff 80%, transparent);
-  box-shadow:0 10px 22px rgba(0,0,0,.18);
-}
-
-.ql-chip:active{
-  box-shadow:0 4px 10px rgba(0,0,0,.12);
-}
-
-.ql-icon-wrap{
-  flex-shrink:0;
-  width:44px;
-  height:44px;
+.ql-icon{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:48px;
+  height:48px;
   border-radius:999px;
   display:flex;
   align-items:center;
   justify-content:center;
-}
-
-.ql-icon-wrap i{
-  font-size:18px;
-}
-
-.ql-chip--work .ql-icon-wrap{
   background:#111;
   color:#fff;
+  text-decoration:none;
+  box-shadow:0 6px 16px rgba(0,0,0,.22);
+  will-change:transform;
 }
-.ql-chip--akamai .ql-icon-wrap{
-  background:#0a7cff;
+.ql-icon i{
+  font-size:20px;
+  line-height:1;
   color:#fff;
 }
-.ql-chip--linkedin .ql-icon-wrap{
-  background:#0A66C2;
-  color:#fff;
+.ql-icon:focus-visible{
+  outline:2px solid var(--brand-primary);
+  outline-offset:3px;
 }
-.ql-chip--github .ql-icon-wrap{
-  background:#181717;
-  color:#fff;
-}
-.ql-chip--x .ql-icon-wrap{
-  background:#000000;
-  color:#ffffff;
-}
-.ql-chip--instagram .ql-icon-wrap{
-  background:#C13584;
-  color:#ffffff;
-}
-.ql-chip--threads .ql-icon-wrap{
-  background:#111111;
-  color:#ffffff;
-}
-.ql-chip--tiktok .ql-icon-wrap{
-  background:#000000;
-  color:#ffffff;
-}
-.ql-chip--youtube .ql-icon-wrap{
-  background:#FF0000;
-  color:#ffffff;
-}
-.ql-chip--spotify .ql-icon-wrap{
-  background:#1DB954;
-  color:#000000;
-}
-.ql-chip--site .ql-icon-wrap{
-  background: var(--brand-primary, #111);
-  color:#ffffff;
-}
-.ql-chip--film .ql-icon-wrap{
-  background:#222222;
-  color:#ffffff;
+.u-visually-hidden{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0 0 0 0);
+  white-space:nowrap;
+  border:0;
 }
 
-@media (min-width: 768px){
-  .ql-track{
-    margin-inline: 0;
-    padding-inline: 0;
-  }
-  .ql-chip{
-    flex: 0 0 auto;
-    min-width: 260px;
-    max-width: 280px;
-    border-radius: 18px;
-  }
-}
 </style>
 
 </head>
@@ -215,88 +144,18 @@
         <div class="c-card u-bleed-mobile">
           <header class="c-section-head">
             <h2>Quick Links</h2>
+            <div class="c-section-head__sub">Drag to scroll.</div>
           </header>
-
-          <div class="ql-strip">
-            <div class="ql-track" role="list">
-              <a class="ql-chip ql-chip--site" href="/" role="listitem">
-                <span class="ql-icon-wrap" aria-hidden="true">
-                  <i class="fa-solid fa-house"></i>
-                </span>
-              </a>
-
-              <a class="ql-chip ql-chip--work" href="/#work" role="listitem">
-                <span class="ql-icon-wrap" aria-hidden="true">
-                  <i class="fa-solid fa-briefcase"></i>
-                </span>
-              </a>
-
-              <a class="ql-chip ql-chip--akamai" href="/akamai" role="listitem">
-                <span class="ql-icon-wrap" aria-hidden="true">
-                  <i class="fa-solid fa-cloud-arrow-up"></i>
-                </span>
-              </a>
-
-              <a class="ql-chip ql-chip--linkedin" href="https://www.linkedin.com/in/natwerth" role="listitem">
-                <span class="ql-icon-wrap" aria-hidden="true">
-                  <i class="fa-brands fa-linkedin-in"></i>
-                </span>
-              </a>
-
-              <a class="ql-chip ql-chip--github" href="#" role="listitem">
-                <span class="ql-icon-wrap" aria-hidden="true">
-                  <i class="fa-brands fa-github"></i>
-                </span>
-              </a>
-
-              <a class="ql-chip ql-chip--x" href="#" role="listitem">
-                <span class="ql-icon-wrap" aria-hidden="true">
-                  <i class="fa-brands fa-x-twitter"></i>
-                </span>
-              </a>
-
-              <a class="ql-chip ql-chip--instagram" href="#" role="listitem">
-                <span class="ql-icon-wrap" aria-hidden="true">
-                  <i class="fa-brands fa-instagram"></i>
-                </span>
-              </a>
-
-              <a class="ql-chip ql-chip--threads" href="#" role="listitem">
-                <span class="ql-icon-wrap" aria-hidden="true">
-                  <i class="fa-brands fa-threads"></i>
-                </span>
-              </a>
-
-              <a class="ql-chip ql-chip--tiktok" href="#" role="listitem">
-                <span class="ql-icon-wrap" aria-hidden="true">
-                  <i class="fa-brands fa-tiktok"></i>
-                </span>
-              </a>
-
-              <a class="ql-chip ql-chip--youtube" href="#" role="listitem">
-                <span class="ql-icon-wrap" aria-hidden="true">
-                  <i class="fa-brands fa-youtube"></i>
-                </span>
-              </a>
-
-              <a class="ql-chip ql-chip--spotify" href="#" role="listitem">
-                <span class="ql-icon-wrap" aria-hidden="true">
-                  <i class="fa-brands fa-spotify"></i>
-                </span>
-              </a>
-
-              <a class="ql-chip ql-chip--film" href="#" role="listitem">
-                <span class="ql-icon-wrap" aria-hidden="true">
-                  <i class="fa-solid fa-film"></i>
-                </span>
-              </a>
-
-              <a class="ql-chip" href="mailto:hello@natwerth.com" role="listitem">
-                <span class="ql-icon-wrap" aria-hidden="true">
-                  <i class="fa-solid fa-envelope"></i>
-                </span>
-              </a>
-            </div>
+          <div class="ql-viewport" id="ql-viewport" aria-label="Quick link grid" role="group">
+            <div class="ql-canvas" id="ql-canvas"></div>
+            <ul class="u-visually-hidden" id="ql-a11y-list">
+              <li><a href="#" aria-label="GitHub profile">GitHub</a></li>
+              <li><a href="#" aria-label="LinkedIn profile">LinkedIn</a></li>
+              <li><a href="#" aria-label="Instagram profile">Instagram</a></li>
+              <li><a href="#" aria-label="X profile">X</a></li>
+              <li><a href="#" aria-label="Email Nat">Email</a></li>
+              <li><a href="#" aria-label="Portfolio site">Portfolio</a></li>
+            </ul>
           </div>
         </div>
       </div>
@@ -306,54 +165,178 @@
     <p><a href="/">← Back to Homepage</a></p>
   </section>
   <div class="c-toast" id="toast" role="status" aria-live="polite"></div>
-</body>
-<script>
-  (function () {
-    const track = document.querySelector('.ql-track');
-    if (!track) return;
-    const chips = Array.from(track.querySelectorAll('.ql-chip'));
-    if (!chips.length) return;
+  <script>
+    (function(){
+      const viewport = document.getElementById('ql-viewport');
+      const canvas = document.getElementById('ql-canvas');
+      if (!viewport || !canvas) return;
 
-    function updateParallax() {
-      const trackRect = track.getBoundingClientRect();
-      const centerX = trackRect.left + trackRect.width / 2;
+      const ICON_DATA = [
+        { icon: 'fa-brands fa-github',      href: '#', label: 'GitHub',      color: '#181717' },
+        { icon: 'fa-brands fa-linkedin-in', href: '#', label: 'LinkedIn',    color: '#0A66C2' },
+        { icon: 'fa-brands fa-instagram',   href: '#', label: 'Instagram',   color: '#737373' }, // multi-color, neutral grey
+        { icon: 'fa-solid fa-envelope',     href: '#', label: 'Email',       color: '#4B5563' },
+        { icon: 'fa-brands fa-x-twitter',   href: '#', label: 'X',           color: '#000000' },
+        { icon: 'fa-solid fa-globe',        href: '#', label: 'Portfolio',   color: '#4B5563' },
+        { icon: 'fa-brands fa-spotify',     href: '#', label: 'Spotify',     color: '#1DB954' },
+        { icon: 'fa-brands fa-letterboxd',  href: '#', label: 'Letterboxd',  color: '#4B5563' },
+        { icon: 'fa-brands fa-youtube',     href: '#', label: 'YouTube',     color: '#FF0000' },
+        { icon: 'fa-brands fa-discord',     href: '#', label: 'Discord',     color: '#5865F2' }
+      ];
 
-      chips.forEach((chip) => {
-        const rect = chip.getBoundingClientRect();
-        const chipCenter = rect.left + rect.width / 2;
-        const offset = (chipCenter - centerX) / trackRect.width; // roughly -0.5 .. 0.5
-        const distance = Math.max(-1, Math.min(1, offset * 2)); // clamp
+      const baseSize   = 48;           // icon container size (matches CSS)
+      const colSpacing = baseSize * 1.6;
+      const rowSpacing = baseSize * 1.25;
+      const maxScale   = 1.45;
+      const innerRadius = 60;
+      const outerRadius = 260;
+      const colCount    = 4;
 
-        // Dramatic parallax:
-        const scale = 1.4 - Math.min(Math.abs(distance) * 0.9, 0.9);   // center ~1.4, edges ~0.5
-        const translateY = Math.abs(distance) * 16;                     // edges sit lower
-        const depthShift = -40 * distance;                              // strong horizontal skew
-        const tilt = distance * 26;                                     // big rotateY
+      const icons = [];
 
-        chip.style.transform =
-          'translateZ(0) translateX(' + depthShift.toFixed(1) + 'px) translateY(' + translateY.toFixed(1) + 'px) scale(' +
-          scale.toFixed(3) + ') rotateY(' + tilt.toFixed(1) + 'deg)';
-        chip.style.zIndex = String(1000 - Math.round(Math.abs(distance) * 600));
-      });
-    }
+      ICON_DATA.forEach((data, index) => {
+        const row = Math.floor(index / colCount);
+        const col = index % colCount;
 
-    let ticking = false;
-    function onScroll() {
-      if (!ticking) {
-        window.requestAnimationFrame(function () {
-          updateParallax();
-          ticking = false;
+        const xOffset = (col - (colCount - 1) / 2) * colSpacing;
+        const stagger = (row % 2 === 0 ? 0 : colSpacing / 2);
+        const x = xOffset + stagger;
+        const y = (row - 1) * rowSpacing; // center-ish cluster
+
+        const a = document.createElement('a');
+        a.href = data.href;
+        a.className = 'ql-icon';
+        a.style.backgroundColor = data.color || '#111';
+        a.setAttribute('aria-label', data.label);
+        a.innerHTML = '<i class="' + data.icon + '"></i>';
+
+        canvas.appendChild(a);
+
+        icons.push({
+          x,
+          y,
+          el: a
         });
-        ticking = true;
+      });
+
+      let offsetX = 0;
+      let offsetY = 0;
+      let velocityX = 0;
+      let velocityY = 0;
+      let isDragging = false;
+      let lastPointerX = 0;
+      let lastPointerY = 0;
+      let lastMoveTime = 0;
+
+      let pointerLocalX = 0;
+      let pointerLocalY = 0;
+      let usePointerFocal = false;
+
+      function updatePointerLocal(e){
+        const rect = viewport.getBoundingClientRect();
+        pointerLocalX = e.clientX - rect.left - rect.width / 2;
+        pointerLocalY = e.clientY - rect.top - rect.height / 2;
       }
-    }
 
-    track.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', updateParallax);
-    window.addEventListener('orientationchange', updateParallax);
+      viewport.addEventListener('pointerdown', (e) => {
+        viewport.setPointerCapture(e.pointerId);
+        isDragging = true;
+        viewport.classList.add('is-dragging');
+        lastPointerX = e.clientX;
+        lastPointerY = e.clientY;
+        lastMoveTime = performance.now();
+        velocityX = 0;
+        velocityY = 0;
+        if (e.pointerType === 'mouse'){
+          updatePointerLocal(e);
+          usePointerFocal = true;
+        }
+      });
 
-    // initial paint
-    updateParallax();
-  })();
-</script>
+      viewport.addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'mouse'){
+          updatePointerLocal(e);
+          usePointerFocal = true;
+        }
+        if (!isDragging) return;
+        const now = performance.now();
+        const dt = now - lastMoveTime || 16;
+        const dx = e.clientX - lastPointerX;
+        const dy = e.clientY - lastPointerY;
+        lastPointerX = e.clientX;
+        lastPointerY = e.clientY;
+        lastMoveTime = now;
+
+        offsetX += dx;
+        offsetY += dy;
+
+        velocityX = dx / dt * 16;
+        velocityY = dy / dt * 16;
+      });
+
+      function endDrag(e){
+        if (!isDragging) return;
+        isDragging = false;
+        viewport.classList.remove('is-dragging');
+        if (e && e.pointerId != null){
+          viewport.releasePointerCapture(e.pointerId);
+        }
+      }
+
+      viewport.addEventListener('pointerup', endDrag);
+      viewport.addEventListener('pointercancel', endDrag);
+      viewport.addEventListener('pointerleave', (e) => {
+        if (!isDragging){
+          usePointerFocal = false;
+        }
+      });
+
+      function smoothStep(t){
+        return t * t * (3 - 2 * t);
+      }
+
+      function animate(){
+        requestAnimationFrame(animate);
+
+        if (!isDragging){
+          const friction = 0.92;
+          velocityX *= friction;
+          velocityY *= friction;
+          if (Math.abs(velocityX) < 0.01) velocityX = 0;
+          if (Math.abs(velocityY) < 0.01) velocityY = 0;
+          offsetX += velocityX;
+          offsetY += velocityY;
+        }
+
+        const focalX = usePointerFocal ? pointerLocalX : 0;
+        const focalY = usePointerFocal ? pointerLocalY : 0;
+
+        icons.forEach(icon => {
+          const localX = icon.x + offsetX;
+          const localY = icon.y + offsetY;
+
+          const dx = localX - focalX;
+          const dy = localY - focalY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          let scale = 1;
+          if (dist <= innerRadius){
+            scale = maxScale;
+          } else if (dist >= outerRadius){
+            scale = 1;
+          } else {
+            const t = (dist - innerRadius) / (outerRadius - innerRadius);
+            const s = smoothStep(Math.min(Math.max(t, 0), 1));
+            scale = maxScale + (1 - maxScale) * s;
+          }
+
+          const transform = 'translate(' + localX + 'px,' + localY + 'px) scale(' + scale + ') translate(-50%, -50%)';
+          icon.el.style.transform = transform;
+        });
+      }
+
+      animate();
+    })();
+  </script>
+</body>
 </html>
