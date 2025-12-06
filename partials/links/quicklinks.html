@@ -114,6 +114,11 @@
   line-height:1;
   color:#fff;
 }
+.ql-icon img{
+  max-width:70%;
+  max-height:70%;
+  display:block;
+}
 .ql-icon:focus-visible{
   outline:2px solid var(--brand-primary);
   outline-offset:3px;
@@ -172,16 +177,18 @@
       if (!viewport || !canvas) return;
 
       const ICON_DATA = [
-        { icon: 'fa-brands fa-github',      href: '#', label: 'GitHub',      color: '#181717' },
-        { icon: 'fa-brands fa-linkedin-in', href: '#', label: 'LinkedIn',    color: '#0A66C2' },
-        { icon: 'fa-brands fa-instagram',   href: '#', label: 'Instagram',   color: '#737373' }, // multi-color, neutral grey
+        { icon: 'fa-solid fa-code-branch',  href: 'https://github.com/natwerth', label: 'GitHub',      color: '#181717' },
+        { icon: 'fa-solid fa-location-dot', href: 'https://www.google.com/maps/contrib/111567881794706653052/reviews/@29.8835804,-104.4037173,3z/data=!3m1!4b1!4m3!8m2!3m1!1e1?authuser=1&entry=ttu&g_ep=EgoyMDI1MDkxMC4wIKXMDSoASAFQAw%3D%3D', label: 'Google Maps', color: '#34A853' },
+        { icon: 'fa-brands fa-linkedin-in', href: 'https://www.linkedin.com/in/nat-werth', label: 'LinkedIn',    color: '#0A66C2' },
+        { icon: 'fa-brands fa-instagram',   href: 'https://www.instagram.com/natwerth',    label: 'Instagram',   color: '#e1306c' }, // multi-color, neutral grey
         { icon: 'fa-solid fa-envelope',     href: '#', label: 'Email',       color: '#4B5563' },
-        { icon: 'fa-brands fa-x-twitter',   href: '#', label: 'X',           color: '#000000' },
+        { icon: '', href: 'https://venmo.com/u/natwerth', label: 'Venmo', color: '#3d95ce', img: '/assets/icons/venmo.png' },
         { icon: 'fa-solid fa-globe',        href: '#', label: 'Portfolio',   color: '#4B5563' },
-        { icon: 'fa-brands fa-spotify',     href: '#', label: 'Spotify',     color: '#1DB954' },
-        { icon: 'fa-brands fa-letterboxd',  href: '#', label: 'Letterboxd',  color: '#4B5563' },
-        { icon: 'fa-brands fa-youtube',     href: '#', label: 'YouTube',     color: '#FF0000' },
-        { icon: 'fa-brands fa-discord',     href: '#', label: 'Discord',     color: '#5865F2' }
+        { icon: 'fa-brands fa-spotify',     href: 'https://open.spotify.com/user/zedbikc30wyo6bjpgvugo24pp?si=8RK2YWJOTwCy-F28WXOhJQ&nd=1&dlsi=b7b2a6b2e27444dc', label: 'Spotify',     color: '#1DB954' },
+        { icon: 'fa-brands fa-letterboxd',  href: 'https://letterboxd.com/natwerth',       label: 'Letterboxd',  color: '#ff7034' },
+        { icon: 'fa-brands fa-youtube',     href: 'https://www.youtube.com/@natwerth5512', label: 'YouTube',     color: '#FF0000' },
+        { icon: 'fa-brands fa-tiktok',      href: 'https://www.tiktok.com/@natwerth3',     label: 'TikTok',      color: '#40e0d0' },
+        { icon: 'fa-brands fa-facebook-f',  href: 'https://facebook.com/natwerth',         label: 'Facebook',    color: '#0866ff' },
       ];
 
       const baseSize   = 48;           // icon container size (matches CSS)
@@ -212,10 +219,16 @@
 
         const a = document.createElement('a');
         a.href = data.href;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
         a.className = 'ql-icon';
         a.style.backgroundColor = data.color || '#111';
         a.setAttribute('aria-label', data.label);
-        a.innerHTML = '<i class="' + data.icon + '"></i>';
+        if (data.img){
+          a.innerHTML = '<img src="' + data.img + '" alt="" />';
+        } else {
+          a.innerHTML = '<i class="' + data.icon + '"></i>';
+        }
 
         canvas.appendChild(a);
 
@@ -246,7 +259,7 @@
       }
 
       viewport.addEventListener('pointerdown', (e) => {
-        viewport.setPointerCapture(e.pointerId);
+        // viewport.setPointerCapture(e.pointerId);
         isDragging = true;
         viewport.classList.add('is-dragging');
         lastPointerX = e.clientX;
@@ -285,9 +298,11 @@
         if (!isDragging) return;
         isDragging = false;
         viewport.classList.remove('is-dragging');
+        /*
         if (e && e.pointerId != null){
           viewport.releasePointerCapture(e.pointerId);
         }
+        */
       }
 
       viewport.addEventListener('pointerup', endDrag);
@@ -319,13 +334,13 @@
         const rect = viewport.getBoundingClientRect();
         const halfW = rect.width / 2;
         const halfH = rect.height / 2;
-        const marginX = baseSize * maxScale;
-        const marginY = baseSize * maxScale;
+        const marginX = baseSize * 0.1;
+        const marginY = baseSize * 0.1;
 
-        const minOffsetX = -halfW - marginX - maxX;
-        const maxOffsetX =  halfW + marginX - minX;
-        const minOffsetY = -halfH - marginY - maxY;
-        const maxOffsetY =  halfH + marginY - minY;
+        const minOffsetX = -halfW + marginX - minX;
+        const maxOffsetX =  halfW - marginX - maxX;
+        const minOffsetY = -halfH + marginY - minY;
+        const maxOffsetY =  halfH - marginY - maxY;
 
         // apply simple bounce when hitting edges
         const bounce = 0.35;
@@ -370,7 +385,6 @@
           icon.el.style.transform = transform;
         });
       }
-
       animate();
     })();
   </script>
