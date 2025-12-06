@@ -192,9 +192,9 @@
       ];
 
       const baseSize   = 48;           // icon container size (matches CSS)
-      const colSpacing = baseSize * 2.6;
-      const rowSpacing = baseSize * 2.25;
-      const maxScale   = 2.45;
+      const colSpacing = baseSize * 1.6;
+      const rowSpacing = baseSize * 1.25;
+      const maxScale   = 1.45;
       const innerRadius = 60;
       const outerRadius = 260;
       const colCount    = 4;
@@ -252,6 +252,11 @@
       let pointerLocalY = 0;
       let usePointerFocal = false;
 
+      let springTargetX = null;
+      let springTargetY = null;
+      const EDGE_PULL = 32;           // how far back from the hard edge to snap
+      const SPRING_TIGHTNESS = 0.18;  // how quickly it eases into place
+
       function updatePointerLocal(e){
         const rect = viewport.getBoundingClientRect();
         pointerLocalX = e.clientX - rect.left - rect.width / 2;
@@ -260,6 +265,8 @@
 
       viewport.addEventListener('pointerdown', (e) => {
         isDragging = true;
+        springTargetX = null;
+        springTargetY = null;
         viewport.classList.add('is-dragging');
         lastPointerX = e.clientX;
         lastPointerY = e.clientY;
@@ -336,21 +343,50 @@
         const minOffsetY = -halfH + marginY - minY;
         const maxOffsetY =  halfH - marginY - maxY;
 
-        // apply simple bounce when hitting edges
-        const bounce = 0.35;
-        if (offsetX < minOffsetX){
-          offsetX = minOffsetX;
-          velocityX = -velocityX * bounce;
-        } else if (offsetX > maxOffsetX){
-          offsetX = maxOffsetX;
-          velocityX = -velocityX * bounce;
-        }
-        if (offsetY < minOffsetY){
-          offsetY = minOffsetY;
-          velocityY = -velocityY * bounce;
-        } else if (offsetY > maxOffsetY){
-          offsetY = maxOffsetY;
-          velocityY = -velocityY * bounce;
+        // clamp to hard canvas bounds
+        if (offsetX < minOffsetX) offsetX = minOffsetX;
+        else if (offsetX > maxOffsetX) offsetX = maxOffsetX;
+        if (offsetY < minOffsetY) offsetY = minOffsetY;
+        else if (offsetY > maxOffsetY) offsetY = maxOffsetY;
+
+        // when the user lets go on an edge, gently spring back inward
+        if (!isDragging){
+          const almostStoppedX = Math.abs(velocityX) < 0.05;
+          const almostStoppedY = Math.abs(velocityY) < 0.05;
+
+          if (springTargetX == null && almostStoppedX){
+            if (offsetX <= minOffsetX + 0.5){
+              springTargetX = minOffsetX + EDGE_PULL;
+            } else if (offsetX >= maxOffsetX - 0.5){
+              springTargetX = maxOffsetX - EDGE_PULL;
+            }
+          }
+          if (springTargetY == null && almostStoppedY){
+            if (offsetY <= minOffsetY + 0.5){
+              springTargetY = minOffsetY + EDGE_PULL;
+            } else if (offsetY >= maxOffsetY - 0.5){
+              springTargetY = maxOffsetY - EDGE_PULL;
+            }
+          }
+
+          if (springTargetX != null){
+            const dx = springTargetX - offsetX;
+            offsetX += dx * SPRING_TIGHTNESS;
+            velocityX = 0;
+            if (Math.abs(dx) < 0.5){
+              offsetX = springTargetX;
+              springTargetX = null;
+            }
+          }
+          if (springTargetY != null){
+            const dy = springTargetY - offsetY;
+            offsetY += dy * SPRING_TIGHTNESS;
+            velocityY = 0;
+            if (Math.abs(dy) < 0.5){
+              offsetY = springTargetY;
+              springTargetY = null;
+            }
+          }
         }
 
         const focalX = usePointerFocal ? pointerLocalX : 0;
