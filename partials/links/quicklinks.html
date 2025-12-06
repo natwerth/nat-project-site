@@ -193,6 +193,7 @@
       const colCount    = 4;
 
       const icons = [];
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
 
       ICON_DATA.forEach((data, index) => {
         const row = Math.floor(index / colCount);
@@ -202,6 +203,12 @@
         const stagger = (row % 2 === 0 ? 0 : colSpacing / 2);
         const x = xOffset + stagger;
         const y = (row - 1) * rowSpacing; // center-ish cluster
+
+        // track virtual bounds of the icon cluster
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
 
         const a = document.createElement('a');
         a.href = data.href;
@@ -299,13 +306,42 @@
         requestAnimationFrame(animate);
 
         if (!isDragging){
-          const friction = 0.92;
+          const friction = 0.9; // slightly snappier than 0.92
           velocityX *= friction;
           velocityY *= friction;
           if (Math.abs(velocityX) < 0.01) velocityX = 0;
           if (Math.abs(velocityY) < 0.01) velocityY = 0;
           offsetX += velocityX;
           offsetY += velocityY;
+        }
+
+        // compute effective canvas bounds based on icon cluster and viewport size
+        const rect = viewport.getBoundingClientRect();
+        const halfW = rect.width / 2;
+        const halfH = rect.height / 2;
+        const marginX = baseSize * maxScale;
+        const marginY = baseSize * maxScale;
+
+        const minOffsetX = -halfW - marginX - maxX;
+        const maxOffsetX =  halfW + marginX - minX;
+        const minOffsetY = -halfH - marginY - maxY;
+        const maxOffsetY =  halfH + marginY - minY;
+
+        // apply simple bounce when hitting edges
+        const bounce = 0.35;
+        if (offsetX < minOffsetX){
+          offsetX = minOffsetX;
+          velocityX = -velocityX * bounce;
+        } else if (offsetX > maxOffsetX){
+          offsetX = maxOffsetX;
+          velocityX = -velocityX * bounce;
+        }
+        if (offsetY < minOffsetY){
+          offsetY = minOffsetY;
+          velocityY = -velocityY * bounce;
+        } else if (offsetY > maxOffsetY){
+          offsetY = maxOffsetY;
+          velocityY = -velocityY * bounce;
         }
 
         const focalX = usePointerFocal ? pointerLocalX : 0;
