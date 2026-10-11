@@ -11,7 +11,7 @@
   background: transparent; color: #555; cursor: pointer; font: inherit; font-size: 12px;
 }
 .site-search-results {
-  position: absolute; top: calc(100% + 14.8px); right: 0;
+  position: absolute; top: calc(100% + 15px); right: 0;
   width: min(420px, calc(100vw - 32px)); max-height: min(65vh, 520px);
   overflow: auto; overscroll-behavior: contain; box-sizing: border-box;
   border: 1px solid #ebebeb; border-radius: 12px; padding: 4px 8px 8px;

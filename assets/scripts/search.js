@@ -444,7 +444,12 @@
       }
     });
     form.addEventListener('focusout', () => {
-      setTimeout(() => { if (!form.contains(document.activeElement)) close(); }, 0);
+      // Mobile results remain visible when the keyboard is dismissed.
+      if (mobile) return;
+
+      setTimeout(() => {
+        if (!form.contains(document.activeElement)) close();
+      }, 0);
     });
     bindings.set(form, { close, mobile });
   }
