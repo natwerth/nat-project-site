@@ -82,7 +82,7 @@
     position:fixed;
     left:0; right:0;
     top: calc(var(--menu-viewport-top, 0px) + var(--header-h));
-    height: max(0px, calc(var(--menu-viewport-height, 100dvh) - var(--header-h)));
+    height: max(0px, calc(100lvh - var(--header-h)));
     background: var(--frost);
     -webkit-backdrop-filter: blur(var(--blur));
     backdrop-filter: blur(var(--blur));

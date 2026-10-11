@@ -22,6 +22,11 @@
 .xy-page-title{ font-size: clamp(28px,4.5vw,40px); font-weight:700; padding: 0 1rem; }
 
 .c-card-grid{ display:grid; gap:var(--space-4); grid-template-columns:1fr; }
+/* Keep the animation flush with the card on mobile, with more space on desktop. */
+.c-card-grid--experiments{ row-gap:0; }
+@media (min-width:768px){
+  .c-card-grid--experiments{ row-gap: 48px; }
+}
 
 .c-card{ background:#fff; border:1px solid var(--color-border); box-shadow:0 2px 4px rgba(0,0,0,.03); padding:clamp(16px,3vw,24px); border-radius:0; }
 @media (min-width:768px){
@@ -211,7 +216,7 @@
   <section class="c-showcase" aria-label="Brand & Components Showcase">
     <div class="c-showcase__inner">
       <h1 class="xy-page-title u-text-footer" style="margin:0 0 var(--space-5);">About Nat</h1>
-      <div class="c-card-grid">
+      <div class="c-card-grid c-card-grid--experiments">
         <div class="c-card c-card--experiments u-bleed-mobile">
 
 
@@ -221,6 +226,7 @@
           <section data-include="experiments/news.html"></section>
           <section data-include="experiments/quotes.html"></section>
         </div>
+        <section data-include="experiments/logo-gradient-animation.html"></section>
       </div>
     </div>
   </section>
