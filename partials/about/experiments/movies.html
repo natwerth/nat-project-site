@@ -1,0 +1,25 @@
+<!-- Shared carousel assets are loaded by aboutexperiments.html. -->
+<section class="carousel-section">
+  <h2 class="carousel__heading">Movies</h2>
+  <div class="carousel carousel--movies" data-carousel role="group" aria-roledescription="carousel" aria-label="Movies">
+    <p class="carousel__message" data-movie-message role="status" aria-live="polite">Latest reviews from Letterboxd.</p>
+    <noscript><p class="carousel__message">Enable JavaScript to load movie reviews.</p></noscript>
+    <div class="carousel__view" hidden>
+      <ul class="carousel__track" role="list" aria-label="Movie reviews" tabindex="0">
+      </ul>
+    </div>
+    <div class="carousel__controls" hidden>
+      <div class="carousel__arrows">
+        <button class="carousel__arrow" data-carousel-prev type="button" aria-label="Previous tile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg>
+        </button>
+        <button class="carousel__arrow" data-carousel-next type="button" aria-label="Next tile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg>
+        </button>
+      </div>
+      <div class="carousel__dots" role="group" aria-label="Choose a tile"></div>
+    </div>
+    <p class="carousel__status" role="status" aria-live="polite" aria-atomic="true"></p>
+  </div>
+</section>
+<script type="module" src="/assets/scripts/movies.js"></script>

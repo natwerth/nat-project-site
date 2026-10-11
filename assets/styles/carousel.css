@@ -1,0 +1,362 @@
+/* Shared carousel. Override these variables on an individual .carousel. */
+.carousel-section {
+  min-width: 0;
+  max-width: 100%;
+  padding-block: var(--space-6, 24px);
+  background: #fff;
+}
+
+.carousel {
+  --carousel-background: #f1f2f3;
+  --carousel-surface: #fff;
+  --carousel-border: #d3d7db;
+  --carousel-control-background: #f8f9fa;
+  --carousel-control-hover: #e4e7eb;
+  --carousel-accent: #505b67;
+  --carousel-muted: #727c87;
+  --carousel-dot: #b5bdc6;
+  --carousel-dot-active: #7a8591;
+  --carousel-text: #252b32;
+  --carousel-gutter: 1rem;
+  --carousel-gap: 1rem;
+  --carousel-tile-width: min(85%, 360px);
+  --carousel-hover-scale: 1.03;
+  --carousel-hover-room: 24px;
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  /* Keep the scroll track out of ancestor grid sizing. */
+  contain: inline-size;
+  overflow: hidden;
+  background: var(--carousel-background);
+  color: var(--carousel-text);
+  border: 1px solid var(--carousel-border);
+  border-radius: var(--radius-md, 12px);
+}
+
+.carousel *, .carousel *::before, .carousel *::after {
+  box-sizing: border-box;
+}
+
+.carousel-section > .carousel__heading {
+  color: var(--carousel-muted, #727c87);
+  padding: 0;
+  margin: 0 0 16px;
+  font-size: clamp(26px, 3vw, 32px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.carousel__view { min-width: 0; }
+.carousel__view[hidden], .carousel__message[hidden] { display: none; }
+
+.carousel__track {
+  display: flex;
+  align-items: stretch;
+  gap: var(--carousel-gap);
+  list-style: none;
+  width: 100%;
+  margin: 0;
+  padding: var(--carousel-hover-room) var(--carousel-gutter);
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--carousel-gutter);
+  /* Let native scrolling handle horizontal swipes, vertical pans, and zoom. */
+  touch-action: auto;
+}
+
+.carousel__track::-webkit-scrollbar { display: none; }
+
+.carousel__slide {
+  flex: 0 0 var(--carousel-tile-width);
+  min-width: 0;
+  display: flex;
+  position: relative;
+  scroll-snap-align: start;
+}
+
+.carousel__slide:focus-within { z-index: 1; }
+
+.carousel__tile {
+  width: 100%;
+  min-width: 0;
+  padding: var(--space-4, 16px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-3, 12px);
+  background: var(--carousel-surface);
+  border: 1px solid var(--carousel-border);
+  border-radius: var(--radius-md, 12px);
+  box-shadow:var(--shadow-sm, 0 6px 20px rgba(0,0,0,0.2));
+  overflow-wrap: anywhere;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+/* Transform only the inner tile, keeping slide geometry and snap points fixed. */
+@media (hover: hover) and (pointer: fine) {
+  .carousel__slide:hover { z-index: 1; }
+  .carousel__tile:hover {
+    transform: scale(var(--carousel-hover-scale));
+    box-shadow: var(--shadow-sm, 0 6px 20px rgba(0,0,0,0.2));
+  }
+}
+
+.carousel__tile:focus-within {
+  transform: scale(var(--carousel-hover-scale));
+  box-shadow:var(--shadow-sm, 0 6px 20px rgba(0,0,0,0.2));
+}
+
+.carousel__text {
+  font-size: clamp(1rem, 0.96rem + 0.3vw, 1.125rem);
+  line-height: 1.6;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.carousel__name {
+  font-weight: 700;
+  margin: 0.25rem 0 1rem;
+}
+
+.carousel .carousel__more {
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid #007E4C;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: #fff;
+  color: #19945f;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 220ms ease, border-color 220ms ease, color 220ms ease;
+}
+
+.carousel .carousel__more:hover {
+  background: #19945F;
+  border-color: #19945F;
+  color: #fff;
+}
+
+.carousel__controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 0 var(--carousel-gutter) var(--carousel-gutter);
+}
+
+.carousel__controls[hidden] { display: none; }
+.carousel__arrows { display: flex; flex: 0 0 auto; gap: 8px; }
+
+.carousel__arrow, .carousel__dot {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.carousel__arrow {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--carousel-border);
+  border-radius: 50%;
+  background: var(--carousel-control-background);
+  color: var(--carousel-accent);
+  transition: background 180ms ease;
+}
+
+.carousel__arrow svg { width: 26px; height: 26px; }
+.carousel__arrow:hover:not(:disabled) { background: var(--carousel-control-hover); }
+.carousel__arrow:disabled { opacity: 0.35; cursor: default; }
+
+.carousel__dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0;
+  min-width: 0;
+  margin-inline-start: auto;
+}
+
+.carousel__dot {
+  width: 24px;
+  height: 44px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--carousel-dot);
+}
+
+.carousel__dot::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background: currentColor;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.carousel__dot[aria-current="true"] { color: var(--carousel-dot-active); }
+
+.carousel :is(.carousel__arrow, .carousel__dot, .carousel__more, .carousel__track, a.carousel__tile):focus-visible {
+  outline: 2px solid var(--carousel-accent);
+  outline-offset: 3px;
+}
+
+.carousel__track:focus-visible { outline-offset: -3px !important; }
+
+.carousel__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Content variants share the same slide sizes, surface, and controls. */
+.carousel .carousel__title {
+  margin: 0;
+  color: var(--carousel-text);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.carousel .carousel__tile--news {
+  padding: 0;
+  gap: 0;
+  justify-content: flex-start;
+  overflow: hidden;
+  color: var(--carousel-text);
+  text-decoration: none;
+}
+
+.carousel__media {
+  display: block;
+  flex: 0 0 auto;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--carousel-border);
+}
+
+.carousel__media img { width: 100%; height: 100%; object-fit: cover; }
+.carousel__body { padding: var(--space-4, 16px); }
+.carousel__meta { display: grid; gap: 8px; }
+.carousel__source {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  color: var(--carousel-muted);
+  font-size: 0.8125rem;
+}
+.carousel__source img { width: 22px; height: auto; }
+.carousel__source time { white-space: nowrap; }
+
+.carousel .carousel__tile--movie {
+  justify-content: flex-start;
+  color: var(--carousel-text);
+  text-decoration: none;
+}
+.carousel__slide--all {
+  flex-basis: min(var(--carousel-tile-width), 180px);
+}
+
+.carousel .carousel__tile--all {
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: var(--carousel-dot);
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+  /* Empty space in the tile should not activate the generic tile hover. */
+  transform: none;
+  transition: transform 180ms ease, box-shadow 180ms ease, color 220ms ease;
+}
+.carousel .carousel__tile--all:is(:has(> svg:hover, > span:hover), :focus-visible) {
+  color: var(--carousel-dot-active);
+  transform: scale(var(--carousel-hover-scale));
+}
+.carousel__tile--all:is(:has(> svg:hover, > span:hover), :focus-visible) > span {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.carousel__tile--all svg { width: 80px; height: 80px; }
+.carousel__movie-header { display: flex; align-items: flex-start; gap: 12px; }
+.carousel__movie-details { min-width: 0; }
+.carousel__poster {
+  flex: 0 0 72px;
+  width: 72px;
+  height: 108px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--carousel-border);
+}
+.carousel__rating { margin: 8px 0 0; font-size: 0.875rem; }
+.carousel__excerpt {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.carousel__movie-footer { display: grid; justify-items: start; gap: 12px; margin-top: auto; }
+.carousel__review-date { color: var(--carousel-muted); font-size: 0.8125rem; }
+.carousel__message { margin: 0; padding: var(--carousel-gutter); }
+.carousel__footer { padding: 0 var(--carousel-gutter) var(--carousel-gutter); text-align: center; }
+.carousel .carousel__connect {
+  background: #0072b1;
+  border-color: #0072b1;
+  border-radius: var(--radius-md); /* more square */
+  color: #fff;
+  justify-content: center;
+  max-width: 100%;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight:600;
+  line-height: 1.2;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.carousel .carousel__connect:hover { transform: scale(var(--carousel-hover-scale)); background: #1d80b6; border-color: #1d80b6; }
+
+@media (max-width: 767px) {
+  .carousel__media { aspect-ratio: 1 / 1; }
+}
+
+@media (min-width: 768px) {
+  .carousel { --carousel-tile-width: min(45%, 340px); }
+}
+
+@media (min-width: 1024px) {
+  .carousel {
+    --carousel-tile-width: min(30%, 360px);
+    --carousel-gap: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel__tile, .carousel__arrow, .carousel .carousel__more,
+  .carousel .carousel__tile--all { transition: none; }
+  .carousel__tile:hover, .carousel__tile:focus-within,
+  .carousel .carousel__tile--all:is(:has(> svg:hover, > span:hover), :focus-visible) { transform: none; }
+}

@@ -94,3 +94,16 @@
   // If the header was already there for some reason:
   initHeader();
 })();
+
+// Shared site search: loaded once on every page that uses this header.
+(() => {
+  if (document.getElementById('siteSearchScript')) return;
+  const styles = document.createElement('link');
+  styles.rel = 'stylesheet';
+  styles.href = '/assets/styles/search.css';
+  document.head.append(styles);
+  const script = document.createElement('script');
+  script.id = 'siteSearchScript';
+  script.src = '/assets/scripts/search.js';
+  document.head.append(script);
+})();

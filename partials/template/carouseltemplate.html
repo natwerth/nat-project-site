@@ -1,0 +1,76 @@
+<!-- Duplicate this partial and replace the heading and tile contents.
+     Shared styles and behavior are loaded here; keep these asset paths.
+     Optional per-carousel overrides: --carousel-gutter, --carousel-gap,
+     --carousel-tile-width, --carousel-hover-scale, --carousel-accent. -->
+<link rel="stylesheet" href="/assets/styles/carousel.css">
+<section class="carousel-section">
+  <h3 class="carousel__heading">h3</h3>
+  <div class="carousel" data-carousel role="group" aria-roledescription="carousel" aria-label="Showcase">
+    <div class="carousel__view">
+      <ul class="carousel__track" role="list" aria-label="Carousel tiles" tabindex="0">
+        <li class="carousel__slide">
+          <div class="carousel__tile">
+            <p class="carousel__text">“…Nat executed and communicated extremely well, took direction to refine his work, and ultimately presented and trained on what he had accomplished. I would absolutely recommend Nat.”</p>
+            <div>
+              <p class="carousel__name">– A. Weil</p>
+              <a href="https://www.linkedin.com/in/nat-werth/details/recommendations/" class="carousel__more" target="_blank" rel="noopener">See more →</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="carousel__slide">
+          <div class="carousel__tile">
+            <p class="carousel__text">“I wholeheartedly recommend [Nat] for his skills, focus, fast learning abilities, and because he is a pleasure to work with.”</p>
+            <div>
+              <p class="carousel__name">– S. Dummer</p>
+              <a href="https://www.linkedin.com/in/nat-werth/details/recommendations/" class="carousel__more" target="_blank" rel="noopener">See more →</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="carousel__slide">
+          <div class="carousel__tile">
+            <p class="carousel__text">“Admirable”</p>
+            <div>
+              <p class="carousel__name">– TIME Magazine</p>
+              <a href="https://time.com/5603056/high-school-graduation-speeches-censored/" class="carousel__more" target="_blank" rel="noopener">See more →</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="carousel__slide">
+          <div class="carousel__tile">
+            <p class="carousel__text">“Always standing with you.”</p>
+            <div>
+              <p class="carousel__name">– J. Lopez</p>
+              <a href="https://twitter.com/JLo/status/1147265042892709895" class="carousel__more" target="_blank" rel="noopener">See more →</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="carousel__slide">
+          <div class="carousel__tile">
+            <p class="carousel__text">“Moving on”</p>
+            <div>
+              <p class="carousel__name">– The Sheboygan Press</p>
+              <a href="https://www.sheboyganpress.com/story/news/2019/05/30/sheboygan-lutheran-valedictorian-says-speech-homosexuality-nixed/1225636001/" class="carousel__more" target="_blank" rel="noopener">See more →</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="carousel__controls" hidden>
+      <div class="carousel__arrows">
+        <button class="carousel__arrow" data-carousel-prev type="button" aria-label="Previous tile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg>
+        </button>
+        <button class="carousel__arrow" data-carousel-next type="button" aria-label="Next tile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg>
+        </button>
+      </div>
+      <div class="carousel__dots" role="group" aria-label="Choose a tile"></div>
+    </div>
+    <p class="carousel__status" role="status" aria-live="polite" aria-atomic="true"></p>
+  </div>
+</section>
+<script type="module" src="/assets/scripts/carousel.js"></script>
