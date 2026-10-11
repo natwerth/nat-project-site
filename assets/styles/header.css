@@ -1,6 +1,13 @@
-/* HEADER COMPONENT */
-  /* depends on variables from /assets/styles.css: --frost, --blur, --brand-primary, --brand-accent, --header-h */
-  .site-header{
+/* Header/menu layout and interactions. Keep search-specific styles in search.css. */
+:root {
+  --menu-underline-height: 1.5px;
+  --menu-underline-radius: 999px;
+  --menu-underline-duration: .25s;
+  --menu-motion-duration: .2s;
+}
+
+/* Header, navigation, search fields, and mobile panel layout. */
+.site-header{
     position: sticky; top:0; z-index:60;
     background: var(--frost);
     -webkit-backdrop-filter: blur(var(--blur)); backdrop-filter: blur(var(--blur));
@@ -17,24 +24,13 @@
   }
   .brand img{ height:32px; display:block; }
 
-
-  /* Desktop nav */
   .desktop-nav{ display:none; }
   .desktop-nav > a{
     margin-left:32px; text-decoration:none; color:#111;
     font-weight:400; font-size:.95rem; letter-spacing:.01em;
-    position:relative; transition: color .2s ease, transform .2s ease;
+    position:relative; transition: color var(--menu-motion-duration) ease;
   }
-  .desktop-nav a::after{
-    content:""; position:absolute; left:50%; bottom:-6px; width:100%; height:2px;
-    background: var(--brand-primary);
-    transform: translateX(-50%) scaleX(0); transform-origin:center;
-    transition: transform .25s ease;
-  }
-  .desktop-nav a:hover{ color: var(--brand-primary); transform: scale(1.05); }
-  .desktop-nav a:hover::after{ transform: translateX(-50%) scaleX(1); }
 
-  /* Desktop tools / search */
   .desktop-tools{ display:none; align-items:center; gap:12px; margin-left:24px; }
   .search-button{
     position:relative; width:36px; height:36px; border:0; background:transparent; cursor:pointer; padding:0;
@@ -58,12 +54,11 @@
   .site-header.search-open .desktop-search{ width:240px; opacity:1; }
   @media (min-width:1100px){ .site-header.search-open .desktop-search{ width:300px; } }
 
-  /* Burger (uses hamburgers.css for animation; this only sizes/color) */
   .hamburger{
     width:36px; height:36px; display:grid; place-items:center;
     line-height:0; appearance:none; background:none; border:0; padding:0; cursor:pointer; touch-action:manipulation;
     position: relative;
-    top: 6px; /* shift icon down slightly without affecting box */
+    top: 6px; -webkit-tap-highlight-color: transparent;
   }
 .hamburger-box{ width:36px; height:36px; margin:0; display:grid; place-items:center; }
 .hamburger--spring.is-active .hamburger-box{ transform: none; }
@@ -71,7 +66,6 @@
   background-color:#000 !important; width:24px; height:2.5px; border-radius:2px; margin-top: 0 auto;
 }
 
-  /* Backdrop */
   .backdrop{
     position:fixed; left:0; right:0; top:0; height:0; z-index:20;
     background: rgba(255,255,255,0.01);
@@ -83,7 +77,6 @@
     .backdrop{ background: rgba(255,255,255,0.96); }
   }
 
-  /* Mobile panel */
   .mobile-panel{
     position:fixed;
     left:0; right:0; bottom:0;
@@ -112,8 +105,6 @@
     backdrop-filter: blur(var(--blur));
   }
 
-
-  /* Mobile search */
   .mobile-search{ width:100%; margin-bottom:8px; margin-top:8px; }
   .mobile-search input{
     font-size:16px; width:100%; padding:10px 14px; border:1px solid #ccc; border-radius:9999px; outline:none;
@@ -121,72 +112,309 @@
   }
   .mobile-search input:focus-visible{ outline:none; border-color: var(--brand-accent); box-shadow:none; }
 
-  /* Fix: keep the mobile search from overflowing the panel */
-  .mobile-panel nav .mobile-search{ 
+  .mobile-panel nav .mobile-search{
     width: 100%;
-    min-width: 0;           /* allow flex child to shrink */
-    padding-inline: 0;      /* avoid inherited side padding pushing width */
+    min-width: 0;
+    padding-inline: 0;
   }
   .mobile-panel nav .mobile-search input{
-    box-sizing: border-box; /* include padding/border in width calc */
+    box-sizing: border-box;
     width: 100%;
     max-width: 100%;
-    display: block;         /* no inline spacing surprises */
+    display: block;
   }
 
-  /* Mobile links */
   .mobile-link{
     display:flex; align-items:center; justify-content:space-between; gap:16px; padding:4px 0; color:#111; text-decoration:none;
   }
   .mobile-link .label{
-    position:relative; display:inline-block; font-weight:600; font-size:1.5rem; transition: color .2s ease;
+    position:relative; display:inline-block; font-weight:600; font-size:1.5rem; transition: color var(--menu-motion-duration) ease;
   }
-  .mobile-link .label::after{
-    content:""; position:absolute; left:50%; bottom:-4px; width:100%; height:2px; background: var(--brand-primary);
-    transform: translateX(-50%) scaleX(0); transform-origin:center; transition: transform .25s ease;
-  }
+
   .mobile-link .arrow{
     width:20px; text-align:right; color: var(--brand-primary);
-    opacity:0; transform: translateX(6px); transition: opacity .2s ease, transform .2s ease;
+    opacity:0; transform: translateX(6px); transition: opacity var(--menu-motion-duration) ease, transform var(--menu-motion-duration) ease;
   }
-  .mobile-link:hover .label{ color: var(--brand-primary); }
-  .mobile-link:hover .label::after{ transform: translateX(-50%) scaleX(1); }
-  .mobile-link:hover .arrow{ opacity:1; transform: translateX(0); }
 
-  /* Admin bar offsets (kept for parity) */
   body.admin-bar .site-header{ top:36px; }
   @media (max-width:782px){ body.admin-bar .site-header{ top:46px; } }
   body.admin-bar .mobile-panel nav{ padding-top: calc(var(--safe-top) + 16px); }
   @media (max-width:782px){ body.admin-bar .mobile-panel nav{ padding-top: calc(var(--safe-top) + 16px); } }
 
-  /* Responsive visibility */
   @media (min-width:768px){
     .hamburger{ display:none; }
     .desktop-nav{ display:flex; }
     .desktop-tools{ display:flex; }
   }
 
-  /* 1) Keep the viewport as the scroll container by default */
   html, body { overflow: visible !important; }
 
-  /* Lock the page when the mobile menu is open */
   html.menu-open,
   body.menu-open{
-    overflow: hidden !important;     /* stop background scroll */
-    height: 100dvh;                  /* eliminate extra scroll area on iOS */
-    overscroll-behavior: none;       /* prevent scroll chaining/bounce */
-    -webkit-overflow-scrolling: auto;/* disable momentum behind the panel */
+    overflow: hidden !important;
+    height: 100dvh;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: auto;
   }
 
-  /* Belt-and-suspenders: kill touch scroll on page content while menu is open */
   html.menu-open body{ touch-action: none; }
 
-  /* 2) Kill legacy/global locks that aren’t the menu */
   html.no-scroll:not(.menu-open),
   body.no-scroll:not(.menu-open) { overflow: visible !important; }
 
-  /* 3) Header gets its own layer so iOS can’t cull it while heavy sections animate */
   .site-header { transform: translateZ(0); backface-visibility: hidden; }
 
-  /* 4) Make sure the FAB from the projects partial can’t photobomb the menu */
   html.menu-open .fmb-sticky { display: none !important; }
+
+/* Work submenu layout; moved from partials/header.html. */
+.mobile-work-group{
+    margin-top:8px;
+    margin-bottom:8px;
+  }
+
+  .mobile-link--toggle{
+    cursor:pointer;
+  }
+
+  .mobile-submenu{
+    margin-left:12px;
+    padding-top:4px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    pointer-events:none;
+  }
+
+  .mobile-submenu[hidden]{
+    display:none;
+  }
+
+  .mobile-submenu .mobile-link{
+    transform: translateY(-12px);
+    opacity:0;
+    transition: opacity .25s ease, transform .25s ease;
+  }
+
+  .mobile-work-group.is-open .mobile-submenu{
+    pointer-events:auto;
+  }
+  .mobile-work-group.is-open .mobile-submenu .mobile-link{
+    transform: translateY(0);
+    opacity:1;
+  }
+
+  .mobile-work-group.is-open .mobile-submenu .mobile-link:nth-child(1){
+    transition-delay: 0s;
+  }
+  .mobile-work-group.is-open .mobile-submenu .mobile-link:nth-child(2){
+    transition-delay: .06s;
+  }
+  .mobile-work-group.is-open .mobile-submenu .mobile-link:nth-child(3){
+    transition-delay: .12s;
+  }
+
+  .mobile-link--toggle .arrow{
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .mobile-link--toggle .arrow svg path{
+    stroke:#000;
+    transition: stroke var(--menu-motion-duration) ease;
+  }
+
+  .mobile-link--toggle:is(:hover, :focus-visible) .arrow svg path{
+    stroke: var(--brand-primary);
+  }
+
+  .mobile-link--toggle[aria-expanded="true"] .arrow svg path{
+    stroke: var(--brand-primary);
+  }
+
+  .desktop-work-group{
+    position:relative;
+    display:inline-block;
+    margin-left:32px;
+  }
+
+  .desktop-link{
+    background:none;
+    border:0;
+    padding:0;
+    cursor:pointer;
+
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+
+    font:inherit;
+    color:#111;
+  }
+
+  .desktop-link .caret{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    transition: transform var(--menu-motion-duration) ease, color var(--menu-motion-duration) ease;
+  }
+
+  .desktop-link--toggle .label{
+    position:relative;
+    font-weight:400;
+    font-size:.95rem;
+    letter-spacing:.01em;
+    transition: color var(--menu-motion-duration) ease;
+  }
+
+  .desktop-dropdown{
+
+    position:absolute;
+    top:calc(100% + 18px);
+    left:0;
+    min-width:220px;
+
+    padding:8px 0;
+    background:#fff;
+    border-radius:12px;
+    border:1px solid #ebebeb;
+    box-shadow:0 8px 10px rgba(0,0,0,.05);
+
+    opacity:0;
+    transform: translateY(-6px);
+    pointer-events:none;
+    transition: opacity var(--menu-motion-duration) ease, transform var(--menu-motion-duration) ease;
+    z-index:80;
+  }
+
+  .desktop-dropdown[hidden]{
+    display:none;
+  }
+
+  .desktop-dropdown a{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:8px 22px;
+    white-space:nowrap;
+    text-decoration:none;
+    color:#111;
+    font-size:.9rem;
+    line-height:1.4;
+    transition: color var(--menu-motion-duration) ease;
+  }
+
+  .desktop-dropdown a + a{
+    margin-top:2px;
+  }
+
+  .desktop-dropdown .dropdown-label{
+    position:relative;
+    display:inline-block;
+  }
+
+  .desktop-dropdown .dropdown-arrow{
+    opacity:0;
+    transform: translateX(6px);
+    transition: opacity var(--menu-motion-duration) ease, transform var(--menu-motion-duration) ease;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    margin-left:8px;
+  }
+
+    .desktop-dropdown .dropdown-arrow svg{
+    width: 12px;
+    height: 12px;
+  }
+
+  .desktop-work-group.is-open-desktop .desktop-dropdown{
+    opacity:1;
+    transform: translateY(0);
+    pointer-events:auto;
+  }
+
+  .desktop-work-group.is-open-desktop .desktop-link .caret{
+    transform: rotate(180deg);
+  }
+
+
+
+/* One underline definition for navigation, submenu labels, and mobile labels.
+   Search uses the same tokens in search.css, with its own scoped selectors. */
+.desktop-nav > a,
+.desktop-link--toggle { --menu-underline-offset: -6px; }
+.desktop-dropdown .dropdown-label,
+.mobile-link .label { --menu-underline-offset: -4px; }
+
+.desktop-link--toggle { position: relative; }
+
+.desktop-nav > a::after,
+.desktop-link--toggle::after,
+.desktop-dropdown .dropdown-label::after,
+.mobile-link .label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: var(--menu-underline-offset);
+  width: 100%;
+  height: var(--menu-underline-height);
+  border-radius: var(--menu-underline-radius);
+  background: var(--brand-primary);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--menu-underline-duration) ease;
+}
+
+.desktop-nav > a:is(:hover, :focus-visible)::after,
+.desktop-link--toggle:is(:hover, :focus-visible)::after,
+.desktop-dropdown a:is(:hover, :focus-visible) .dropdown-label::after,
+.mobile-link:is(:hover, :focus-visible) .label::after {
+  transform: scaleX(1);
+}
+
+.desktop-nav > a:is(:hover, :focus-visible),
+.desktop-link--toggle:is(:hover, :focus-visible) .label,
+.desktop-dropdown a:is(:hover, :focus-visible),
+.mobile-link:is(:hover, :focus-visible) .label {
+  color: var(--brand-primary);
+}
+
+.desktop-dropdown a:is(:hover, :focus-visible) .dropdown-arrow,
+.mobile-link:is(:hover, :focus-visible) .arrow {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--brand-primary);
+}
+
+.desktop-link--toggle:is(:hover, :focus-visible) .caret {
+  color: var(--brand-primary);
+}
+.desktop-work-group:not(.is-open-desktop) .desktop-link--toggle:is(:hover, :focus-visible) .caret {
+  transform: translateY(1px);
+}
+/* Preserve the mobile Work arrow's expanded direction even during hover. */
+.mobile-link[aria-expanded="true"] .arrow {
+  opacity: 1;
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desktop-nav > a,
+  .desktop-link--toggle .label,
+  .desktop-nav > a::after,
+  .desktop-link--toggle::after,
+  .desktop-dropdown,
+  .desktop-dropdown a,
+  .desktop-dropdown .dropdown-label::after,
+  .desktop-dropdown .dropdown-arrow,
+  .desktop-link .caret,
+  .mobile-link .label,
+  .mobile-link .label::after,
+  .mobile-link .arrow,
+  .mobile-link--toggle .arrow svg path,
+  .mobile-submenu .mobile-link {
+    transition: none;
+  }
+}

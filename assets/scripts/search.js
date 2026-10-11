@@ -180,28 +180,156 @@
     let revision = 0;
     let timer;
     let composing = false;
+    let fadeAnimation;
+    let heightAnimation;
+    let closing = false;
+    let closePromise = Promise.resolve(true);
+
+    function motionOptions() {
+      const reduced = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches;
+
+      const value = getComputedStyle(panel)
+        .getPropertyValue('--menu-motion-duration')
+        .trim() || '.2s';
+
+      const milliseconds = parseFloat(value) *
+        (value.endsWith('ms') ? 1 : 1000);
+
+      return {
+        duration: reduced ? 0 : milliseconds,
+        easing: 'ease'
+      };
+    }
+
+    function setUpdating(updating) {
+      panel.setAttribute('aria-busy', String(updating));
+      panel.inert = updating;
+    }
+
+    function show() {
+      const needsEntrance = panel.hidden || closing;
+
+      const start = panel.hidden
+        ? { opacity: 0, transform: 'translateY(-6px)' }
+        : {
+            opacity: getComputedStyle(panel).opacity,
+            transform: getComputedStyle(panel).transform
+          };
+
+      closing = false;
+      fadeAnimation?.cancel();
+      fadeAnimation = undefined;
+      panel.hidden = false;
+
+      if (mobile) {
+        form.parentElement.classList.add('site-searching');
+      }
+
+      if (needsEntrance) {
+        fadeAnimation = panel.animate(
+          [start, { opacity: 1, transform: 'translateY(0)' }],
+          motionOptions()
+        );
+      }
+    }
+
+    function updateResults(changeContent) {
+      // Capture the currently visible height, even during an animation.
+      const oldHeight = panel.getBoundingClientRect().height;
+
+      heightAnimation?.cancel();
+
+      // Apply all content changes together, then measure their natural size.
+      changeContent();
+
+      const newHeight = panel.getBoundingClientRect().height;
+
+      if (Math.abs(newHeight - oldHeight) > 1) {
+        heightAnimation = panel.animate(
+          [
+            { height: `${oldHeight}px` },
+            { height: `${newHeight}px` }
+          ],
+          motionOptions()
+        );
+      }
+    }
 
     function close() {
       revision++;
       clearTimeout(timer);
-      panel.hidden = true;
-      if (mobile) form.parentElement.classList.remove('site-searching');
+
+      if (closing) return closePromise;
+      if (panel.hidden) return Promise.resolve(true);
+
+      closing = true;
+      panel.inert = true;
+      panel.setAttribute('aria-busy', 'false');
+
+      const start = {
+        opacity: getComputedStyle(panel).opacity,
+        transform: getComputedStyle(panel).transform
+      };
+
+      fadeAnimation?.cancel();
+
+      const exit = panel.animate(
+        [start, { opacity: 0, transform: 'translateY(-6px)' }],
+        { ...motionOptions(), fill: 'forwards' }
+      );
+
+      fadeAnimation = exit;
+
+      closePromise = exit.finished.catch(() => {}).then(() => {
+        // A new search may have interrupted this closing animation.
+        if (!closing || fadeAnimation !== exit) return false;
+
+        panel.hidden = true;
+        closing = false;
+        exit.cancel();
+        fadeAnimation = undefined;
+
+        heightAnimation?.cancel();
+        heightAnimation = undefined;
+
+        if (mobile) {
+          form.parentElement.classList.remove('site-searching');
+        }
+
+        return true;
+      });
+
+      return closePromise;
     }
+
+    form.addEventListener('site-search:close', event => {
+      event.detail.finished = close();
+    });
 
     async function render() {
       clearTimeout(timer);
       const current = ++revision;
       const query = normalize(input.value).toLowerCase();
+
       clear.hidden = !input.value;
-      list.replaceChildren();
-      retry.hidden = true;
-      panel.hidden = false;
-      if (mobile) form.parentElement.classList.toggle('site-searching', !!query);
+
       if (!query) {
-        status.textContent = 'Type a word or phrase to search this site.';
+        close();
         return;
       }
-      status.textContent = 'Searching…';
+
+      // Only show a loading message for a newly opened, empty panel.
+      // Existing results stay visible until their replacements are ready.
+      if (panel.hidden) {
+        list.replaceChildren();
+        retry.hidden = true;
+        status.textContent = 'Searching…';
+      }
+
+      show();
+      setUpdating(true);
       const { pages, incomplete } = await loadIndex();
       if (current !== revision) return;
       const score = page => {
@@ -210,44 +338,85 @@
       };
       const matches = pages.filter(page => page.title.toLowerCase().includes(query) || page.lower.includes(query))
         .sort((a, b) => score(a) - score(b) || a.title.localeCompare(b.title));
-      status.textContent = pages.length === 0 ? 'Search could not load. Please try again.'
-        : matches.length ? `${matches.length} ${matches.length === 1 ? 'page' : 'pages'} found.`
-          : `No matches for “${normalize(input.value)}”. Try a shorter word or phrase.`;
-      if (incomplete && pages.length) status.textContent += ' Some content is unavailable; results may be incomplete.';
-      retry.hidden = !incomplete;
-      for (const page of matches) {
-        const item = document.createElement('li');
-        const link = document.createElement('a');
-        link.className = 'site-search-result';
-        link.href = page.url;
-        const title = document.createElement('strong');
-        title.append(highlighted(page.title, query));
-        const summary = document.createElement('span');
-        summary.className = 'site-search-excerpt';
-        summary.append(highlighted(excerpt(page, query), query));
-        const path = document.createElement('span');
-        path.className = 'site-search-path';
-        path.textContent = page.url;
-        link.append(title, summary, path);
-        item.append(link);
-        list.append(item);
-      }
+      updateResults(() => {
+        status.textContent = pages.length === 0
+          ? 'Search could not load. Please try again.'
+          : matches.length
+            ? `${matches.length} ${
+                matches.length === 1 ? 'page' : 'pages'
+              } found.`
+            : `No matches for “${normalize(input.value)}”. Try a shorter word or phrase.`;
+
+        if (incomplete && pages.length) {
+          status.textContent +=
+            ' Some content is unavailable; results may be incomplete.';
+        }
+
+        retry.hidden = !incomplete;
+
+        const fragment = document.createDocumentFragment();
+
+        for (const page of matches) {
+          const item = document.createElement('li');
+
+          const link = document.createElement('a');
+          link.className = 'site-search-result';
+          link.href = page.url;
+
+          const title = document.createElement('strong');
+          title.append(highlighted(page.title, query));
+
+          const summary = document.createElement('span');
+          summary.className = 'site-search-excerpt';
+          summary.append(highlighted(excerpt(page, query), query));
+
+          const path = document.createElement('span');
+          path.className = 'site-search-path';
+          path.textContent = page.url;
+
+          link.append(title, summary, path);
+          item.append(link);
+          fragment.append(item);
+        }
+
+        list.replaceChildren(fragment);
+        panel.scrollTop = 0;
+      });
+
+      setUpdating(false);  
     }
 
-    input.addEventListener('focus', () => { loadIndex(); if (panel.hidden) render(); });
+    input.addEventListener('focus', () => {
+      loadIndex();
+
+      if (panel.hidden || closing) {
+        render();
+      }
+    });
+
     input.addEventListener('input', () => {
       revision++;
       clearTimeout(timer);
       clear.hidden = !input.value;
-      // Remove stale links immediately while the new query is being prepared.
-      list.replaceChildren();
-      retry.hidden = true;
+
+      // Keep existing results visible, but prevent stale selections.
+      setUpdating(true);
+
       if (!composing) {
-        if (!normalize(input.value)) render();
-        else timer = setTimeout(render, 180);
+        if (!normalize(input.value)) {
+          render();
+        } else {
+          timer = setTimeout(render, 180);
+        }
       }
     });
-    input.addEventListener('compositionstart', () => { composing = true; clearTimeout(timer); });
+
+    input.addEventListener('compositionstart', () => {
+      composing = true;
+      revision++;
+      clearTimeout(timer);
+      setUpdating(true);
+    });
     input.addEventListener('compositionend', () => { composing = false; render(); });
     form.addEventListener('submit', event => { event.preventDefault(); if (!composing) render(); });
     clear.addEventListener('click', () => { input.value = ''; input.focus(); render(); });
@@ -261,7 +430,11 @@
         button?.click();
         document.getElementById(mobile ? 'menuToggle' : 'searchToggle')?.focus();
       }
-      if ((event.key === 'ArrowDown' || event.key === 'ArrowUp') && !panel.hidden) {
+      if (
+        (event.key === 'ArrowDown' || event.key === 'ArrowUp') &&
+        !panel.hidden &&
+        !panel.inert
+      ) {
         const links = [...list.querySelectorAll('a')];
         if (!links.length || (event.target !== input && !links.includes(event.target))) return;
         event.preventDefault();

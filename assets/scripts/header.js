@@ -41,21 +41,55 @@
   }
   function toggleMenu(){ (panel()?.classList.contains('open') ? closePanel : openPanel)(); }
 
+  let searchAction = 0;
+
   function openSearch(){
     const h = header(); const sb = searchBtn();
     if (!h || !sb) return;
+    searchAction++;
+    const form = document.getElementById('desktopSearch');
+    if (form) form.inert = false;
     h.classList.add('search-open');
     sb.setAttribute('aria-expanded','true'); sb.setAttribute('aria-label','Close search');
     const box = searchBox(); if (box) setTimeout(()=> box.focus({preventScroll:true}), 40);
     requestAnimationFrame(setHeaderVar);
   }
-  function closeSearch(){
-    const h = header(); const sb = searchBtn();
+
+  function closeSearch() {
+    const h = header();
+    const sb = searchBtn();
     if (!h || !sb) return;
-    h.classList.remove('search-open');
-    sb.setAttribute('aria-expanded','false'); sb.setAttribute('aria-label','Open search');
-    requestAnimationFrame(setHeaderVar);
+
+    const action = ++searchAction;
+    const form = document.getElementById('desktopSearch');
+
+    // Search replaces this promise with its fade-out completion.
+    const request = {
+      finished: Promise.resolve(true)
+    };
+
+    form?.dispatchEvent(new CustomEvent('site-search:close', {
+      detail: request
+    }));
+
+    // Avoid interacting with controls that are in the process of closing.
+    if (form) form.inert = true;
+
+    request.finished.then(closed => {
+      // Ignore an old close request if search has since reopened.
+      if (action !== searchAction) return;
+
+      if (form) form.inert = false;
+      if (!closed) return;
+
+      h.classList.remove('search-open');
+      sb.setAttribute('aria-expanded', 'false');
+      sb.setAttribute('aria-label', 'Open search');
+      sb.focus({ preventScroll: true });
+      requestAnimationFrame(setHeaderVar);
+    });
   }
+
   function toggleSearch(){ header()?.classList.contains('search-open') ? closeSearch() : openSearch(); }
 
   function initHeader(){

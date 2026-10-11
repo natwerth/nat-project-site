@@ -1,20 +1,21 @@
-/* Scoped to the existing desktop/mobile search forms. */
+/* Search layout and interactions. Shared menu tokens are defined in header.css. */
 .site-search-enabled { position: relative; }
 .site-header.search-open .desktop-search.site-search-enabled { overflow: visible; }
 .site-search-enabled [hidden] { display: none !important; }
 .site-search-enabled input { box-sizing: border-box; padding-right: 94px; }
-.site-search-enabled input:focus-visible { outline: 2px solid #5549b8; outline-offset: 2px; }
+.site-search-enabled input:focus-visible { outline: 2px solid #1435ca; outline-offset: 2px; }
+
 .site-search-clear {
   position: absolute; right: 32px; top: 0; bottom: 0; margin: auto 0;
   height: 34px; padding: 0 7px; border: 0; border-radius: 6px;
   background: transparent; color: #555; cursor: pointer; font: inherit; font-size: 12px;
 }
 .site-search-results {
-  position: absolute; top: calc(100% + 12px); right: 0;
+  position: absolute; top: calc(100% + 14.8px); right: 0;
   width: min(420px, calc(100vw - 32px)); max-height: min(65vh, 520px);
   overflow: auto; overscroll-behavior: contain; box-sizing: border-box;
-  border: 1px solid #e3e0e8; border-radius: 16px; padding: 8px; padding-top: 4px;
-  background: #fff; color: #17141c; box-shadow: 0 12px 32px #17141c1a;
+  border: 1px solid #ebebeb; border-radius: 12px; padding: 4px 8px 8px;
+  background: #fff; color: #17141c; box-shadow: 0 8px 10px rgba(0, 0, 0, .05);
   text-align: left; font-size: 14px; line-height: 1.45; z-index: 90;
 }
 .site-search-status { margin: 0; padding: 10px 12px; color: #625e68; font-size: 13px; }
@@ -24,17 +25,58 @@
   display: flex; flex-direction: column; gap: 5px; padding: 12px;
   border-radius: 10px; color: #17141c; text-decoration: none; white-space: normal;
   overflow-wrap: anywhere; min-height: 44px; box-sizing: border-box;
+  transition: background-color var(--menu-motion-duration, .2s) ease;
 }
-.site-search-result:hover, .site-search-result:focus-visible { background: #f2f0f6; }
-.site-search-result strong { font-size: 15px; font-weight: 600; }
+.site-search-result:is(:hover, :focus-visible) { background: #f2f7f4; }
+
+/* Title-only underline and decorative chevron. Neither affects excerpt layout. */
+.site-search-result strong {
+  position: relative; align-self: flex-start;
+  max-width: calc(100% - 22px); margin-right: 22px;
+  font-size: 15px; font-weight: 600;
+  transition: color var(--menu-motion-duration, .2s) ease;
+}
+.site-search-result strong::before {
+  content: "";
+  position: absolute; left: 0; bottom: -3px; width: 100%;
+  height: 1.5px;
+  border-radius: var(--menu-underline-radius, 999px);
+  background: var(--brand-primary);
+  transform: scaleX(0); transform-origin: center;
+  transition: transform var(--menu-underline-duration, .25s) ease;
+}
+.site-search-result strong::after {
+  content: "";
+  position: absolute; right: -18px; top: .45em;
+  width: 6px; height: 6px;
+  border-top: 2px solid var(--brand-primary);
+  border-right: 2px solid var(--brand-primary);
+  opacity: 0;
+  transform: translateX(6px) rotate(45deg);
+  transition: opacity var(--menu-motion-duration, .2s) ease, transform var(--menu-motion-duration, .2s) ease;
+}
+.site-search-result:is(:hover, :focus-visible) strong { color: var(--brand-primary); }
+.site-search-result:is(:hover, :focus-visible) strong::before { transform: scaleX(1); }
+.site-search-result:is(:hover, :focus-visible) strong::after {
+  opacity: 1; transform: translateX(0) rotate(45deg);
+}
 .site-search-excerpt { color: #514c59; font-size: 13px; }
 .site-search-path { color: #746d80; font-size: 12px; }
-.site-search-result mark { background: #eee7ff; color: inherit; font-weight: 600; }
-.site-search-retry { margin: 8px 12px; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; background: #fff; color: #17141c; cursor: pointer; font: inherit; }
-.site-search-result:focus-visible, .site-search-clear:focus-visible, .site-search-retry:focus-visible { outline: 2px solid #5549b8; outline-offset: -2px; }
-@media (min-width: 768px) {
-  .site-header:not(.search-open) .desktop-search.site-search-enabled { visibility: hidden; }
+.site-search-result mark { background: #e8f2ec; color: inherit; font-weight: 600; }
+.site-search-retry {
+  margin: 8px 12px; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px;
+  background: #fff; color: #17141c; cursor: pointer; font: inherit;
 }
+.site-search-result:focus-visible,
+.site-search-clear:focus-visible,
+.site-search-retry:focus-visible { outline: 2px solid var(--brand-primary); outline-offset: -2px; }
+
+@media (min-width: 768px) {
+  .site-header:not(.search-open) .desktop-search.site-search-enabled {
+    visibility: hidden;
+  }
+}
+
 @media (max-width: 767px) {
   .mobile-search.site-search-enabled { flex-shrink: 0; }
   .mobile-panel nav .mobile-search.site-search-enabled input { padding-right: 66px; }
@@ -46,4 +88,10 @@
   .mobile-panel nav.site-searching > :not(.mobile-search) { display: none; }
   html.menu-open body { touch-action: pan-y; }
   .mobile-panel nav { max-height: calc(var(--site-search-viewport-height, 100dvh) - var(--header-h)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-search-result,
+  .site-search-result strong,
+  .site-search-result strong::before,
+  .site-search-result strong::after { transition: none; }
 }
