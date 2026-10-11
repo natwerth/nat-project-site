@@ -67,20 +67,25 @@
 }
 
   .backdrop{
-    position:fixed; left:0; right:0; top:0; height:0; z-index:20;
+    position:fixed; inset:0; z-index:20;
     background: rgba(255,255,255,0.01);
     -webkit-backdrop-filter: blur(var(--blur)); backdrop-filter: blur(var(--blur));
-    pointer-events:none; opacity:0; transition: height 220ms ease, opacity 200ms ease; will-change: height, opacity;
+    pointer-events:none; opacity:0; transition: opacity 200ms ease;
   }
-  html.menu-open .backdrop{ height:100dvh; opacity:1; pointer-events:auto; }
+  html.menu-open .backdrop{ opacity:1; pointer-events:auto; }
+  html.menu-closing .backdrop{ opacity:0; }
   @supports not ((-webkit-backdrop-filter: blur(0)) or (backdrop-filter: blur(0))){
     .backdrop{ background: rgba(255,255,255,0.96); }
   }
 
   .mobile-panel{
     position:fixed;
-    left:0; right:0; bottom:0;
-    top: var(--header-h);
+    left:0; right:0;
+    top: calc(var(--menu-viewport-top, 0px) + var(--header-h));
+    height: max(0px, calc(var(--menu-viewport-height, 100dvh) - var(--header-h)));
+    background: var(--frost);
+    -webkit-backdrop-filter: blur(var(--blur));
+    backdrop-filter: blur(var(--blur));
     z-index:40;
     transform: translateY(-2%);
     transition: transform 220ms ease, opacity 180ms ease;
@@ -100,9 +105,6 @@
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
 
-    background: var(--frost);
-    -webkit-backdrop-filter: blur(var(--blur));
-    backdrop-filter: blur(var(--blur));
   }
 
   .mobile-search{ width:100%; margin-bottom:8px; margin-top:8px; }
@@ -150,14 +152,23 @@
   html, body { overflow: visible !important; }
 
   html.menu-open,
-  body.menu-open{
+  html.menu-open body{
     overflow: hidden !important;
-    height: 100dvh;
     overscroll-behavior: none;
-    -webkit-overflow-scrolling: auto;
   }
-
-  html.menu-open body{ touch-action: none; }
+  html.menu-open body{
+    position: fixed;
+    top: var(--menu-scroll-top, 0px);
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+  html.menu-open .site-header{
+    position: fixed;
+    top: var(--menu-viewport-top, 0px);
+    left: 0;
+    right: 0;
+  }
 
   html.no-scroll:not(.menu-open),
   body.no-scroll:not(.menu-open) { overflow: visible !important; }

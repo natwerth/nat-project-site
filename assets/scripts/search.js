@@ -468,11 +468,5 @@
   window.addEventListener('resize', () => {
     for (const [form, binding] of bindings) if (!form.getClientRects().length) binding.close();
   }, { passive: true });
-  function updateViewport() {
-    document.documentElement.style.setProperty('--site-search-viewport-height', `${window.visualViewport?.height || window.innerHeight}px`);
-  }
-  window.visualViewport?.addEventListener('resize', updateViewport, { passive: true });
-  window.addEventListener('resize', updateViewport, { passive: true });
-  updateViewport();
   init();
 })();

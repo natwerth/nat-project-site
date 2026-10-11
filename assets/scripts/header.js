@@ -21,25 +21,72 @@
     docEl.style.setProperty('--header-h', px);
   }
 
+  let pageScroll;
+  let headerSpacer;
+  let menuCloseTimer;
+  let menuOpenFrame;
+
+  function updateMenuViewport(){
+    const viewport = window.visualViewport;
+    docEl.style.setProperty('--menu-viewport-height', `${viewport?.height || window.innerHeight}px`);
+    docEl.style.setProperty('--menu-viewport-top', `${viewport?.offsetTop || 0}px`);
+    setHeaderVar();
+    if (headerSpacer) headerSpacer.style.height = `${header().getBoundingClientRect().height}px`;
+  }
+
+  function lockPage(){
+    if (pageScroll) return;
+    pageScroll = { x: window.scrollX, y: window.scrollY };
+    docEl.style.setProperty('--menu-scroll-top', `${-pageScroll.y}px`);
+    // The header becomes fixed while the menu is open. Keep its space in the page.
+    headerSpacer = document.createElement('div');
+    headerSpacer.setAttribute('aria-hidden', 'true');
+    headerSpacer.style.height = `${header().getBoundingClientRect().height}px`;
+    header().before(headerSpacer);
+    docEl.classList.add('menu-open');
+  }
+
+  function finishMenuClose(){
+    clearTimeout(menuCloseTimer);
+    const p = panel();
+    if (p?.classList.contains('open')) return;
+    if (p) p.hidden = true;
+    docEl.classList.remove('menu-open', 'menu-closing');
+    headerSpacer?.remove();
+    headerSpacer = undefined;
+    docEl.style.removeProperty('--menu-scroll-top');
+    if (pageScroll) {
+      const saved = pageScroll;
+      pageScroll = undefined;
+      // Bypass any smooth-scroll styling when restoring the page's position.
+      window.scrollTo({ left: saved.x, top: saved.y, behavior: 'instant' });
+    }
+  }
+
   function openPanel(){
     const p = panel(); if (!p) return;
+    clearTimeout(menuCloseTimer);
+    cancelAnimationFrame(menuOpenFrame);
+    docEl.classList.remove('menu-closing');
+    updateMenuViewport();
+    lockPage();
     p.hidden = false;
-    requestAnimationFrame(()=> p.classList.add('open'));
-    docEl.classList.add('menu-open');
+    menuOpenFrame = requestAnimationFrame(()=> p.classList.add('open'));
     const b = menuBtn(); if (b){ b.classList.add('is-active'); b.setAttribute('aria-expanded','true'); }
   }
-  function closePanel(){
-    const p = panel(); if (!p) return;
+  function closePanel(immediate = false){
+    const p = panel(); if (!p || !pageScroll) return;
+    cancelAnimationFrame(menuOpenFrame);
+    if (p.contains(doc.activeElement)) doc.activeElement.blur();
     p.classList.remove('open');
-    p.addEventListener('transitionend', function te(e){
-      if(e.propertyName === 'transform' && !p.classList.contains('open')){
-        p.hidden = true; p.removeEventListener('transitionend', te);
-      }
-    });
-    docEl.classList.remove('menu-open');
+    docEl.classList.add('menu-closing');
     const b = menuBtn(); if (b){ b.classList.remove('is-active'); b.setAttribute('aria-expanded','false'); }
+    clearTimeout(menuCloseTimer);
+    // Fallback covers interrupted transitions, including Safari keyboard changes.
+    if (immediate) finishMenuClose();
+    else menuCloseTimer = setTimeout(finishMenuClose, 260);
   }
-  function toggleMenu(){ (panel()?.classList.contains('open') ? closePanel : openPanel)(); }
+  function toggleMenu(){ (docEl.classList.contains('menu-open') && !docEl.classList.contains('menu-closing') ? closePanel : openPanel)(); }
 
   let searchAction = 0;
 
@@ -114,8 +161,17 @@
       const ro = new ResizeObserver(()=>{ setHeaderVar(); });
       ro.observe(header());
     }
-    window.addEventListener('resize', ()=>{ setHeaderVar(); }, {passive:true});
-    window.visualViewport && window.visualViewport.addEventListener('resize', ()=>{ setHeaderVar(); }, {passive:true});
+    panel()?.addEventListener('transitionend', event => {
+      if (event.target === panel() && event.propertyName === 'transform' &&
+          docEl.classList.contains('menu-closing')) finishMenuClose();
+    });
+    window.addEventListener('resize', () => {
+      updateMenuViewport();
+      if (window.matchMedia('(min-width: 768px)').matches) closePanel(true);
+    }, { passive: true });
+    window.visualViewport?.addEventListener('resize', updateMenuViewport, { passive: true });
+    window.visualViewport?.addEventListener('scroll', updateMenuViewport, { passive: true });
+    updateMenuViewport();
 
     // Recompute after fonts and full load
     window.addEventListener('load', setHeaderVar, { once:true });

@@ -86,8 +86,6 @@
     margin-top: 12px; box-shadow: none;
   }
   .mobile-panel nav.site-searching > :not(.mobile-search) { display: none; }
-  html.menu-open body { touch-action: pan-y; }
-  .mobile-panel nav { max-height: calc(var(--site-search-viewport-height, 100dvh) - var(--header-h)); }
 }
 @media (prefers-reduced-motion: reduce) {
   .site-search-result,
