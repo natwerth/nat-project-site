@@ -78,8 +78,10 @@
 .ql-viewport{
   position:relative;
   overflow:hidden;
-  margin-top:var(--space-4);
-  block-size:260px;
+  margin:var(--space-4) auto 0;
+  inline-size:100%;
+  max-inline-size:380px;
+  block-size:300px;
   border-radius:var(--card-radius);
   border:1px dashed var(--color-border);
   background:#fff;
@@ -99,8 +101,8 @@
   position:absolute;
   left:50%;
   top:50%;
-  width:48px;
-  height:48px;
+  width:80px;
+  height:80px;
   border-radius:999px;
   display:flex;
   align-items:center;
@@ -108,11 +110,11 @@
   background:#111;
   color:#fff;
   text-decoration:none;
-  box-shadow:0 6px 16px rgba(0,0,0,.22);
+  box-shadow:0 4px 10px rgba(0,0,0,.18);
   will-change:transform;
 }
 .ql-icon i{
-  font-size:20px;
+  font-size:32px;
   line-height:1;
   color:#fff;
 }
@@ -151,18 +153,10 @@
         <div class="c-card u-bleed-mobile">
           <header class="c-section-head">
             <h2>Quick Links</h2>
-            <div class="c-section-head__sub">Drag to scroll.</div>
+            <div class="c-section-head__sub">Drag to explore. Tap to open.</div>
           </header>
           <div class="ql-viewport" id="ql-viewport" aria-label="Quick link grid" role="group">
             <div class="ql-canvas" id="ql-canvas"></div>
-            <ul class="u-visually-hidden" id="ql-a11y-list">
-              <li><a href="#" aria-label="GitHub profile">GitHub</a></li>
-              <li><a href="#" aria-label="LinkedIn profile">LinkedIn</a></li>
-              <li><a href="#" aria-label="Instagram profile">Instagram</a></li>
-              <li><a href="#" aria-label="X profile">X</a></li>
-              <li><a href="#" aria-label="Email Nat">Email</a></li>
-              <li><a href="#" aria-label="Portfolio site">Portfolio</a></li>
-            </ul>
           </div>
         </div>
       </div>
@@ -193,32 +187,14 @@
         { icon: 'fa-brands fa-facebook-f',  href: 'https://facebook.com/natwerth',         label: 'Facebook',    color: '#0866ff' },
       ];
 
-      const baseSize   = 48;           // icon container size (matches CSS)
-      const colSpacing = baseSize * 1.6;
-      const rowSpacing = baseSize * 1.25;
-      const maxScale   = 1.45;
-      const innerRadius = 60;
-      const outerRadius = 260;
-      const colCount    = 4;
-
-      const icons = [];
-      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-
-      ICON_DATA.forEach((data, index) => {
-        const row = Math.floor(index / colCount);
-        const col = index % colCount;
-
-        const xOffset = (col - (colCount - 1) / 2) * colSpacing;
-        const stagger = (row % 2 === 0 ? 0 : colSpacing / 2);
-        const x = xOffset + stagger;
-        const y = (row - 1) * rowSpacing; // center-ish cluster
-
-        // track virtual bounds of the icon cluster
-        if (x < minX) minX = x;
-        if (x > maxX) maxX = x;
-        if (y < minY) minY = y;
-        if (y > maxY) maxY = y;
-
+      // A regular honeycomb in world coordinates. The same centered lens is
+      // used for mouse and touch; moving the pointer alone never changes zoom.
+      const spacing = 92;
+      const rowSpacing = spacing * Math.sqrt(3) / 2;
+      const columns = 4;
+      const icons = ICON_DATA.map((data, index) => {
+        const row = Math.floor(index / columns);
+        const col = index % columns;
         const a = document.createElement('a');
         a.href = data.href;
         a.target = '_blank';
@@ -227,128 +203,145 @@
         a.draggable = false;
         a.style.backgroundColor = data.color || '#111';
         a.setAttribute('aria-label', data.label);
-        if (data.img){
-          a.innerHTML = '<img src="' + data.img + '" alt="" draggable="false" />';
-        } else {
-          a.innerHTML = '<i class="' + data.icon + '"></i>';
-        }
-
+        a.title = data.label;
+        a.innerHTML = data.img
+          ? '<img src="' + data.img + '" alt="" draggable="false" />'
+          : '<i class="' + data.icon + '" aria-hidden="true"></i>';
         canvas.appendChild(a);
-
-        icons.push({
-          x,
-          y,
-          el: a
-        });
+        return { x: (col - 1.5) * spacing + (row % 2) * spacing / 2,
+          y: (row - 1) * rowSpacing, el: a };
       });
-
-      // Center the staggered cluster, including its half-column overhang.
-      const centerX = (minX + maxX) / 2;
+      const centerX = (Math.min(...icons.map(icon => icon.x)) + Math.max(...icons.map(icon => icon.x))) / 2;
       icons.forEach(icon => { icon.x -= centerX; });
-      minX -= centerX;
-      maxX -= centerX;
-
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      // Every icon, including the outermost ones, can be dragged to the center.
+      const minOffsetX = -Math.max(...icons.map(icon => icon.x));
+      const maxOffsetX = -Math.min(...icons.map(icon => icon.x));
+      const minOffsetY = -Math.max(...icons.map(icon => icon.y));
+      const maxOffsetY = -Math.min(...icons.map(icon => icon.y));
       const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
-      let activePointerId = null;
-      let pointerStartX = 0;
-      let pointerStartY = 0;
-      let dragged = false;
-      let previousFrameTime = 0;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const friction = 0.86;
+      let radiusX = 1;
+      let radiusY = 1;
       let offsetX = 0;
       let offsetY = 0;
       let velocityX = 0;
       let velocityY = 0;
-      let isDragging = false;
+      let activePointerId = null;
+      let pointerStartX = 0;
+      let pointerStartY = 0;
       let lastPointerX = 0;
       let lastPointerY = 0;
       let lastMoveTime = 0;
+      let dragged = false;
+      let frame = 0;
+      let previousFrameTime = 0;
 
-      let pointerLocalX = 0;
-      let pointerLocalY = 0;
-      let usePointerFocal = false;
-
-      let springTargetX = null;
-      let springTargetY = null;
-      const EDGE_PULL = 52;           // how far back from the hard edge to snap
-      const SPRING_TIGHTNESS = 0.18;  // how quickly it eases into place
-
-      function updatePointerLocal(e){
-        const rect = viewport.getBoundingClientRect();
-        pointerLocalX = e.clientX - rect.left - rect.width / 2;
-        pointerLocalY = e.clientY - rect.top - rect.height / 2;
+      function render(){
+        icons.forEach(icon => {
+          const x = icon.x + offsetX;
+          const y = icon.y + offsetY;
+          const distance = Math.hypot(x / radiusX, y / radiusY);
+          const innerRadius = 0.32;
+          let scale = 1;
+          let compression = 1;
+          if (distance > innerRadius){
+            // Position and size share a continuous falloff. As icons approach
+            // the perimeter they pack closer together and become tiny, rather
+            // than being clipped or keeping large gaps between small circles.
+            scale = Math.exp(-(distance - innerRadius) / (1 - innerRadius));
+            const projectedDistance = innerRadius + (1 - innerRadius) * (1 - scale);
+            compression = projectedDistance / distance;
+          }
+          icon.el.style.transform = 'translate(' + (x * compression) + 'px,' +
+            (y * compression) + 'px) translate(-50%, -50%) scale(' + scale + ')';
+          icon.el.style.zIndex = String(Math.round(scale * 100));
+        });
       }
+
+      function requestTick(){
+        if (!frame){
+          previousFrameTime = performance.now();
+          frame = requestAnimationFrame(tick);
+        }
+      }
+
+      function tick(now){
+        frame = 0;
+        const step = Math.min((now - previousFrameTime) / (1000 / 60), 3);
+        previousFrameTime = now;
+        if (activePointerId === null && !reducedMotion.matches){
+          const decay = Math.pow(friction, step);
+          const travel = friction * (1 - decay) / (1 - friction);
+          const nextX = offsetX + velocityX * travel;
+          const nextY = offsetY + velocityY * travel;
+          offsetX = clamp(nextX, minOffsetX, maxOffsetX);
+          offsetY = clamp(nextY, minOffsetY, maxOffsetY);
+          velocityX = nextX === offsetX ? velocityX * decay : 0;
+          velocityY = nextY === offsetY ? velocityY * decay : 0;
+          if (Math.abs(velocityX) < 0.05) velocityX = 0;
+          if (Math.abs(velocityY) < 0.05) velocityY = 0;
+        }
+        render();
+        if (activePointerId === null && (velocityX || velocityY)){
+          frame = requestAnimationFrame(tick);
+        }
+      }
+
+      function measure(){
+        radiusX = Math.max(1, viewport.clientWidth / 2 - 12);
+        radiusY = Math.max(1, viewport.clientHeight / 2 - 12);
+        requestTick();
+      }
+      new ResizeObserver(measure).observe(viewport);
+      measure();
 
       viewport.addEventListener('pointerdown', (e) => {
         if (!e.isPrimary || e.button !== 0 || activePointerId !== null) return;
         activePointerId = e.pointerId;
-        pointerStartX = e.clientX;
-        pointerStartY = e.clientY;
-        dragged = false;
-        isDragging = true;
-        springTargetX = null;
-        springTargetY = null;
-        viewport.classList.add('is-dragging');
-        lastPointerX = e.clientX;
-        lastPointerY = e.clientY;
+        pointerStartX = lastPointerX = e.clientX;
+        pointerStartY = lastPointerY = e.clientY;
         lastMoveTime = performance.now();
-        velocityX = 0;
-        velocityY = 0;
-        usePointerFocal = e.pointerType === 'mouse';
-        if (e.pointerType === 'mouse'){
-          updatePointerLocal(e);
-          usePointerFocal = true;
-        }
+        dragged = false;
+        velocityX = velocityY = 0;
+        viewport.classList.add('is-dragging');
       });
-
       viewport.addEventListener('pointermove', (e) => {
-        if (!e.isPrimary || (activePointerId !== null && e.pointerId !== activePointerId)) return;
-        if (e.pointerType === 'mouse'){
-          updatePointerLocal(e);
-          usePointerFocal = true;
-        }
-        if (!isDragging) return;
+        if (e.pointerId !== activePointerId) return;
         if (!dragged){
           if (Math.hypot(e.clientX - pointerStartX, e.clientY - pointerStartY) < 6) return;
           dragged = true;
-          // Capture only drags so a normal tap still activates its original link.
+          // Waiting for a drag preserves ordinary link taps and clicks.
           viewport.setPointerCapture(e.pointerId);
         }
         const now = performance.now();
-        const dt = now - lastMoveTime || 16;
+        const dt = Math.max(8, now - lastMoveTime);
         const dx = e.clientX - lastPointerX;
         const dy = e.clientY - lastPointerY;
+        const nextX = clamp(offsetX + dx, minOffsetX, maxOffsetX);
+        const nextY = clamp(offsetY + dy, minOffsetY, maxOffsetY);
+        velocityX = clamp((nextX - offsetX) / dt * (1000 / 60), -30, 30);
+        velocityY = clamp((nextY - offsetY) / dt * (1000 / 60), -30, 30);
+        offsetX = nextX;
+        offsetY = nextY;
         lastPointerX = e.clientX;
         lastPointerY = e.clientY;
         lastMoveTime = now;
-
-        offsetX += dx;
-        offsetY += dy;
-
-        velocityX = dx / dt * (1000 / 60);
-        velocityY = dy / dt * (1000 / 60);
+        requestTick();
       });
-
       function endDrag(e){
-        if (!isDragging || e.pointerId !== activePointerId) return;
-        isDragging = false;
+        if (e.pointerId !== activePointerId) return;
         activePointerId = null;
         if (e.type !== 'pointerup' || performance.now() - lastMoveTime > 80 || reducedMotion.matches){
-          velocityX = 0;
-          velocityY = 0;
+          velocityX = velocityY = 0;
         }
         viewport.classList.remove('is-dragging');
         if (viewport.hasPointerCapture(e.pointerId)) viewport.releasePointerCapture(e.pointerId);
-        const rect = viewport.getBoundingClientRect();
-        if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom){
-          usePointerFocal = false;
-        }
+        requestTick();
       }
-
       window.addEventListener('pointerup', endDrag);
       window.addEventListener('pointercancel', endDrag);
       viewport.addEventListener('lostpointercapture', (e) => {
-        // Ignore the original link losing implicit touch capture during transfer.
         if (e.target === viewport) endDrag(e);
       });
       viewport.addEventListener('dragstart', e => e.preventDefault());
@@ -358,127 +351,31 @@
           e.stopPropagation();
         }
       }, true);
-      viewport.addEventListener('pointerleave', (e) => {
-        if (!isDragging){
-          usePointerFocal = false;
-        }
+      // The real links are the keyboard/screen-reader navigation. Bring each
+      // focused link into the full-size center without creating duplicate links.
+      viewport.addEventListener('focusin', (e) => {
+        const icon = icons.find(icon => icon.el === e.target);
+        if (!icon || activePointerId !== null || !icon.el.matches(':focus-visible')) return;
+        velocityX = velocityY = 0;
+        offsetX = -icon.x;
+        offsetY = -icon.y;
+        render();
       });
-
-      function smoothStep(t){
-        return t * t * (3 - 2 * t);
+      reducedMotion.addEventListener('change', () => {
+        velocityX = velocityY = 0;
+        requestTick();
+      });
+      function cancelInteraction(){
+        const pointerId = activePointerId;
+        activePointerId = null;
+        velocityX = velocityY = 0;
+        viewport.classList.remove('is-dragging');
+        if (pointerId !== null && viewport.hasPointerCapture(pointerId)) viewport.releasePointerCapture(pointerId);
       }
-
-      function animate(now){
-        requestAnimationFrame(animate);
-        // Keep inertia and spring speed consistent on 60Hz and 120Hz displays.
-        const frameStep = previousFrameTime ? Math.min((now - previousFrameTime) / (1000 / 60), 3) : 1;
-        previousFrameTime = now;
-
-        if (!isDragging){
-          const friction = reducedMotion.matches ? 0 : Math.pow(0.3, frameStep);
-          const travel = reducedMotion.matches ? 0 : 0.3 * (1 - friction) / (1 - 0.3);
-          offsetX += velocityX * travel;
-          offsetY += velocityY * travel;
-          velocityX *= friction;
-          velocityY *= friction;
-          if (Math.abs(velocityX) < 0.01) velocityX = 0;
-          if (Math.abs(velocityY) < 0.01) velocityY = 0;
-        }
-
-        // compute effective canvas bounds based on icon cluster and viewport size
-        const halfW = viewport.clientWidth / 2;
-        const halfH = viewport.clientHeight / 2;
-        const margin = baseSize * maxScale / 2 + 8;
-        const leftAligned = -halfW + margin - minX;
-        const rightAligned = halfW - margin - maxX;
-        const topAligned = -halfH + margin - minY;
-        const bottomAligned = halfH - margin - maxY;
-        // When the grid is wider than the phone, either edge must remain reachable.
-        // Leave one icon-width of play even when the cluster exactly fits a phone.
-        const minOffsetX = Math.min(leftAligned, rightAligned, -baseSize);
-        const maxOffsetX = Math.max(leftAligned, rightAligned, baseSize);
-        const minOffsetY = Math.min(topAligned, bottomAligned, -baseSize);
-        const maxOffsetY = Math.max(topAligned, bottomAligned, baseSize);
-        const edgePullX = Math.min(EDGE_PULL, (maxOffsetX - minOffsetX) / 2);
-        const edgePullY = Math.min(EDGE_PULL, (maxOffsetY - minOffsetY) / 2);
-        const springStep = reducedMotion.matches ? 1 : 1 - Math.pow(1 - SPRING_TIGHTNESS, frameStep);
-
-        // clamp to hard canvas bounds
-        if (offsetX < minOffsetX) offsetX = minOffsetX;
-        else if (offsetX > maxOffsetX) offsetX = maxOffsetX;
-        if (offsetY < minOffsetY) offsetY = minOffsetY;
-        else if (offsetY > maxOffsetY) offsetY = maxOffsetY;
-
-        // when the user lets go on an edge, gently spring back inward
-        if (!isDragging){
-          const almostStoppedX = Math.abs(velocityX) < 0.05;
-          const almostStoppedY = Math.abs(velocityY) < 0.05;
-
-          if (springTargetX == null && almostStoppedX && edgePullX > 0.5){
-            if (offsetX <= minOffsetX + 0.5){
-              springTargetX = minOffsetX + edgePullX;
-            } else if (offsetX >= maxOffsetX - 0.5){
-              springTargetX = maxOffsetX - edgePullX;
-            }
-          }
-          if (springTargetY == null && almostStoppedY && edgePullY > 0.5){
-            if (offsetY <= minOffsetY + 0.5){
-              springTargetY = minOffsetY + edgePullY;
-            } else if (offsetY >= maxOffsetY - 0.5){
-              springTargetY = maxOffsetY - edgePullY;
-            }
-          }
-
-          if (springTargetX != null){
-            springTargetX = clamp(springTargetX, minOffsetX, maxOffsetX);
-            const dx = springTargetX - offsetX;
-            offsetX += dx * springStep;
-            velocityX = 0;
-            if (Math.abs(dx) < 0.5){
-              offsetX = springTargetX;
-              springTargetX = null;
-            }
-          }
-          if (springTargetY != null){
-            springTargetY = clamp(springTargetY, minOffsetY, maxOffsetY);
-            const dy = springTargetY - offsetY;
-            offsetY += dy * springStep;
-            velocityY = 0;
-            if (Math.abs(dy) < 0.5){
-              offsetY = springTargetY;
-              springTargetY = null;
-            }
-          }
-        }
-
-        const focalX = usePointerFocal ? pointerLocalX : 0;
-        const focalY = usePointerFocal ? pointerLocalY : 0;
-
-        icons.forEach(icon => {
-          const localX = icon.x + offsetX;
-          const localY = icon.y + offsetY;
-
-          const dx = localX - focalX;
-          const dy = localY - focalY;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          let scale = 1;
-          if (dist <= innerRadius){
-            scale = maxScale;
-          } else if (dist >= outerRadius){
-            scale = 1;
-          } else {
-            const t = (dist - innerRadius) / (outerRadius - innerRadius);
-            const s = smoothStep(Math.min(Math.max(t, 0), 1));
-            scale = maxScale + (1 - maxScale) * s;
-          }
-
-          if (reducedMotion.matches) scale = 1;
-          const transform = 'translate(' + localX + 'px,' + localY + 'px) translate(-50%, -50%) scale(' + scale + ')';
-          icon.el.style.transform = transform;
-        });
-      }
-      requestAnimationFrame(animate);
+      window.addEventListener('blur', cancelInteraction);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) cancelInteraction();
+      });
     })();
   </script>
 </body>
