@@ -1,8 +1,7 @@
 /* Form styles stay scoped to Services. */
-.page--services .contact-section .c-card { border:0; box-shadow:none; }
+.page--services .contact-section .c-card { border:0; }
 .page--services .c-form, .page--services .service-fields { display:grid; gap:20px; }
 .page--services [hidden] { display:none !important; }
-.page--services .form-intro { margin:0 0 24px; color:var(--color-muted); }
 .page--services .c-form .row { display:grid; gap:8px; }
 .page--services .c-form .two { display:grid; gap:20px; grid-template-columns:minmax(0,1fr); }
 .page--services .c-form fieldset { border:0; margin:0; padding:0; min-inline-size:0; }
@@ -16,17 +15,18 @@
 .page--services .c-form [aria-invalid=true] { border-color:#b00020 !important; }
 .page--services .svc-pills { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); }
 .page--services .svc-pills input { position:absolute; width:1px; height:1px; opacity:0; }
-.page--services .svc-pills label[for="svc-resume-review"] { --service-color:var(--service-resume); --service-tint:#edf3ee; --service-hover:#e1ece3; --service-border:#c6d9cb; }
-.page--services .svc-pills label[for="svc-ask-nat"] { --service-color:var(--service-ask); --service-tint:#f2edf6; --service-hover:#e8e0ef; --service-border:#d8cce3; }
-.page--services .svc-pills label[for="svc-project-help"] { --service-color:var(--service-project); --service-tint:#eef1f6; --service-hover:#e2e7ef; --service-border:#ccd4df; }
-.page--services .svc-pills label { display:flex; align-items:center; gap:10px; border:1px solid var(--service-border); border-radius:12px; padding:12px; cursor:pointer; background:var(--service-tint); color:var(--service-color); transition:background-color .15s ease,border-color .15s ease,color .15s ease; }
-.page--services .svc-pills label:hover { background:var(--service-hover); }
-.page--services .svc-pills input:checked + label { border-color:var(--service-color); background:var(--service-color); color:#fff; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+.page--services .svc-pills label[for="svc-resume-review"] { --service-color:var(--service-resume); --service-tint:#edf3ee; }
+.page--services .svc-pills label[for="svc-ask-nat"] { --service-color:var(--service-ask); --service-tint:#f2edf6; }
+.page--services .svc-pills label[for="svc-project-help"] { --service-color:var(--service-project); --service-tint:#eef1f6; }
+.page--services .svc-pills label { display:flex; align-items:center; gap:10px; border:1px solid #e5e7eb; border-radius:12px; padding:12px; cursor:pointer; background:#f5f5f5; color:var(--color-muted); transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .15s ease,box-shadow .15s ease; }
+.page--services .svc-pills label:hover { background:#ebedef; }
+.page--services .svc-pills input:checked + label { border-color:var(--service-color); background:var(--service-tint); color:var(--service-color); box-shadow:0 2px 8px rgba(0,0,0,.06); transform:scale(1.025); }
+.page--services .svc-pills label:active, .page--services .svc-pills input:checked + label:active { transform:scale(.98); }
 .page--services .svc-pills input:focus-visible + label { outline:2px solid var(--service-color); outline-offset:3px; }
-.page--services .form-status { margin:0; color:var(--color-muted); font-size:.9rem; }
 .page--services .btn-primary { appearance:none; border:1px solid #111827; background:#111827; color:#fff; padding:12px 14px; margin-top:4px; border-radius:10px; font:600 18px var(--font-sans); cursor:pointer; }
 .page--services .btn-primary:hover { background:#1c2842; }
 .page--services .btn-primary:focus-visible { outline:3px solid var(--ui-blue); outline-offset:3px; }
-.page--services .btn-primary:disabled { background:#d1d5db; color:#4b5563; border-color:#d1d5db; cursor:not-allowed; }
+.page--services .btn-primary:disabled { background:#e5e7eb; color:#4b5563; border-color:#e5e7eb; cursor:not-allowed; }
 .page--services .form-honeypot { display:none !important; }
 @media (min-width:768px) { .page--services .c-form .two { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (prefers-reduced-motion:reduce) { .page--services .svc-pills label { transition:none; } }

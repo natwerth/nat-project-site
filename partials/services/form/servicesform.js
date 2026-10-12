@@ -15,7 +15,6 @@ function initForm() {
   const panels = [...form.querySelectorAll('[data-service-fields]')];
   const button = form.querySelector('#submitBtn');
   const submitError = form.querySelector('#submitErr');
-  const status = form.querySelector('#service-status');
   const intent = form.elements.namedItem('intent');
   const name = form.elements.namedItem('name');
   const email = form.elements.namedItem('email');
@@ -26,7 +25,7 @@ function initForm() {
   }
 
   function updateButton() {
-    button.disabled = submitting || !chosenService();
+    button.disabled = submitting || !chosenService() || activeFields().some(input => fieldError(input));
     button.textContent = submitting ? 'Sending…' : intent.value === 'booking' ? 'Send booking request' : 'Send request';
   }
 
@@ -48,7 +47,6 @@ function initForm() {
     }
     form.querySelector('#svcErr').hidden = true;
     submitError.hidden = true;
-    status.textContent = `${SERVICES[service]} selected. ${intent.value === 'booking' ? 'Tell me a little about what you need, and I’ll email you to arrange next steps.' : 'Tell me a little more below.'}`;
     updateButton();
     if (updateURL) {
       const url = new URL(location.href);
@@ -95,14 +93,41 @@ function initForm() {
     if (event.target.matches('input[name="service"]')) selectService(event.target.value, 'details', true);
   });
   form.addEventListener('input', event => {
-    clearError(event.target);
+    if (event.target.matches('[aria-invalid=true]')) validateField(event.target);
     submitError.hidden = true;
+    updateButton();
   });
+  form.addEventListener('change', updateButton);
+  form.addEventListener('focusout', event => {
+    if (event.target.matches('input[data-label], textarea[data-label]')) validateField(event.target);
+    updateButton();
+  });
+  window.addEventListener('pageshow', updateButton);
   window.addEventListener('popstate', readURL);
   window.addEventListener('hashchange', readURL);
 
   function activeFields() {
     return [...form.querySelectorAll('input[data-label], textarea[data-label]')].filter(input => !input.matches(':disabled'));
+  }
+
+  function fieldError(input) {
+    if (input.required && !input.value.trim()) return `${input.dataset.label} is required.`;
+    if (!input.validity.valid) return input.type === 'email' ? 'Enter a valid email address.'
+      : input.type === 'url' ? 'Enter a complete link, starting with https://.'
+      : 'Please check this answer.';
+    return '';
+  }
+
+  function validateField(input) {
+    clearError(input);
+    if (input.matches(':disabled')) return true;
+    const message = fieldError(input);
+    if (!message) return true;
+    input.setAttribute('aria-invalid', 'true');
+    const error = document.getElementById(`${input.id}-error`);
+    error.textContent = message;
+    error.hidden = false;
+    return false;
   }
 
   function validate() {
@@ -111,18 +136,7 @@ function initForm() {
     form.querySelector('#svcErr').hidden = !missingService;
     if (missingService) firstInvalid = group.querySelector('input');
     for (const input of activeFields()) {
-      clearError(input);
-      const empty = !input.value.trim();
-      if ((input.required && empty) || !input.validity.valid) {
-        input.setAttribute('aria-invalid', 'true');
-        const error = document.getElementById(`${input.id}-error`);
-        error.textContent = empty ? `${input.dataset.label} is required.`
-          : input.type === 'email' ? 'Enter a valid email address.'
-          : input.type === 'url' ? 'Enter a complete link, starting with https://.'
-          : 'Please check this answer.';
-        error.hidden = false;
-        firstInvalid ||= input;
-      }
+      if (!validateField(input)) firstInvalid ||= input;
     }
     firstInvalid?.focus();
     return !firstInvalid;
