@@ -1,190 +1,182 @@
+// The page loads this module once; includes may finish in any order.
+const DEFAULT_ENDPOINT = 'https://consulting-form-backend.nat-1fa.workers.dev/';
+const SERVICES = {
+  'resume-review': 'Resume Reviews',
+  'ask-nat': 'Ask Nat',
+  'project-help': 'Project Help'
+};
+const initialized = new WeakSet();
 
-  window.CONSULT_EMAIL_ENDPOINT = 'https://contact-smtp-on8q1jms6-nats-projects-0f7444b9.vercel.app/api/contact';
-  (function(){
-    // Title hydration (keeps your markup minimal)
-    const h = document.getElementById('sectionTitle');
-    if (h) h.textContent = '';
+function initForm() {
+  const form = document.getElementById('consultForm');
+  if (!form || initialized.has(form)) return;
+  initialized.add(form);
+  const group = form.querySelector('#svc-group');
+  const panels = [...form.querySelectorAll('[data-service-fields]')];
+  const button = form.querySelector('#submitBtn');
+  const submitError = form.querySelector('#submitErr');
+  const status = form.querySelector('#service-status');
+  const intent = form.elements.namedItem('intent');
+  const name = form.elements.namedItem('name');
+  const email = form.elements.namedItem('email');
+  let submitting = false;
 
-    const form = document.getElementById('consultForm');
-    const svcGroup = document.getElementById('svc-group');
-    const EMAIL_ENDPOINT = window.CONSULT_EMAIL_ENDPOINT || ''; // set window.CONSULT_EMAIL_ENDPOINT globally to enable server send
+  function chosenService() {
+    return form.querySelector('input[name="service"]:checked')?.value || '';
+  }
 
-    // Map friendly slugs/synonyms to the actual radio values/ids
-    const SVC_MAP = {
-      'uat':'svc-uat',
-      'u-a-t':'svc-uat',
-      'static':'svc-static',
-      'static-sites':'svc-static',
-      'ops':'svc-ops',
-      'ops-sprint':'svc-ops',
-      'hygiene':'svc-hyg',
-      'crm-hygiene':'svc-hyg',
-      'cleanup':'svc-clean',
-      'data-cleanup':'svc-clean'
+  function updateButton() {
+    button.disabled = submitting || !chosenService();
+    button.textContent = submitting ? 'Sending…' : intent.value === 'booking' ? 'Send booking request' : 'Send request';
+  }
+
+  function clearError(input) {
+    input.removeAttribute('aria-invalid');
+    const error = document.getElementById(`${input.id}-error`);
+    if (error) { error.hidden = true; error.textContent = ''; }
+  }
+
+  function selectService(service, requestIntent = 'details', updateURL = false) {
+    if (!Object.hasOwn(SERVICES, service)) return false;
+    form.querySelector(`input[value="${service}"]`).checked = true;
+    intent.value = requestIntent === 'booking' ? 'booking' : 'details';
+    for (const panel of panels) {
+      const active = panel.dataset.serviceFields === service;
+      panel.hidden = !active;
+      panel.disabled = !active;
+      if (!active) panel.querySelectorAll('input, textarea').forEach(clearError);
+    }
+    form.querySelector('#svcErr').hidden = true;
+    submitError.hidden = true;
+    status.textContent = `${SERVICES[service]} selected. ${intent.value === 'booking' ? 'Tell me a little about what you need, and I’ll email you to arrange next steps.' : 'Tell me a little more below.'}`;
+    updateButton();
+    if (updateURL) {
+      const url = new URL(location.href);
+      url.searchParams.set('service', service);
+      url.searchParams.set('intent', intent.value);
+      // Normalize the older #contact?service=… format too.
+      if (url.hash.startsWith('#contact')) url.hash = 'contact';
+      history.replaceState({}, '', url);
+    }
+    return true;
+  }
+
+  function scrollToForm(focus = false) {
+    if (focus) name.focus({ preventScroll:true });
+    document.getElementById('contact').scrollIntoView({
+      behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+      block:'start'
+    });
+  }
+
+  function readURL() {
+    const query = new URLSearchParams(location.search);
+    const hashQuery = new URLSearchParams(location.hash.split('?')[1] || '');
+    const service = query.get('service') || hashQuery.get('service');
+    selectService(service, query.get('intent') || hashQuery.get('intent'));
+    if (location.hash.startsWith('#contact')) requestAnimationFrame(() => scrollToForm());
+  }
+
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[data-service]');
+    if (!link || !Object.hasOwn(SERVICES, link.dataset.service)) return;
+    // Preserve normal modified-click behavior for shareable links.
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    if (submitting) return;
+    selectService(link.dataset.service, link.dataset.intent, true);
+    const url = new URL(location.href);
+    url.hash = 'contact';
+    history.replaceState({}, '', url);
+    scrollToForm(true);
+  });
+
+  group.addEventListener('change', event => {
+    if (event.target.matches('input[name="service"]')) selectService(event.target.value, 'details', true);
+  });
+  form.addEventListener('input', event => {
+    clearError(event.target);
+    submitError.hidden = true;
+  });
+  window.addEventListener('popstate', readURL);
+  window.addEventListener('hashchange', readURL);
+
+  function activeFields() {
+    return [...form.querySelectorAll('input[data-label], textarea[data-label]')].filter(input => !input.matches(':disabled'));
+  }
+
+  function validate() {
+    let firstInvalid;
+    const missingService = !chosenService();
+    form.querySelector('#svcErr').hidden = !missingService;
+    if (missingService) firstInvalid = group.querySelector('input');
+    for (const input of activeFields()) {
+      clearError(input);
+      const empty = !input.value.trim();
+      if ((input.required && empty) || !input.validity.valid) {
+        input.setAttribute('aria-invalid', 'true');
+        const error = document.getElementById(`${input.id}-error`);
+        error.textContent = empty ? `${input.dataset.label} is required.`
+          : input.type === 'email' ? 'Enter a valid email address.'
+          : input.type === 'url' ? 'Enter a complete link, starting with https://.'
+          : 'Please check this answer.';
+        error.hidden = false;
+        firstInvalid ||= input;
+      }
+    }
+    firstInvalid?.focus();
+    return !firstInvalid;
+  }
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (submitting || !validate() || form.elements.namedItem('hp').value) return;
+    const service = chosenService();
+    // Preserve the existing backend contract. Service answers go in its message
+    // field instead of assuming the email template supports new JSON keys.
+    const answers = activeFields().filter(input => input !== name && input !== email && input.value.trim())
+      .map(input => `${input.dataset.label}: ${input.value.trim()}`);
+    const payload = {
+      service,
+      name:name.value.trim(),
+      email:email.value.trim(),
+      company:'',
+      message:[`Service: ${SERVICES[service]}`, `Request: ${intent.value === 'booking' ? 'Booking request' : 'Get details'}`, '', ...answers].join('\n\n'),
+      source:'consulting'
     };
-
-    function selectService(slug){
-      if (!slug) return;
-      const key = (slug + '').toLowerCase();
-      const id = SVC_MAP[key] || SVC_MAP[key.replace(/\s+/g,'-')];
-      if (!id) return;
-      const radio = document.getElementById(id);
-      if (radio){
-        radio.checked = true;
-        // Sync visual state for older browsers without :has support
-        svcGroup.querySelectorAll('label').forEach(l => l.classList.toggle('is-selected', l.htmlFor === id));
-        svcGroup.classList.add('has-choice');
-        updateSubmitState();
-      }
+    submitting = true;
+    form.inert = true;
+    form.setAttribute('aria-busy', 'true');
+    submitError.hidden = true;
+    updateButton();
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    try {
+      const endpoint = window.CONSULT_EMAIL_ENDPOINT ?? DEFAULT_ENDPOINT;
+      if (!endpoint) throw new Error('No endpoint configured');
+      const response = await fetch(endpoint, {
+        method:'POST', headers:{ 'Content-Type':'application/json' },
+        body:JSON.stringify(payload), signal:controller.signal
+      });
+      if (!response.ok) throw new Error('Request failed');
+      const result = await response.json();
+      // The Worker confirms delivery with { ok: true }; a 2xx alone is not enough.
+      if (result?.ok !== true || result?.error) throw new Error('Request rejected');
+      location.assign(`/thankyou/?source=consulting&service=${encodeURIComponent(service)}`);
+    } catch {
+      submitError.hidden = false;
+      submitting = false;
+      form.inert = false;
+      form.removeAttribute('aria-busy');
+      updateButton();
+    } finally {
+      clearTimeout(timeout);
     }
+  });
+  readURL();
+  updateButton();
+}
 
-    // From URL: ?service=uat and/or #contact?service=uat
-    function preselectFromURL(){
-      try{
-        let svc = null;
-        const qs = new URLSearchParams(window.location.search);
-        svc = qs.get('service');
-        if (!svc && window.location.hash.includes('service=')){
-          const hashQ = window.location.hash.split('service=')[1];
-          svc = hashQ ? hashQ.split('&')[0] : null;
-        }
-        if (svc) selectService(svc);
-      }catch(e){}
-    }
-    preselectFromURL();
-    updateSubmitState();
-
-    // Delegated listener: any element on the page can set [data-service="uat"]
-    document.addEventListener('click', function(e){
-      const el = e.target.closest('[data-service]');
-      if (!el) return;
-      const svc = el.getAttribute('data-service');
-      selectService(svc);
-      // Keep the URL coherent without reload
-      try{
-        const url = new URL(window.location.href);
-        url.searchParams.set('service', svc);
-        history.replaceState({}, '', url);
-      }catch(e){}
-      // Nudge into view
-      const card = document.getElementById('contact');
-      if (card) card.scrollIntoView({behavior:'smooth', block:'start'});
-      // Put the caret where people actually type
-      const firstField = document.getElementById('name');
-      if (firstField){
-        // Delay a touch so smooth scroll doesn't fight the focus, and avoid extra jump
-        setTimeout(()=> { firstField.focus({ preventScroll: true }); }, 300);
-      }
-    }, true);
-
-    svcGroup.addEventListener('change', function(e){
-      if (e.target && e.target.matches('input[type="radio"]')){
-        const id = e.target.id;
-        svcGroup.querySelectorAll('label').forEach(l => l.classList.toggle('is-selected', l.htmlFor === id));
-        svcGroup.classList.toggle('has-choice', true);
-        updateSubmitState();
-      }
-    });
-
-    function showError(inputEl, errEl){
-      inputEl.classList.add('is-invalid');
-      if (errEl) errEl.classList.add('show-err');
-    }
-    function clearError(inputEl, errEl){
-      inputEl.classList.remove('is-invalid');
-      if (errEl) errEl.classList.remove('show-err');
-    }
-
-    function updateSubmitState(){
-      const btn = document.getElementById('submitBtn');
-      if (!btn) return;
-
-      const svcChecked = form.querySelector('input[name="service"]:checked');
-      const nameEl = document.getElementById('name');
-      const emailEl = document.getElementById('email');
-
-      const nameOk = !!(nameEl && nameEl.value.trim().length);
-      const emailOk = !!(emailEl && emailEl.validity.valid);
-      const allOk = !!(svcChecked && nameOk && emailOk);
-
-      btn.disabled = !allOk;
-      btn.setAttribute('aria-disabled', String(btn.disabled));
-
-      // Grey out non-selected services only when something is chosen
-      if (svcGroup){
-        svcGroup.classList.toggle('has-choice', !!svcChecked);
-      }
-    }
-
-    // Live-clear on input
-    ['name','email'].forEach(id=>{
-      const el = document.getElementById(id);
-      const err = document.getElementById(id+'Err');
-      if (el){
-        el.addEventListener('input', ()=> { clearError(el, err); updateSubmitState(); });
-      }
-    });
-
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      const svcChecked = form.querySelector('input[name="service"]:checked');
-      const name = document.getElementById('name');
-      const email = document.getElementById('email');
-      const svcErr = document.getElementById('svcErr');
-      const nameErr = document.getElementById('nameErr');
-      const emailErr = document.getElementById('emailErr');
-
-      let ok = true;
-
-      // Service required
-      if (!svcChecked){ ok = false; svcErr.classList.add('show-err'); svcGroup.scrollIntoView({behavior:'smooth', block:'center'}); }
-      else { svcErr.classList.remove('show-err'); }
-
-      // Native validity for name/email
-      if (!name.value.trim()){ ok = false; showError(name, nameErr); }
-      if (!email.validity.valid){ ok = false; showError(email, emailErr); }
-
-      if (!ok){
-        const first = form.querySelector('.is-invalid') || svcGroup.querySelector('label');
-        if (first) first.focus ? first.focus() : null;
-        return;
-      }
-
-      const chosen = svcChecked ? svcChecked.value : '';
-      const payload = {
-        service: chosen,
-        name: name.value.trim(),
-        email: email.value.trim(),
-        company: (document.getElementById('company')?.value || '').trim(),
-        message: (document.getElementById('message')?.value || '').trim(),
-        source: 'consulting'
-      };
-
-      const btn = document.getElementById('submitBtn'); 
-      const submitErr = document.getElementById('submitErr');
-      if (btn){ btn.disabled = true; btn.textContent = 'Submitting...'; }
-      if (submitErr) submitErr.classList.remove('show-err');
-
-      // If an email endpoint is configured, POST the form; otherwise, fall back to the existing redirect
-      if (EMAIL_ENDPOINT){
-        fetch(EMAIL_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        })
-        .then(res => {
-          if (!res.ok) throw new Error('Bad response');
-          return res.json().catch(()=> ({}));
-        })
-        .then(() => {
-          window.location.href = '/thankyou?source=consulting&service=' + encodeURIComponent(chosen);
-        })
-        .catch(() => {
-          if (submitErr) submitErr.classList.add('show-err');
-          if (btn){ btn.disabled = false; btn.textContent = 'Submit'; }
-        });
-      } else {
-        window.location.href = '/thankyou?source=consulting&service=' + encodeURIComponent(chosen);
-      }
-    });
-  })();
+document.addEventListener('includes:ready', initForm);
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initForm, { once:true });
+else initForm();

@@ -1,80 +1,30 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/partials/services/form/servicesform.css">
-</head>
-<body>
-  <section class="c-showcase" aria-label="Brand & Components Showcase">
-    <div class="c-showcase__inner">
-      <h1 id="pageTitle" class="page-title u-text-footer" 
-          style="margin:0 0 var(--space-5);">
-        <strong>Contact</strong>
-      </h1>
-      <div class="c-card-grid">
-        <div class="c-card u-bleed-mobile" id="contact">
-          <header class="c-section-head">
-            <h2 id="sectionTitle"></h2>
-            <div id="sectionSub" class="c-section-head__sub">Powered by Salesforce.</div>
-          </header>
-          <!-- Contact form -->
-          <form id="consultForm" class="c-form" novalidate>
-            <div class="row">
-              <label for="svc-group">I’m interested in<small> *</small></label>
-              <fieldset id="svc-group" class="svc-pills" role="radiogroup" aria-label="Service">
-
-                <input id="svc-static" name="service" type="radio" value="static-sites">
-                <label for="svc-static"><span class="ico" aria-hidden="true"><i class="fas fa-globe"></i></span><span class="txt">Custom Site</span></label>
-
-                <input id="svc-hyg" name="service" type="radio" value="crm-hygiene">
-                <label for="svc-hyg"><span class="ico" aria-hidden="true"><i class="fab fa-salesforce"></i></span><span class="txt">CRM Hygiene</span></label>
-
-              </fieldset>
-              <div class="err" id="svcErr">Select a service to keep things moving.</div>
-            </div>
-
-            <div class="row two">
-              <div>
-                <label for="name">Name<small> *</small></label>
-                <input id="name" name="name" type="text" autocomplete="name" required aria-required="true" placeholder="">
-                <div class="err" id="nameErr">Name is required.</div>
-              </div>
-              <div>
-                <label for="email">Email<small> *</small></label>
-                <input id="email" name="email" type="email" autocomplete="email" required aria-required="true" placeholder="">
-                <div class="err" id="emailErr">Enter a valid email.</div>
-              </div>
-            </div>
-
-            <div class="row">
-              <label for="company">Company</label>
-              <input id="company" name="company" type="text" autocomplete="organization" placeholder="">
-            </div>
-
-            <div class="row">
-              <label for="message">Details</label>
-              <textarea id="message" name="message" placeholder="Wish list, must-haves, goals..."></textarea>
-            </div>
-
-            <input type="hidden" name="source" value="consulting">
-            <input type="text" name="hp" autocomplete="off" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;height:1px;width:1px;opacity:0;">
-
-            <div class="row">
-              <button type="submit" class="btn-primary" id="submitBtn" disabled aria-disabled="true">Submit</button>
-              <p class="alt-action">Prefer to talk? <a id="scheduleLink" href="https://calendly.com/nat-werth/consultation-w-nat" target="_blank" rel="noopener">Book a free consultation</a>.</p>
-              <small>By submitting, you consent to being contacted about this request.</small>
-              <div class="err" id="submitErr" role="alert" aria-live="polite">Sorry, something went wrong sending your request. Please try again.</div>
-            </div>
-          </form>
-        </div>
-      </div>
+<section class="c-showcase contact-section" id="contact" aria-labelledby="contact-title">
+ <div class="c-showcase__inner">
+  <h2 id="contact-title" class="section-title">Contact</h2>
+  <div class="c-card">
+   <p class="form-intro">Pick a service and tell me a little about yourself. Fields marked * are required.</p>
+   <form id="consultForm" class="c-form" novalidate>
+    <fieldset id="svc-group"><legend>I’m interested in <span aria-hidden="true">*</span></legend><div class="svc-pills"><input id="svc-resume-review" name="service" type="radio" value="resume-review" required aria-describedby="svcErr"><label for="svc-resume-review"><i class="fa-solid fa-file-lines" aria-hidden="true"></i>Resume Reviews</label>
+<input id="svc-ask-nat" name="service" type="radio" value="ask-nat" required aria-describedby="svcErr"><label for="svc-ask-nat"><i class="fa-solid fa-comments" aria-hidden="true"></i>Ask Nat</label>
+<input id="svc-project-help" name="service" type="radio" value="project-help" required aria-describedby="svcErr"><label for="svc-project-help"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>Project Help</label></div><span class="err" id="svcErr" hidden>Select a service to keep things moving.</span></fieldset>
+    <p id="service-status" class="form-status" role="status" aria-live="polite">Choose a service to see the relevant questions.</p>
+    <div class="two"><div class="row"><label for="name">Name <span aria-hidden="true">*</span></label><input id="name" name="name" data-label="Name" aria-describedby="name-error" required type="text" autocomplete="name" maxlength="500" placeholder=""><span id="name-error" class="err" hidden></span></div><div class="row"><label for="email">Email <span aria-hidden="true">*</span></label><input id="email" name="email" data-label="Email" aria-describedby="email-error" required type="email" autocomplete="email" maxlength="500" placeholder=""><span id="email-error" class="err" hidden></span></div></div>
+<fieldset class="service-fields" data-service-fields="resume-review" hidden disabled><legend class="sr-only">Resume Reviews details</legend><div class="row"><label for="resume-goal">Target role or career direction <span aria-hidden="true">*</span></label><input id="resume-goal" name="resume-goal" data-label="Target role or career direction" aria-describedby="resume-goal-error" required type="text" autocomplete="off" maxlength="500" placeholder="e.g., Marketing internships or my first engineering role"><span id="resume-goal-error" class="err" hidden></span></div><div class="row"><label for="resume-link">Resume link <small>(optional)</small></label><input id="resume-link" name="resume-link" data-label="Resume link" aria-describedby="resume-link-error resume-link-hint" type="url" autocomplete="off" maxlength="500" placeholder="https://…"><small id="resume-link-hint">A shareable link is great. You can also send your resume after we connect.</small><span id="resume-link-error" class="err" hidden></span></div><div class="row"><label for="career-stage">School or career stage <small>(optional)</small></label><input id="career-stage" name="career-stage" data-label="School or career stage" aria-describedby="career-stage-error" type="text" autocomplete="off" maxlength="500" placeholder="e.g., College junior, recent graduate, career change"><span id="career-stage-error" class="err" hidden></span></div><div class="row"><label for="resume-questions">Questions for the review <small>(optional)</small></label><textarea id="resume-questions" name="resume-questions" data-label="Questions for the review" aria-describedby="resume-questions-error" rows="4" maxlength="6000" placeholder="What would you like feedback on?"></textarea><span id="resume-questions-error" class="err" hidden></span></div></fieldset>
+<fieldset class="service-fields" data-service-fields="ask-nat" hidden disabled><legend class="sr-only">Ask Nat details</legend><div class="row"><label for="ask-question">What’s your question? <span aria-hidden="true">*</span></label><textarea id="ask-question" name="ask-question" data-label="What’s your question?" aria-describedby="ask-question-error" required rows="4" maxlength="6000" placeholder="Tell me what’s on your mind…"></textarea><span id="ask-question-error" class="err" hidden></span></div><div class="row"><label for="ask-context">Additional context <small>(optional)</small></label><textarea id="ask-context" name="ask-context" data-label="Additional context" aria-describedby="ask-context-error" rows="4" maxlength="6000" placeholder="The lore, if you will."></textarea><span id="ask-context-error" class="err" hidden></span></div></fieldset>
+<fieldset class="service-fields" data-service-fields="project-help" hidden disabled><legend class="sr-only">Project Help details</legend><div class="row"><label for="project-goal">What would you like help with? <span aria-hidden="true">*</span></label><textarea id="project-goal" name="project-goal" data-label="What would you like help with?" aria-describedby="project-goal-error" required rows="4" maxlength="6000" placeholder="What are you trying to make, fix, or simplify?"></textarea><span id="project-goal-error" class="err" hidden></span></div><div class="row"><label for="project-type">Project type <small>(optional)</small></label><input id="project-type" name="project-type" data-label="Project type" aria-describedby="project-type-error" type="text" autocomplete="off" maxlength="500" placeholder="Website, automation, or something else"><span id="project-type-error" class="err" hidden></span></div><div class="row"><label for="project-link">Existing link <small>(optional)</small></label><input id="project-link" name="project-link" data-label="Existing link" aria-describedby="project-link-error" type="url" autocomplete="off" maxlength="500" placeholder="https://…"><span id="project-link-error" class="err" hidden></span></div><div class="two"><div class="row"><label for="project-timeline">Timeline <small>(optional)</small></label><input id="project-timeline" name="project-timeline" data-label="Timeline" aria-describedby="project-timeline-error" type="text" autocomplete="off" maxlength="500" placeholder="A date, a rough idea, or “flexible”"><span id="project-timeline-error" class="err" hidden></span></div><div class="row"><label for="project-budget">Budget <small>(optional)</small></label><input id="project-budget" name="project-budget" data-label="Budget" aria-describedby="project-budget-error" type="text" autocomplete="off" maxlength="500" placeholder="A range or “not sure yet”"><span id="project-budget-error" class="err" hidden></span></div></div></fieldset>
+    <input type="hidden" name="source" value="consulting">
+    <input type="hidden" name="intent" value="details">
+    <!-- Keep the bot trap expected by the existing handler out of the visible form. -->
+    <div class="form-honeypot" hidden aria-hidden="true"><label for="hp">Leave this field empty</label><input id="hp" type="text" name="hp" autocomplete="off" tabindex="-1"></div>
+    <div class="row">
+     <button type="submit" class="btn-primary" id="submitBtn" disabled>Send request</button>
+     <small id="request-note">I’ll follow up by email. Booking requests aren’t confirmed appointments.</small>
+     <small>By submitting, you consent to being contacted about this request.</small>
+     <div class="err" id="submitErr" role="alert" hidden>Sorry, your request couldn’t be sent. Please try again. Your answers are still here.</div>
     </div>
-  </section>
-  <section class="about">
-    <p><a href="/">← Back to home</a></p>
-  </section>
-
-<script type="module" src="/partials/consulting/form/consultingform.js" defer></script>
-
-</body>
-</html>
+   </form>
+   <noscript><p>Please enable JavaScript to use this form.</p></noscript>
+  </div>
+ </div>
+</section>
+<div class="services-home"><a href="/">← Back to home</a></div>

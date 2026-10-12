@@ -84,6 +84,8 @@
   border:1px dashed var(--color-border);
   background:#fff;
   touch-action:none;
+  -webkit-user-select:none;
+  user-select:none;
   cursor:grab;
 }
 .ql-viewport.is-dragging{
@@ -222,10 +224,11 @@
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
         a.className = 'ql-icon';
+        a.draggable = false;
         a.style.backgroundColor = data.color || '#111';
         a.setAttribute('aria-label', data.label);
         if (data.img){
-          a.innerHTML = '<img src="' + data.img + '" alt="" />';
+          a.innerHTML = '<img src="' + data.img + '" alt="" draggable="false" />';
         } else {
           a.innerHTML = '<i class="' + data.icon + '"></i>';
         }
@@ -239,6 +242,19 @@
         });
       });
 
+      // Center the staggered cluster, including its half-column overhang.
+      const centerX = (minX + maxX) / 2;
+      icons.forEach(icon => { icon.x -= centerX; });
+      minX -= centerX;
+      maxX -= centerX;
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+      let activePointerId = null;
+      let pointerStartX = 0;
+      let pointerStartY = 0;
+      let dragged = false;
+      let previousFrameTime = 0;
       let offsetX = 0;
       let offsetY = 0;
       let velocityX = 0;
@@ -264,6 +280,11 @@
       }
 
       viewport.addEventListener('pointerdown', (e) => {
+        if (!e.isPrimary || e.button !== 0 || activePointerId !== null) return;
+        activePointerId = e.pointerId;
+        pointerStartX = e.clientX;
+        pointerStartY = e.clientY;
+        dragged = false;
         isDragging = true;
         springTargetX = null;
         springTargetY = null;
@@ -273,6 +294,7 @@
         lastMoveTime = performance.now();
         velocityX = 0;
         velocityY = 0;
+        usePointerFocal = e.pointerType === 'mouse';
         if (e.pointerType === 'mouse'){
           updatePointerLocal(e);
           usePointerFocal = true;
@@ -280,11 +302,18 @@
       });
 
       viewport.addEventListener('pointermove', (e) => {
+        if (!e.isPrimary || (activePointerId !== null && e.pointerId !== activePointerId)) return;
         if (e.pointerType === 'mouse'){
           updatePointerLocal(e);
           usePointerFocal = true;
         }
         if (!isDragging) return;
+        if (!dragged){
+          if (Math.hypot(e.clientX - pointerStartX, e.clientY - pointerStartY) < 6) return;
+          dragged = true;
+          // Capture only drags so a normal tap still activates its original link.
+          viewport.setPointerCapture(e.pointerId);
+        }
         const now = performance.now();
         const dt = now - lastMoveTime || 16;
         const dx = e.clientX - lastPointerX;
@@ -296,18 +325,39 @@
         offsetX += dx;
         offsetY += dy;
 
-        velocityX = dx / dt * 16;
-        velocityY = dy / dt * 16;
+        velocityX = dx / dt * (1000 / 60);
+        velocityY = dy / dt * (1000 / 60);
       });
 
       function endDrag(e){
-        if (!isDragging) return;
+        if (!isDragging || e.pointerId !== activePointerId) return;
         isDragging = false;
+        activePointerId = null;
+        if (e.type !== 'pointerup' || performance.now() - lastMoveTime > 80 || reducedMotion.matches){
+          velocityX = 0;
+          velocityY = 0;
+        }
         viewport.classList.remove('is-dragging');
+        if (viewport.hasPointerCapture(e.pointerId)) viewport.releasePointerCapture(e.pointerId);
+        const rect = viewport.getBoundingClientRect();
+        if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom){
+          usePointerFocal = false;
+        }
       }
 
-      viewport.addEventListener('pointerup', endDrag);
-      viewport.addEventListener('pointercancel', endDrag);
+      window.addEventListener('pointerup', endDrag);
+      window.addEventListener('pointercancel', endDrag);
+      viewport.addEventListener('lostpointercapture', (e) => {
+        // Ignore the original link losing implicit touch capture during transfer.
+        if (e.target === viewport) endDrag(e);
+      });
+      viewport.addEventListener('dragstart', e => e.preventDefault());
+      viewport.addEventListener('click', (e) => {
+        if (dragged && e.detail !== 0){
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
       viewport.addEventListener('pointerleave', (e) => {
         if (!isDragging){
           usePointerFocal = false;
@@ -318,30 +368,40 @@
         return t * t * (3 - 2 * t);
       }
 
-      function animate(){
+      function animate(now){
         requestAnimationFrame(animate);
+        // Keep inertia and spring speed consistent on 60Hz and 120Hz displays.
+        const frameStep = previousFrameTime ? Math.min((now - previousFrameTime) / (1000 / 60), 3) : 1;
+        previousFrameTime = now;
 
         if (!isDragging){
-          const friction = 0.3; // slightly snappier than 0.92
+          const friction = reducedMotion.matches ? 0 : Math.pow(0.3, frameStep);
+          const travel = reducedMotion.matches ? 0 : 0.3 * (1 - friction) / (1 - 0.3);
+          offsetX += velocityX * travel;
+          offsetY += velocityY * travel;
           velocityX *= friction;
           velocityY *= friction;
           if (Math.abs(velocityX) < 0.01) velocityX = 0;
           if (Math.abs(velocityY) < 0.01) velocityY = 0;
-          offsetX += velocityX;
-          offsetY += velocityY;
         }
 
         // compute effective canvas bounds based on icon cluster and viewport size
-        const rect = viewport.getBoundingClientRect();
-        const halfW = rect.width / 2;
-        const halfH = rect.height / 2;
-        const marginX = baseSize * 0.1;
-        const marginY = baseSize * 0.1;
-
-        const minOffsetX = -halfW + marginX - minX;
-        const maxOffsetX =  halfW - marginX - maxX;
-        const minOffsetY = -halfH + marginY - minY;
-        const maxOffsetY =  halfH - marginY - maxY;
+        const halfW = viewport.clientWidth / 2;
+        const halfH = viewport.clientHeight / 2;
+        const margin = baseSize * maxScale / 2 + 8;
+        const leftAligned = -halfW + margin - minX;
+        const rightAligned = halfW - margin - maxX;
+        const topAligned = -halfH + margin - minY;
+        const bottomAligned = halfH - margin - maxY;
+        // When the grid is wider than the phone, either edge must remain reachable.
+        // Leave one icon-width of play even when the cluster exactly fits a phone.
+        const minOffsetX = Math.min(leftAligned, rightAligned, -baseSize);
+        const maxOffsetX = Math.max(leftAligned, rightAligned, baseSize);
+        const minOffsetY = Math.min(topAligned, bottomAligned, -baseSize);
+        const maxOffsetY = Math.max(topAligned, bottomAligned, baseSize);
+        const edgePullX = Math.min(EDGE_PULL, (maxOffsetX - minOffsetX) / 2);
+        const edgePullY = Math.min(EDGE_PULL, (maxOffsetY - minOffsetY) / 2);
+        const springStep = reducedMotion.matches ? 1 : 1 - Math.pow(1 - SPRING_TIGHTNESS, frameStep);
 
         // clamp to hard canvas bounds
         if (offsetX < minOffsetX) offsetX = minOffsetX;
@@ -354,24 +414,25 @@
           const almostStoppedX = Math.abs(velocityX) < 0.05;
           const almostStoppedY = Math.abs(velocityY) < 0.05;
 
-          if (springTargetX == null && almostStoppedX){
+          if (springTargetX == null && almostStoppedX && edgePullX > 0.5){
             if (offsetX <= minOffsetX + 0.5){
-              springTargetX = minOffsetX + EDGE_PULL;
+              springTargetX = minOffsetX + edgePullX;
             } else if (offsetX >= maxOffsetX - 0.5){
-              springTargetX = maxOffsetX - EDGE_PULL;
+              springTargetX = maxOffsetX - edgePullX;
             }
           }
-          if (springTargetY == null && almostStoppedY){
+          if (springTargetY == null && almostStoppedY && edgePullY > 0.5){
             if (offsetY <= minOffsetY + 0.5){
-              springTargetY = minOffsetY + EDGE_PULL;
+              springTargetY = minOffsetY + edgePullY;
             } else if (offsetY >= maxOffsetY - 0.5){
-              springTargetY = maxOffsetY - EDGE_PULL;
+              springTargetY = maxOffsetY - edgePullY;
             }
           }
 
           if (springTargetX != null){
+            springTargetX = clamp(springTargetX, minOffsetX, maxOffsetX);
             const dx = springTargetX - offsetX;
-            offsetX += dx * SPRING_TIGHTNESS;
+            offsetX += dx * springStep;
             velocityX = 0;
             if (Math.abs(dx) < 0.5){
               offsetX = springTargetX;
@@ -379,8 +440,9 @@
             }
           }
           if (springTargetY != null){
+            springTargetY = clamp(springTargetY, minOffsetY, maxOffsetY);
             const dy = springTargetY - offsetY;
-            offsetY += dy * SPRING_TIGHTNESS;
+            offsetY += dy * springStep;
             velocityY = 0;
             if (Math.abs(dy) < 0.5){
               offsetY = springTargetY;
@@ -411,11 +473,12 @@
             scale = maxScale + (1 - maxScale) * s;
           }
 
-          const transform = 'translate(' + localX + 'px,' + localY + 'px) scale(' + scale + ') translate(-50%, -50%)';
+          if (reducedMotion.matches) scale = 1;
+          const transform = 'translate(' + localX + 'px,' + localY + 'px) translate(-50%, -50%) scale(' + scale + ')';
           icon.el.style.transform = transform;
         });
       }
-      animate();
+      requestAnimationFrame(animate);
     })();
   </script>
 </body>

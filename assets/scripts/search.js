@@ -9,9 +9,10 @@
     { url: '/about/', title: 'About Nat' },
     { url: '/links/', title: 'Links', text: 'GitHub, Google Maps, LinkedIn, Instagram, Email, Venmo, Portfolio, Spotify, Letterboxd, YouTube, TikTok, Facebook.' },
     // Optional text covers labels rendered by JavaScript rather than HTML.
-    { url: '/services/', title: 'Services', text: 'Custom Websites. CRM Hygiene Sprint.', sources: [
-      '/partials/services/servicetilefragments/uat.html',
-      '/partials/services/servicetilefragments/ops.html'
+    { url: '/services/', title: 'Services', text: 'Resume Reviews. Student career coaching. Ask Nat. Project Help. Websites and automations.', sources: [
+      '/partials/services/servicetilefragments/resume-review.html',
+      '/partials/services/servicetilefragments/ask-nat.html',
+      '/partials/services/servicetilefragments/project-help.html'
     ] }
   ];
   const FORM_SELECTOR = '#desktopSearch, #mobilePanel .mobile-search';

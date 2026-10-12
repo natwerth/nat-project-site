@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>natwerth.com</title>
+  <title>Services | Nat Werth</title>
+  <meta name="description" content="Resume reviews, Ask Nat, and help with websites, automations, and projects.">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#a09484" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -13,36 +14,11 @@
   <!-- Global styles first -->
   <link rel="stylesheet" href="/assets/styles/styles.css" />
   <link rel="stylesheet" href="/assets/styles/header.css" />
-  <link rel="stylesheet" href="/assets/styles/footer.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/partials/services/services.css?v=visual-fixes-1">
+  <link rel="stylesheet" href="/partials/services/form/servicesform.css?v=visual-fixes-1">
 
-<style id="page-chrome-clamp">
-  /* Scoped clamps: only affect About page shell */
-  .page--about {
-    box-sizing: border-box;
-    min-width: 0;
-    max-width: 100%;
-    overflow-x: hidden; /* stop page-level wobble without touching other pages */
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-  }
 
-  .page--about .content, .page--about .container, .page--about .wrap,
-  .page--about .c-card, .page--about .c-card__content, .page--about .pc-body,
-  .page--about .profile-card, .page--about .partial {
-    box-sizing: border-box;
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  /* Full-bleed guards, scoped */
-  .page--about [data-fullbleed], .page--about .fullbleed, .page--about .full-bleed {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  /* Do not block inner horizontal scrollers (your fragments) */
-  .page--about .nt-tiles__wrap { overflow-x: auto; }
-</style>
 </head>
 <body>
   <!-- Include the header partial -->
@@ -52,11 +28,12 @@
   <!-- The tiny include loader -->
   <script type="module" src="/assets/includes.js" defer></script>
 
-<main class="page page--about">
+<main class="page page--services">
   <section data-include="/partials/services/serviceshero.html"></section>
   <section data-include="/partials/services/form/servicesform.html"></section>
   <section data-include="/partials/footer.html"></section>
 </main>
+<script type="module" src="/partials/services/form/servicesform.js"></script>
 
 </body>
 </html>
