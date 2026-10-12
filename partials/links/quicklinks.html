@@ -123,6 +123,22 @@
   max-height:70%;
   display:block;
 }
+/* Brand artwork lives inside each circle, leaving the watch lens unchanged. */
+.ql-icon--instagram{
+  background-image:
+    radial-gradient(circle at 28% 104%, #ffdc80 0%, #fcaf45 19%, #f77737 34%, transparent 59%),
+    linear-gradient(145deg, #405de6 0%, #833ab4 28%, #c13584 53%, #e1306c 75%, #fd1d1d 100%);
+}
+.ql-icon--instagram i{ font-size:44px; }
+.ql-icon--maps{
+  box-shadow:inset 0 0 0 1px rgba(60,64,67,.08), 0 4px 10px rgba(0,0,0,.16);
+}
+.ql-icon--maps img{ width:44px; height:58px; max-width:none; max-height:none; object-fit:contain; }
+.ql-icon--letterboxd img{ width:58px; height:30px; max-width:none; max-height:none; object-fit:contain; }
+.ql-icon--tiktok i{
+  font-size:42px;
+  text-shadow:-2px -1.5px 0 #25f4ee, 2px 1.5px 0 #fe2c55;
+}
 .ql-icon:focus-visible{
   outline:2px solid var(--brand-primary);
   outline-offset:3px;
@@ -172,18 +188,20 @@
       const canvas = document.getElementById('ql-canvas');
       if (!viewport || !canvas) return;
 
+      // Maps pin rendered from Google’s official product asset:
+      // https://www.gstatic.com/images/branding/productlogos/maps_2025/v1/192px.svg
       const ICON_DATA = [
         { icon: 'fa-solid fa-code-branch',  href: 'https://github.com/natwerth', label: 'GitHub',      color: '#181717' },
-        { icon: 'fa-solid fa-location-dot', href: 'https://www.google.com/maps/contrib/111567881794706653052/reviews/@29.8835804,-104.4037173,3z/data=!3m1!4b1!4m3!8m2!3m1!1e1?authuser=1&entry=ttu&g_ep=EgoyMDI1MDkxMC4wIKXMDSoASAFQAw%3D%3D', label: 'Google Maps', color: '#34A853' },
+        { icon: 'fa-solid fa-location-dot', href: 'https://www.google.com/maps/contrib/111567881794706653052/reviews/@29.8835804,-104.4037173,3z/data=!3m1!4b1!4m3!8m2!3m1!1e1?authuser=1&entry=ttu&g_ep=EgoyMDI1MDkxMC4wIKXMDSoASAFQAw%3D%3D', label: 'Google Maps', color: '#fff', brand: 'maps', img: '/assets/icons/google-maps-gradient.png' },
         { icon: 'fa-brands fa-linkedin-in', href: 'https://www.linkedin.com/in/nat-werth', label: 'LinkedIn',    color: '#0A66C2' },
-        { icon: 'fa-brands fa-instagram',   href: 'https://www.instagram.com/natwerth',    label: 'Instagram',   color: '#e1306c' }, // multi-color, neutral grey
+        { icon: 'fa-brands fa-instagram',   href: 'https://www.instagram.com/natwerth',    label: 'Instagram',   color: '#e1306c', brand: 'instagram' },
         { icon: 'fa-solid fa-envelope',     href: '#', label: 'Email',       color: '#4B5563' },
         { icon: '', href: 'https://venmo.com/u/natwerth', label: 'Venmo', color: '#3d95ce', img: '/assets/icons/venmo.png' },
         { icon: 'fa-solid fa-globe',        href: '#', label: 'Portfolio',   color: '#4B5563' },
         { icon: 'fa-brands fa-spotify',     href: 'https://open.spotify.com/user/zedbikc30wyo6bjpgvugo24pp?si=8RK2YWJOTwCy-F28WXOhJQ&nd=1&dlsi=b7b2a6b2e27444dc', label: 'Spotify',     color: '#1DB954' },
-        { icon: 'fa-brands fa-letterboxd',  href: 'https://letterboxd.com/natwerth',       label: 'Letterboxd',  color: '#ff7034' },
+        { icon: 'fa-brands fa-letterboxd',  href: 'https://letterboxd.com/natwerth',       label: 'Letterboxd',  color: '#202830', brand: 'letterboxd', img: '/assets/icons/letterboxd-mark.svg' },
         { icon: 'fa-brands fa-youtube',     href: 'https://www.youtube.com/@natwerth5512', label: 'YouTube',     color: '#FF0000' },
-        { icon: 'fa-brands fa-tiktok',      href: 'https://www.tiktok.com/@natwerth3',     label: 'TikTok',      color: '#40e0d0' },
+        { icon: 'fa-brands fa-tiktok',      href: 'https://www.tiktok.com/@natwerth3',     label: 'TikTok',      color: '#111', brand: 'tiktok' },
         { icon: 'fa-brands fa-facebook-f',  href: 'https://facebook.com/natwerth',         label: 'Facebook',    color: '#0866ff' },
       ];
 
@@ -199,7 +217,7 @@
         a.href = data.href;
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
-        a.className = 'ql-icon';
+        a.className = 'ql-icon' + (data.brand ? ' ql-icon--' + data.brand : '');
         a.draggable = false;
         a.style.backgroundColor = data.color || '#111';
         a.setAttribute('aria-label', data.label);
