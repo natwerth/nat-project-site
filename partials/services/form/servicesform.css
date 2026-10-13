@@ -30,3 +30,9 @@
 .page--services .form-honeypot { display:none !important; }
 @media (min-width:768px) { .page--services .c-form .two { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (prefers-reduced-motion:reduce) { .page--services .svc-pills label { transition:none; } }
+
+.page--services .form-status { margin:0; color:var(--color-text); font-size:.95rem; line-height:1.6; overflow-wrap:anywhere; }
+.page--services .form-actions { display:flex; flex-wrap:wrap; align-items:center; gap:12px; }
+.page--services .btn-secondary { appearance:none; border:1px solid var(--color-border-strong); border-radius:8px; padding:8px 12px; background:transparent; color:var(--color-text); font:inherit; cursor:pointer; }
+.page--services .btn-secondary:focus-visible, .page--services .form-actions a:focus-visible { outline:2px solid var(--ui-blue); outline-offset:3px; }
+.page--services .btn-secondary:disabled { cursor:wait; opacity:.65; }

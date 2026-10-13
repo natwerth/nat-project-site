@@ -80,11 +80,12 @@
       <div class="c-card-grid">
         <div class="c-card u-bleed-mobile">
           <header class="c-section-head">
-            <h2>Thank You!</h2>
+            <h2 id="thankyouHeading">Thank You</h2>
             <div class="c-section-head__sub"></div>
           </header>
           <p>Sending a booking request does not confirm an appointment.</p>
-          <p>Your request has been sent. Nat will follow up by email.</p>
+          <p id="confirmedRequestMessage" role="status">This page does not confirm that a request was received. Please return to the Services form to submit a request or check its status.</p>
+          <p id="confirmedRequestReference" style="overflow-wrap:anywhere" hidden></p>
         </div>
       </div>
     </div>
@@ -98,6 +99,7 @@
   <div class="c-toast" id="toast" role="status" aria-live="polite"></div>
 
 
+<script type="module" src="/partials/services/form/thankyou.js"></script>
 </body>
 
 </html>
